@@ -17,9 +17,19 @@
         body::before{content:'';position:fixed;inset:0;background-image:url("{{ asset('images/madin.png') }}");background-size:180px;background-repeat:repeat;opacity:.025;pointer-events:none;z-index:0}
         .arab{font-family:'Amiri',serif}
         /* Sidebar world-class */
-        .sidebar{width:260px;min-height:100vh;min-height:100dvh;background:linear-gradient(180deg,#0a3d1f 0%, #0e4d26 40%, #0a3d1f 100%);position:fixed;left:0;top:0;bottom:0;overflow-y:auto;border-right:3px solid var(--gold);box-shadow:4px 0 28px rgba(0,0,0,0.18);z-index:1050;transition:transform .32s cubic-bezier(.4,0,.2,1);overscroll-behavior:contain}
-        .sidebar::-webkit-scrollbar{width:6px}
-        .sidebar::-webkit-scrollbar-thumb{background:rgba(212,175,55,0.35);border-radius:10px}
+        .sidebar{width:260px;min-height:100vh;min-height:100dvh;background:linear-gradient(180deg,#0a3d1f 0%, #0e4d26 40%, #0a3d1f 100%);position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column;overflow:hidden;border-right:3px solid var(--gold);box-shadow:4px 0 28px rgba(0,0,0,0.18);z-index:1050;transition:transform .32s cubic-bezier(.4,0,.2,1);overscroll-behavior:contain}
+        .sidebar .menu{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:8px}
+        .sidebar .menu::-webkit-scrollbar{width:6px}
+        .sidebar .menu::-webkit-scrollbar-thumb{background:rgba(212,175,55,0.35);border-radius:10px}
+        .sidebar-user{margin-top:auto;position:sticky;bottom:0;z-index:3;background:linear-gradient(180deg,rgba(10,61,31,0) 0%, #0a3d1f 30%);padding:10px 12px calc(10px + env(safe-area-inset-bottom));}
+        .sidebar-user-card{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:1px solid rgba(212,175,55,.45);border-radius:14px;padding:9px 10px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+        .sidebar-user-card img.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;background:#0a3d1f}
+        .sidebar-user-card .uinfo{min-width:0;flex:1;line-height:1.25}
+        .sidebar-user-card .uname{color:#fff;font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .sidebar-user-card .usub{color:rgba(253,246,227,.65);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .sidebar-user-card .urole{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--gold);border:1px solid rgba(212,175,55,.6);border-radius:20px;padding:1px 7px;margin-top:3px}
+        .sidebar-user-card .logout-btn{width:38px;height:38px;border-radius:11px;border:1px solid rgba(255,120,120,.5);background:rgba(220,53,69,.14);color:#ffb3b3;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.18s}
+        .sidebar-user-card .logout-btn:hover{background:#dc3545;color:#fff;border-color:#dc3545}
         .sidebar .brand{background:linear-gradient(135deg,var(--cream) 0%, #fff 60%, var(--cream2) 100%);padding:12px 14px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:2;cursor:pointer;transition:background .3s}
         .sidebar .brand:hover{background:linear-gradient(135deg,#fff 0%, var(--cream) 100%)}
         .sidebar .brand::after{content:'◆';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--cream);color:var(--gold);padding:0 6px;font-size:12px}
@@ -120,6 +130,18 @@
         .menu a.hidden-search{display:none !important}
         /* bottom nav sits flush above footer — no extra cream gap */
         @media(max-width:991px){ .main{padding-bottom:0} }
+        /* ── Animasi pergantian menu ── */
+        @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+        @keyframes tabIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+        .content{animation:pageIn .35s cubic-bezier(.22,1,.36,1) both}
+        .content.page-leave{opacity:0;transform:translateY(8px);transition:opacity .16s ease,transform .16s ease}
+        .card,.card-form{animation:pageIn .4s cubic-bezier(.22,1,.36,1) both}
+        .tab-pane.show.active{animation:tabIn .28s ease both}
+        .sidebar .menu a{transition:background .18s,color .18s,transform .12s,box-shadow .18s}
+        .sidebar .menu a.active{animation:pageIn .3s ease both}
+        .bottom-nav a{transition:background .18s,color .18s,transform .12s}
+        .bottom-nav a.active{animation:pageIn .3s ease both}
+        @media (prefers-reduced-motion: reduce){ .content,.card,.card-form,.tab-pane.show.active{animation:none !important} }
     </style>
     @stack('styles')
 </head>
@@ -136,9 +158,10 @@
     <div class="sidebar-search"><i class="bi bi-search"></i><input id="sidebarSearch" type="text" placeholder="Cari menu... ( / )" autocomplete="off"><span class="small" style="color:rgba(253,246,227,0.5);padding-right:8px;font-size:10px">⌘K</span></div>
     <div class="menu mt-2">
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+        @if((auth()->user()->role ?? '')!=='gt')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
-        <a href="#" data-bs-toggle="collapse" data-bs-target="#permohonanMenu" style="justify-content:space-between;" onclick="event.preventDefault(); document.getElementById('permohonanMenu').classList.toggle('show')">
-            <span><i class="bi bi-journal-bookmark-fill"></i> Permohonan</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:.2s" id="permohonanChevron"></i>
+        <a href="#permohonanMenu" data-bs-toggle="collapse" aria-expanded="true" aria-controls="permohonanMenu" class="collapse-toggle" style="justify-content:space-between;">
+            <span><i class="bi bi-journal-bookmark-fill"></i> Permohonan</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s" id="permohonanChevron"></i>
         </a>
         <div id="permohonanMenu" class="collapse show">
             @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
@@ -151,6 +174,7 @@
             <a href="{{ route('form-questions.index') }}" class="{{ request()->routeIs('form-questions*') ? 'active':'' }} submenu"><i class="bi bi-patch-question-fill"></i> Kelola Pertanyaan</a>
             @endif
         </div>
+        @endif
         @if((auth()->user()->role ?? '')==='admin')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">ADMIN</div>
         <a href="{{ route('landing-contents.index') }}" class="{{ request()->routeIs('landing-contents*') ? 'active':'' }}"><i class="bi bi-pencil-square"></i> Kelola Landing</a>
@@ -158,17 +182,29 @@
         <a href="#" style="opacity:.55"><i class="bi bi-megaphone-fill"></i> Laporan <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         <a href="#" style="opacity:.55"><i class="bi bi-calendar-event"></i> Rapat <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         <a href="#" style="opacity:.55"><i class="bi bi-mosque"></i> Supervisi <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
-        @else
-        <a href="#" style="opacity:0.7"><i class="bi bi-mortarboard"></i> Guru Tugas</a>
-        @endif
-        <div class="mt-3 mx-3 p-3 rounded-3 small" style="background:var(--cream);border:2px solid var(--gold);">
-            <div class="fw-bold" style="color:var(--green)"><i class="bi bi-person-badge" style="color:var(--gold)"></i> {{ auth()->user()->name }}</div>
-            <div style="font-size:11px;color:#5d4037;word-break:break-all">{{ auth()->user()->username }} • <span class="badge-pendaftaran">{{ strtoupper(auth()->user()->role ?? '-') }}</span></div>
-            <div class="small arab text-center mt-1" style="color:var(--gold);font-size:10px">بارك الله فيكم</div>
-            <form method="POST" action="{{ route('logout') }}" class="mt-2">@csrf<button class="btn btn-outline-danger btn-sm w-100 rounded-pill" style="border-color:var(--gold);color:var(--green);font-weight:700;min-height:40px"><i class="bi bi-box-arrow-right"></i> Keluar</button></form>
+        @elseif((auth()->user()->role ?? '')==='gt')
+        <a href="{{ route('gt.biodata') }}" class="{{ request()->routeIs('gt.biodata') ? 'active':'' }}"><i class="bi bi-person-badge-fill"></i> Biodata</a>
+        <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">KEGIATAN</div>
+        <a href="#absensiMenu" data-bs-toggle="collapse" aria-expanded="true" aria-controls="absensiMenu" class="collapse-toggle" style="justify-content:space-between;">
+            <span><i class="bi bi-fingerprint"></i> Absensi Kehadiran</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s" id="absensiChevron"></i>
+        </a>
+        <div id="absensiMenu" class="collapse show">
+            <a href="{{ route('gt.absensi.mengajar') }}" class="{{ request()->routeIs('gt.absensi.mengajar') ? 'active':'' }} submenu"><i class="bi bi-journal-check"></i> Kehadiran Mengajar</a>
+            <a href="{{ route('gt.absensi.shalat') }}" class="{{ request()->routeIs('gt.absensi.shalat') ? 'active':'' }} submenu"><i class="bi bi-moon-stars-fill"></i> Shalat 5 Waktu</a>
         </div>
-        <div class="text-center mt-3 small arab" style="color:var(--gold);opacity:0.6;font-size:10px">العلم نور</div>
-        <div style="height:16px"></div>
+        @endif
+    </div>
+    {{-- Kartu user paling bawah — model minimal modern --}}
+    <div class="sidebar-user">
+        <div class="sidebar-user-card">
+            <img class="avatar" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'U') }}&background=d4af37&color=0a3d1f&size=80" alt="">
+            <div class="uinfo">
+                <div class="uname">{{ auth()->user()->name }}</div>
+                <div class="usub">{{ auth()->user()->username }}</div>
+                <span class="urole">{{ strtoupper(auth()->user()->role ?? '-') }}</span>
+            </div>
+            <form method="POST" action="{{ route('logout') }}" class="m-0">@csrf<button class="logout-btn" title="Keluar"><i class="bi bi-box-arrow-right"></i></button></form>
+        </div>
     </div>
 </div>
 
@@ -223,7 +259,7 @@
 
 <div id="toastWrap" class="toast-wrap"></div>
 <!-- Bottom Nav — Mobile Masterpiece -->
-<nav class="bottom-nav" aria-label="Navigasi bawah">
+<nav class="bottom-nav" aria-label="Navigasi bawah" style="@if(!in_array(auth()->user()->role ?? '', ['admin','pjgt']))grid-template-columns:repeat(3,1fr);@endif">
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('dashboard*') ? 'bi-house-door-fill' : 'bi-house-door' }}"></i>
         <span>Home</span>
@@ -233,7 +269,6 @@
         <i class="bi {{ request()->routeIs('permohonan.step*') ? 'bi-feather' : 'bi-pencil-square' }}"></i>
         <span>Form</span>
     </a>
-    @endif
     <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'bi-collection-fill' : 'bi-collection' }}"></i>
         <span>Arsip</span>
@@ -246,6 +281,16 @@
         <i class="bi bi-globe2"></i>
         <span>Beranda</span>
     </a>
+    @else
+    <a href="{{ route('gt.biodata') }}" class="{{ request()->routeIs('gt.biodata') ? 'active':'' }}">
+        <i class="bi {{ request()->routeIs('gt.biodata') ? 'bi-person-badge-fill' : 'bi-person-badge' }}"></i>
+        <span>Biodata</span>
+    </a>
+    <a href="{{ route('gt.absensi.mengajar') }}" class="{{ request()->routeIs('gt.absensi.*') ? 'active':'' }}">
+        <i class="bi {{ request()->routeIs('gt.absensi.*') ? 'bi-fingerprint' : 'bi-fingerprint' }}"></i>
+        <span>Absensi</span>
+    </a>
+    @endif
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -270,8 +315,27 @@ function closeSidebar(){
   document.documentElement.style.overflow='';
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSidebar(); });
-// Tutup saat klik link di sidebar (mobile)
-document.querySelectorAll('.sidebar .menu a').forEach(a=>{
+// Animasi keluar saat pindah menu (sidebar / bottom-nav / topbar)
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const content=document.querySelector('.content');
+  if(!content) return;
+  document.querySelectorAll('.sidebar .menu a:not(.collapse-toggle), .bottom-nav a, .topbar a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const href=a.getAttribute('href')||'';
+      if(!href || href.startsWith('#') || a.target==='_blank' || e.ctrlKey || e.metaKey) return;
+      if(a.dataset.bsToggle) return;
+      e.preventDefault();
+      content.classList.add('page-leave');
+      let done=false;
+      const go=function(){ if(done) return; done=true; window.location.href=a.href; };
+      setTimeout(go, 140);
+      setTimeout(go, 800);
+    }, {capture:false});
+  });
+})();
+// Tutup saat klik link di sidebar (mobile) — kecuali toggle collapse
+document.querySelectorAll('.sidebar .menu a:not(.collapse-toggle)').forEach(a=>{
   a.addEventListener('click', ()=>{ if(window.innerWidth<=991) setTimeout(closeSidebar, 180); });
 });
 // Swipe to close
@@ -283,15 +347,17 @@ sbEl.addEventListener('touchmove', e=>{
   const dx=e.touches[0].clientX - touchStartX;
   if(dx < -60) closeSidebar();
 }, {passive:true});
-// Chevron rotasi saat collapse (opsional)
-const permohonanMenu=document.getElementById('permohonanMenu');
-const ch=document.getElementById('permohonanChevron');
-if(permohonanMenu && ch){
-  new MutationObserver(()=>{
-    const isShown=permohonanMenu.classList.contains('show');
-    ch.style.transform=isShown?'rotate(0deg)':'rotate(-90deg)';
-  }).observe(permohonanMenu, {attributes:true});
+// Chevron rotasi via event Bootstrap collapse (anti-glitch)
+function bindChevron(menuId, chevId){
+  const menu=document.getElementById(menuId), ch=document.getElementById(chevId);
+  if(!menu||!ch) return;
+  const sync=function(){ const open=menu.classList.contains('show'); ch.style.transform=open?'rotate(0deg)':'rotate(-90deg)'; };
+  sync();
+  menu.addEventListener('shown.bs.collapse', function(){ ch.style.transform='rotate(0deg)'; });
+  menu.addEventListener('hidden.bs.collapse', function(){ ch.style.transform='rotate(-90deg)'; });
 }
+bindChevron('permohonanMenu','permohonanChevron');
+bindChevron('absensiMenu','absensiChevron');
 // ── RIPPLE untuk btn & sidebar ──
 document.querySelectorAll('.btn-green,.btn-yellow,.sidebar .menu a,.topbar .btn').forEach(btn=>{
   btn.style.position='relative'; btn.style.overflow='hidden';

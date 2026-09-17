@@ -49,4 +49,9 @@ class User extends Authenticatable
     public function isAdmin(): bool { return $this->role === 'admin'; }
     public function isPjgt(): bool { return $this->role === 'pjgt'; }
     public function isGt(): bool { return $this->role === 'gt'; }
+
+    public function biodata()
+    {
+        return $this->hasOne(GtBiodata::class);
+    }
 }

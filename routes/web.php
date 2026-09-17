@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormQuestionController;
+use App\Http\Controllers\GtController;
 use App\Http\Controllers\LandingContentController;
 use App\Http\Controllers\PermohonanController;
 use App\Models\Permohonan;
@@ -57,4 +58,13 @@ Route::middleware('auth')->group(function () {
     // Form Ijin GT ringkas - halaman sendiri (admin & pjgt)
     Route::get('/form-ijin-gt', [PermohonanController::class, 'ijinForm'])->name('form.ijin')->middleware('role:admin,pjgt');
     Route::post('/form-ijin-gt', [PermohonanController::class, 'storeIjin'])->name('form.ijin.store')->middleware('role:admin,pjgt');
+
+    // Guru Tugas - Biodata, Kegiatan, Absensi (gt & admin)
+    Route::prefix('gt')->name('gt.')->middleware('role:gt,admin')->group(function () {
+        Route::get('/biodata', [GtController::class, 'biodata'])->name('biodata');
+        Route::put('/biodata', [GtController::class, 'updateBiodata'])->name('biodata.update');
+        Route::get('/kegiatan', [GtController::class, 'kegiatan'])->name('kegiatan');
+        Route::get('/absensi-mengajar', [GtController::class, 'absensiMengajar'])->name('absensi.mengajar');
+        Route::get('/absensi-shalat', [GtController::class, 'absensiShalat'])->name('absensi.shalat');
+    });
 });
