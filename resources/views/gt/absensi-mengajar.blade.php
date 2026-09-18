@@ -52,11 +52,25 @@
   tick(); setInterval(tick,1000);
   function render(){
     const data=all(), k=today(), info=document.getElementById('mgInfo'), btn=document.getElementById('mgBtn'), rw=document.getElementById('mgRiwayat');
-    if(data[k]){ info.style.background='#e8f5e9'; info.style.border='1px solid #22c55e'; info.innerHTML='✅ <strong>'+data[k].status+'</strong> pukul '+data[k].jam+(data[k].ket?' • '+data[k].ket:''); }
+    const sudah = !!data[k];
+    const stEl=document.getElementById('mgStatus'), ketEl=document.getElementById('mgKet');
+    if(data[k]){
+      info.style.background='#e8f5e9'; info.style.border='1px solid #22c55e';
+      info.innerHTML='✅ <strong>'+data[k].status+'</strong> pukul '+data[k].jam+(data[k].ket?' • '+data[k].ket:'')+'<br><span class="small" style="color:#198754">Sudah absen hari ini — tidak bisa absen lagi</span>';
+      btn.disabled=true; btn.style.opacity='.55'; btn.style.pointerEvents='none'; btn.innerHTML='<i class="bi bi-lock-fill"></i> Sudah Absen';
+      if(stEl) stEl.disabled=true; if(ketEl) ketEl.disabled=true;
+    } else {
+      info.style.background='#fdf6e3'; info.style.border='1px dashed #d4af37'; info.textContent='Belum absen hari ini';
+      btn.disabled=false; btn.style.opacity='1'; btn.style.pointerEvents=''; btn.innerHTML='<i class="bi bi-check-circle-fill"></i> Simpan Absensi';
+      if(stEl) stEl.disabled=false; if(ketEl) ketEl.disabled=false;
+    }
     const rows=[];
     for(let i=0;i<14;i++){ const d=new Date(); d.setDate(d.getDate()-i); const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); const v=data[key]; rows.push('<div class="d-flex justify-content-between align-items-center p-2 mb-1 rounded-3 small" style="background:'+(v?'#e8f5e9':'#f7f7f7')+';border:1px solid '+(v?'#22c55e':'#eee')+'"><span>'+d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'})+'</span><span><strong style="color:'+(v?'#198754':'#999')+'">'+(v?v.status+' • '+v.jam:'—')+'</strong>'+(v&&v.ket?'<br><span style="color:#5d4037">'+v.ket+'</span>':'')+'</span></div>'); }
     rw.innerHTML=rows.join('');
-    btn.onclick=function(){ const st=document.getElementById('mgStatus').value, ket=document.getElementById('mgKet').value.trim(); const jam=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); const d=all(); d[k]={status:st,jam:jam,ket:ket}; save(d); render(); if(window.showToast) showToast('Absensi mengajar tersimpan'); };
+    btn.onclick=function(){
+      if(all()[today()]){ if(window.showToast) showToast('Sudah absen hari ini — tidak bisa absen lagi', 'error'); return; }
+      const st=document.getElementById('mgStatus').value, ket=document.getElementById('mgKet').value.trim(); const jam=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); const d=all(); d[k]={status:st,jam:jam,ket:ket}; save(d); render(); if(window.showToast) showToast('Absensi mengajar tersimpan');
+    };
   }
   document.addEventListener('DOMContentLoaded',render); render();
 })();

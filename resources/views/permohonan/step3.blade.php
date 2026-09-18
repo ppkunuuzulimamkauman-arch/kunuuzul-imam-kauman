@@ -11,6 +11,12 @@
     <div class="text-end"><span class="username-badge" style="background:#fdf6e3;color:#0a3d1f;border-color:#d4af37">{{ auth()->user()->username ?? '00007' }}</span><div class="arab small mt-1" style="color:#d4af37">٣/٤</div></div>
 </div>
 @include('components.stepper', ['current'=>3])
+@if(!empty($sudahAjukan) && !empty($existing))
+<div class="alert d-flex gap-2 align-items-start mb-3" style="background:#fff8d6;border:2px solid #d4af37;color:#0a3d1f;border-radius:12px">
+  <i class="bi bi-info-circle-fill mt-1" style="color:#b8941f;font-size:18px"></i>
+  <div class="small" style="line-height:1.5"><strong>Mode Edit</strong> — sudah ada pengajuan {{ $existing->tahun }} ({{ $existing->pjgt_id }}). Menyimpan akan memperbarui, bukan duplikat. <a href="{{ route('permohonan.show',$existing) }}" style="color:var(--green);font-weight:700">Lihat</a></div>
+</div>
+@endif
 <div class="card-form mt-0">
     <form method="POST" action="{{ route('permohonan.store3') }}">
         @csrf

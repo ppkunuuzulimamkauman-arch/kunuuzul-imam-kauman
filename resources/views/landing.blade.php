@@ -118,7 +118,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <nav class="navbar navbar-expand-lg navbar-heritage sticky-top py-2">
 <div class="container">
   <a class="navbar-brand d-flex align-items-center gap-3 fw-bold" href="{{ route('landing') }}" style="color:var(--green)">
-    <span class="brand-ornamen" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar"><img src="{{ asset('images/madin.png') }}" alt="Logo Madin"></span>
+    <span class="brand-ornamen" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin"></span>
     <span style="line-height:1.1"><span style="font-weight:800;letter-spacing:0.5px">TMTB & DAI <span style="color:var(--gold2)">KIK</span></span><br><span class="arab" style="font-size:12px;color:var(--brown);font-weight:700">PP KUNUUZUL IMAM KAUMAN</span></span>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -320,7 +320,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <div class="row g-3">
   <div class="col-md-7">
     <div class="d-flex gap-3 align-items-center mb-2">
-      <span style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,.2))"></span>
+      <span style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,.2))"></span>
       <div><strong style="color:var(--gold)">TMTB & DAI KIK</strong><br><span class="arab small" style="color:var(--cream)">PP KUNUUZUL IMAM KAUMAN</span></div>
     </div>
     <div class="small" style="color:var(--cream);opacity:0.9">Jln KH Zainul Arifin No.165, Kauman, Bondowoso - Jawa Timur 68213<br>Pendaftaran TMTB & DAI • Resmi • Terverifikasi • © 1448 H</div>

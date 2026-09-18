@@ -21,6 +21,17 @@
 
 @include('components.stepper', ['current'=>1])
 
+@if(!empty($sudahAjukan) && !empty($existing))
+<div class="alert d-flex gap-2 align-items-start mb-3" style="background:#fff8d6;border:2px solid #d4af37;color:#0a3d1f;border-radius:12px">
+  <i class="bi bi-info-circle-fill mt-1" style="color:#b8941f;font-size:18px"></i>
+  <div class="small" style="line-height:1.5">
+    <strong>Sudah mengajukan untuk tahun {{ $existing->tahun }}</strong> — ID <span class="badge-pendaftaran">{{ $existing->pjgt_id }}</span> • Status <span class="badge" style="background:var(--green);color:var(--gold)">{{ $existing->status }}</span><br>
+    Form tetap ditampilkan agar bisa dicek & dikoreksi. Menyimpan akan <strong>memperbarui</strong> pengajuan tersebut, bukan membuat baru. Tidak bisa kirim pengajuan baru tahun ini.
+    <div class="mt-1 d-flex gap-2 flex-wrap"><a href="{{ route('permohonan.show',$existing) }}" class="btn btn-sm" style="background:var(--green);color:var(--gold);border-radius:20px;font-size:11px"><i class="bi bi-eye"></i> Lihat</a><a href="{{ route('permohonan.edit',$existing) }}" class="btn btn-sm" style="background:#fff;border:1.5px solid #d4af37;color:#0a3d1f;border-radius:20px;font-size:11px"><i class="bi bi-pencil"></i> Edit Halaman</a></div>
+  </div>
+</div>
+@endif
+
 <div class="card-form mt-0">
     <form method="POST" action="{{ route('permohonan.store1') }}">
         @csrf

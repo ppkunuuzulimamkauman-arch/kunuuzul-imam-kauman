@@ -11,6 +11,12 @@
     <div class="text-end"><span class="username-badge" style="background:#fdf6e3;color:#0a3d1f;border-color:#d4af37">Khatam ٤/٤</span><div class="arab small mt-1" style="color:#d4af37">خاتمة</div></div>
 </div>
 @include('components.stepper', ['current'=>4])
+@if(!empty($sudahAjukan) && !empty($existing))
+<div class="alert d-flex gap-2 align-items-start mb-3" style="background:#fff8d6;border:2px solid #d4af37;color:#0a3d1f;border-radius:12px">
+  <i class="bi bi-info-circle-fill mt-1" style="color:#b8941f;font-size:18px"></i>
+  <div class="small" style="line-height:1.5"><strong>Mode Perbarui</strong> — Anda sudah mengajukan {{ $existing->tahun }} ({{ $existing->pjgt_id }} • {{ $existing->status }}). Tombol di bawah akan <strong>memperbarui</strong> data tersebut, bukan membuat pengajuan baru tahun ini. Untuk tahun ajaran baru silakan tunggu ganti tahun. <a href="{{ route('permohonan.show',$existing) }}" style="color:var(--green);font-weight:700">Lihat detail</a></div>
+</div>
+@endif
 <div class="card-form mt-0">
     <form method="POST" action="{{ route('permohonan.store4') }}">
         @csrf
@@ -71,7 +77,7 @@
         <div class="p-3 border-top d-flex justify-content-between align-items-center" style="background:linear-gradient(135deg,#fdf6e3 0%, #fdf0c7 100%);border-top:2px solid #d4af37">
             <a href="{{ route('permohonan.step3') }}" class="btn-yellow"><i class="bi bi-arrow-left"></i> Tahap ٣</a>
             <span class="arab small text-center" style="color:#0a3d1f">تم — Khatam & Simpan <i class="bi bi-check-circle-fill" style="color:#d4af37"></i></span>
-            <button type="submit" class="btn-green"><i class="bi bi-send-check"></i> Simpan Permohonan</button>
+            <button type="submit" class="btn-green"><i class="bi {{ !empty($sudahAjukan) ? 'bi-arrow-repeat' : 'bi-send-check' }}"></i> {{ !empty($sudahAjukan) ? 'Perbarui Pengajuan '.$existing->tahun : 'Simpan Permohonan' }}</button>
         </div>
     </form>
 </div>

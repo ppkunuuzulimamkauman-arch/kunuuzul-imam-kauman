@@ -28,6 +28,44 @@ class PermohonanController extends Controller
         session(['permohonan_extra' => array_merge($this->getExtra(), $data)]);
     }
 
+    private function tahunAjaranAktif(): string
+    {
+        // Terpusat — ganti di sini / config jika tahun berubah
+        return config('app.tahun_ajaran', '1448/1449');
+    }
+
+    private function sudahMengajukan(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        if ($user->role === 'admin') return false;
+        // Hanya hitung pengajuan FORM PERMOHONAN utama, bukan ijin GT (via form-ijin-gt)
+        return Permohonan::where('username', $user->username)
+            ->where('tahun', $this->tahunAjaranAktif())
+            ->where(function($q){ $q->whereNull('extra_answers')->orWhere('extra_answers','not like','%form-ijin-gt%'); })
+            ->exists();
+    }
+
+    private function getPermohonanAktif(): ?Permohonan
+    {
+        $user = auth()->user();
+        if (!$user || $user->role === 'admin') return null;
+        return Permohonan::where('username', $user->username)
+            ->where('tahun', $this->tahunAjaranAktif())
+            ->where(function($q){ $q->whereNull('extra_answers')->orWhere('extra_answers','not like','%form-ijin-gt%'); })
+            ->latest()->first();
+    }
+
+    private function redirectJikaSudahMengajukan()
+    {
+        // Hanya untuk cegah pembuatan BARU (storeStep4/storeIjin). Form tetap boleh dilihat untuk edit.
+        if ($this->sudahMengajukan()) {
+            return redirect()->route('permohonan.lama')
+                ->withErrors(['msg' => 'Anda sudah mengajukan untuk tahun '.$this->tahunAjaranAktif().'. Tidak bisa membuat pengajuan baru — silakan buka form untuk melihat & edit pengajuan tahun ini.']);
+        }
+        return null;
+    }
+
     private function customQuestions(int $step)
     {
         return FormQuestion::where('step',$step)->where('is_active',true)->orderBy('sort_order')->orderBy('id')->get();
@@ -52,7 +90,19 @@ class PermohonanController extends Controller
     // STEP 1 : Identitas Madrasah (halaman 1 PDF)
     public function step1()
     {
-        $data = $this->getData();
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        $sessionData = $this->getData();
+        // Jika sudah ada pengajuan tahun ini dan belum ada session wizard, tampilkan data DB agar bisa dikoreksi/edit
+        if ($sudahAjukan && empty($sessionData)) {
+            $data = $existing->toArray();
+            // preload juga extra_answers ke session extra agar custom fields terisi
+            if (!empty($existing->extra_answers) && empty($this->getExtra())) {
+                session(['permohonan_extra' => $existing->extra_answers]);
+            }
+        } else {
+            $data = $sessionData;
+        }
         // default values - PP KUNUUZUL IMAM KAUMAN
         $defaults = [
             'nama_madrasah' => $data['nama_madrasah'] ?? 'PP KUNUUZUL IMAM KAUMAN',
@@ -71,11 +121,13 @@ class PermohonanController extends Controller
         ];
         $customQuestions = $this->customQuestions(1);
         $extraData = $this->getExtra();
-        return view('permohonan.step1', compact('defaults', 'data', 'customQuestions', 'extraData'));
+        return view('permohonan.step1', compact('defaults', 'data', 'customQuestions', 'extraData', 'existing', 'sudahAjukan'));
     }
 
     public function storeStep1(Request $request)
     {
+        // Step 1-3 tetap boleh disimpan ke session untuk flow edit — hanya final store yang dicegah duplikat
+        
         $validated = $request->validate(array_merge([
             'nama_madrasah' => 'required|string|max:255',
             'nama_pesantren' => 'required|string|max:255',
@@ -104,14 +156,22 @@ class PermohonanController extends Controller
     // STEP 2 : Data Pengelola Lembaga (halaman 2)
     public function step2()
     {
-        $data = $this->getData();
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        $sessionData = $this->getData();
+        if ($sudahAjukan && empty($sessionData)) {
+            $data = $existing->toArray();
+        } else {
+            $data = $sessionData;
+        }
         $customQuestions = $this->customQuestions(2);
         $extraData = $this->getExtra();
-        return view('permohonan.step2', compact('data', 'customQuestions', 'extraData'));
+        return view('permohonan.step2', compact('data', 'customQuestions', 'extraData', 'existing', 'sudahAjukan'));
     }
 
     public function storeStep2(Request $request)
     {
+        
         $validated = $request->validate(array_merge([
             'pengasuh' => 'required|string|min:3|max:100',
             'pengasuh_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
@@ -140,7 +200,14 @@ class PermohonanController extends Controller
     // STEP 3 : Situasi dan Kondisi Madrasah (halaman 3)
     public function step3()
     {
-        $data = $this->getData();
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        $sessionData = $this->getData();
+        if ($sudahAjukan && empty($sessionData)) {
+            $data = $existing->toArray();
+        } else {
+            $data = $sessionData;
+        }
         $defaults = [
             'situasi_madrasah' => $data['situasi_madrasah'] ?? 'PESANTREN',
             'komunikasi_bahasa' => $data['komunikasi_bahasa'] ?? 'INDONESIA',
@@ -148,11 +215,12 @@ class PermohonanController extends Controller
         ];
         $customQuestions = $this->customQuestions(3);
         $extraData = $this->getExtra();
-        return view('permohonan.step3', compact('data', 'defaults', 'customQuestions', 'extraData'));
+        return view('permohonan.step3', compact('data', 'defaults', 'customQuestions', 'extraData', 'existing', 'sudahAjukan'));
     }
 
     public function storeStep3(Request $request)
     {
+        
         $validated = $request->validate(array_merge([
             'situasi_madrasah' => 'required|string',
             'komunikasi_bahasa' => 'required|string',
@@ -178,14 +246,25 @@ class PermohonanController extends Controller
     // STEP 4 : Jumlah Murid (halaman 4)
     public function step4()
     {
-        $data = $this->getData();
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        $sessionData = $this->getData();
+        if ($sudahAjukan && empty($sessionData)) {
+            $data = $existing->toArray();
+        } else {
+            $data = $sessionData;
+        }
         $customQuestions = $this->customQuestions(4);
         $extraData = $this->getExtra();
-        return view('permohonan.step4', compact('data', 'customQuestions', 'extraData'));
+        return view('permohonan.step4', compact('data', 'customQuestions', 'extraData', 'existing', 'sudahAjukan'));
     }
 
     public function storeStep4(Request $request)
     {
+        // Jika sudah ada pengajuan tahun ini, jangan buat baru — update yang ada (mode edit via wizard)
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        
         $validated = $request->validate(array_merge([
             'sifir_putra' => 'nullable|integer|min:0',
             'sifir_putri' => 'nullable|integer|min:0',
@@ -224,7 +303,19 @@ class PermohonanController extends Controller
         // Generate alamat lengkap
         $alamat = trim(($all['jalan_dusun'] ?? '') . ' - ' . ($all['desa'] ?? '') . ' - ' . ($all['kecamatan'] ?? '') . ' - ' . ($all['kabupaten'] ?? '') . ' - ' . ($all['provinsi'] ?? ''));
 
-        // Generate ID PJGT atomic - MAX + 1 anti race
+        if ($sudahAjukan && $existing) {
+            // MODE EDIT: sudah ada pengajuan tahun ini — update, jangan buat baru
+            $existing->update(array_merge($all, [
+                'alamat_lengkap' => $alamat,
+                'extra_answers' => $this->getExtra() ?: $existing->extra_answers,
+                // pjgt_id/tahun/username tidak diubah agar tetap 1 per tahun
+            ]));
+            session()->forget('permohonan_data');
+            session()->forget('permohonan_extra');
+            return redirect()->route('permohonan.lama')->with('success', 'Pengajuan tahun '.$this->tahunAjaranAktif().' diperbarui (ID '.$existing->pjgt_id.'). Tidak membuat pengajuan baru.');
+        }
+
+        // MODE BARU: belum ada — buat baru
         $maxId = Permohonan::max(\DB::raw('CAST(pjgt_id AS UNSIGNED)'));
         $next = $maxId ? $maxId + 1 : 196;
         if ($next < 195) $next = 195;
@@ -236,7 +327,7 @@ class PermohonanController extends Controller
             'pjgt_nama' => $pjgtNama,
             'alamat_lengkap' => $alamat,
             'wil' => 'T-4',
-            'tahun' => '1448/1449',
+            'tahun' => $this->tahunAjaranAktif(),
             'status' => 'Proses',
             'butuh_gt' => 1,
             'rapot' => 'A',
@@ -252,24 +343,32 @@ class PermohonanController extends Controller
         return redirect()->route('permohonan.lama');
     }
 
-    // FORM IJIN GT RINGKAS - 1 halaman (nama, madrasah, telepon, butuh GT, tanggal, keterangan + pertanyaan custom step 5)
+    // FORM IJIN GT — diajukan GT ke Admin
     public function ijinForm()
     {
+        $existing = $this->getPermohonanAktif();
+        $sudahAjukan = $existing !== null;
+        $isApprover = (auth()->user()->role ?? '') === 'admin';
         $customQuestions = $this->customQuestions(5);
         $extraData = [];
-        return view('permohonan.ijin', compact('customQuestions', 'extraData'));
+        return view('permohonan.ijin', compact('customQuestions', 'extraData', 'existing', 'sudahAjukan', 'isApprover'));
     }
 
     public function storeIjin(Request $request)
     {
+        // Ijin tidak boleh membuat duplikat tahun ini — arahkan edit pengajuan utama
+        if ($this->sudahMengajukan()) {
+            return redirect()->route('permohonan.lama')->withErrors(['msg' => 'Anda sudah punya pengajuan untuk tahun '.$this->tahunAjaranAktif().'. Form Ijin tidak bisa membuat pengajuan baru — silakan edit pengajuan utama via Form Permohonan (data tetap tampil untuk koreksi).']);
+        }
         $validated = $request->validate(array_merge([
             'pjgt_nama' => 'required|string|min:3|max:100',
-            'nama_madrasah' => 'required|string|max:255',
             'telepon' => 'required|string|min:9|max:20',
-            'butuh_gt' => 'required|integer|min:1|max:10',
             'tanggal_ijin' => 'required|date',
-            'keterangan' => 'nullable|string|max:500',
-        ], $this->customRules(5)));
+            'tanggal_sampai' => 'required|date|after_or_equal:tanggal_ijin',
+            'keterangan' => 'nullable|string|max:1000',
+        ], $this->customRules(5)), [
+            'tanggal_sampai.after_or_equal' => 'Tanggal Sampai Dengan harus sama atau setelah Tanggal Mulai Izin.',
+        ]);
 
         $maxId = Permohonan::max(\DB::raw('CAST(pjgt_id AS UNSIGNED)'));
         $next = $maxId ? $maxId + 1 : 196;
@@ -280,49 +379,67 @@ class PermohonanController extends Controller
             'pjgt_id' => $pjgtId,
             'pjgt_nama' => $validated['pjgt_nama'],
             'pjgt' => $validated['pjgt_nama'],
-            'nama_madrasah' => $validated['nama_madrasah'],
+            'nama_madrasah' => $validated['nama_madrasah'] ?? Permohonan::where('username', auth()->user()->username)->latest()->value('nama_madrasah') ?? '-',
             'telepon' => $validated['telepon'],
-            'butuh_gt' => $validated['butuh_gt'],
+            'butuh_gt' => $validated['butuh_gt'] ?? 1,
             'wil' => 'T-4',
-            'tahun' => '1448/1449',
+            'tahun' => $this->tahunAjaranAktif(),
             'status' => 'Proses',
             'rapot' => 'A',
             'username' => auth()->user()->username ?? '00007',
-            'extra_answers' => array_merge(['tanggal_ijin' => $validated['tanggal_ijin'], 'keterangan' => $validated['keterangan'] ?? null, 'via' => 'form-ijin-gt'], $validated['extra'] ?? []),
+            'extra_answers' => array_merge(['tanggal_ijin' => $validated['tanggal_ijin'], 'tanggal_sampai' => $validated['tanggal_sampai'], 'keterangan' => $validated['keterangan'] ?? null, 'via' => 'form-ijin-gt'], $validated['extra'] ?? []),
         ]);
 
         return redirect()->route('permohonan.lama')->with('success', 'Ijin GT berhasil disimpan dengan ID PJGT ' . $pjgtId);
     }
 
-    // Halaman Permohonan Lama (halaman 5 PDF) - tabel list heritage
+    // Halaman Permohonan Lama — Arsip & Persetujuan Ijin GT (via=ijin)
     public function lama(Request $request)
     {
         $search = $request->query('search');
         $rapot = $request->query('rapot');
         $status = $request->query('status');
+        $via = $request->query('via');
         $query = Permohonan::query()->latest();
-        // Role filter: admin lihat semua, pjgt lihat milik sendiri, gt lihat yang Diterima (tugas)
-        if (auth()->user()->role === 'pjgt') {
-            $query->where('username', auth()->user()->username);
-        } elseif (auth()->user()->role === 'gt') {
-            $query->where('status', 'Diterima');
+        if ($via === 'ijin') {
+            $query->where('extra_answers', 'like', '%"via":"form-ijin-gt"%');
+            // Persetujuan: hanya GT yang ditugaskan di lembaganya (biasanya 1 GT)
+            if (auth()->user()->role === 'pjgt') {
+                $myMadrasah = Permohonan::where('username', auth()->user()->username)
+                    ->where(function($q){ $q->whereNull('extra_answers')->orWhere('extra_answers','not like','%form-ijin-gt%'); })
+                    ->latest()->value('nama_madrasah');
+                if ($myMadrasah) {
+                    $query->where('nama_madrasah', $myMadrasah);
+                } else {
+                    $query->whereRaw('1=0');
+                }
+            } elseif (auth()->user()->role === 'gt') {
+                $query->where('username', auth()->user()->username);
+            }
+            // admin lihat semua ijin
+        } else {
+            // Arsip biasa: admin semua, pjgt/gt milik sendiri
+            if (auth()->user()->role === 'pjgt' || auth()->user()->role === 'gt') {
+                $query->where('username', auth()->user()->username);
+            }
+            if ($search) {
+                $query->where(function($q) use ($search){
+                    $q->where('pjgt_nama','like',"%$search%")
+                      ->orWhere('nama_madrasah','like',"%$search%")
+                      ->orWhere('pjgt_id','like',"%$search%");
+                });
+            }
+            if ($rapot && in_array($rapot, ['A','B','C'])) {
+                $query->where('rapot', $rapot);
+            }
+            if ($status && in_array($status, ['Diterima','Ditolak','Proses'])) {
+                $query->where('status', $status);
+            }
         }
-        if ($search) {
-            $query->where(function($q) use ($search){
-                $q->where('pjgt_nama','like',"%$search%")
-                  ->orWhere('nama_madrasah','like',"%$search%")
-                  ->orWhere('pjgt_id','like',"%$search%");
-            });
-        }
-        if ($rapot && in_array($rapot, ['A','B','C'])) {
-            $query->where('rapot', $rapot);
-        }
-        if ($status && in_array($status, ['Diterima','Ditolak','Proses'])) {
-            $query->where('status', $status);
-        }
-        $permohonans = $query->paginate(15)->withQueryString();
+        // Untuk persetujuan (via=ijin) gausah filter cari/rapot/status — langsung tampilkan 1 GT di lembaganya
+        $permohonans = $query->paginate($via === 'ijin' ? 10 : 15)->withQueryString();
 
-        return view('permohonan.lama', compact('permohonans','search','rapot','status'));
+        return view('permohonan.lama', compact('permohonans','search','rapot','status','via'));
     }
 
     public function show(Permohonan $permohonan)
@@ -394,6 +511,46 @@ class PermohonanController extends Controller
         $byWil = Permohonan::selectRaw('wil, count(*) as total')->groupBy('wil')->pluck('total','wil');
         $recent = Permohonan::latest()->take(5)->get();
         return view('permohonan.rekap', compact('total','byStatus','byRapot','byWil','recent'));
+    }
+
+    public function laporan(Request $request)
+    {
+        // Laporan sekarang bebas diisi kapan saja (apa aja) — tanpa batas akhir bulan
+        $now = now();
+        $isAkhirBulan = true;
+        $canIsi = true;
+        $nextWindow = $now->locale('id')->isoFormat('D MMMM YYYY');
+
+        $tahun = $request->query('tahun');
+        $status = $request->query('status');
+        $wil = $request->query('wil');
+        $search = $request->query('search');
+
+        $query = Permohonan::query();
+        // PJGT hanya lihat milik sendiri
+        if (auth()->user()->role === 'pjgt') $query->where('username', auth()->user()->username);
+        if ($tahun) $query->where('tahun', $tahun);
+        if ($status && in_array($status, ['Diterima','Ditolak','Proses'])) $query->where('status', $status);
+        if ($wil) $query->where('wil', $wil);
+        if ($search) {
+            $query->where(function($q) use ($search){
+                $q->where('pjgt_nama','like',"%$search%")
+                  ->orWhere('nama_madrasah','like',"%$search%")
+                  ->orWhere('pjgt_id','like',"%$search%");
+            });
+        }
+
+        $total = (clone $query)->count();
+        $byStatus = (clone $query)->selectRaw('status, count(*) as c')->groupBy('status')->pluck('c','status');
+        $byWil = (clone $query)->selectRaw('wil, count(*) as c')->groupBy('wil')->pluck('c','wil');
+        $byProv = (clone $query)->selectRaw('provinsi, count(*) as c')->groupBy('provinsi')->orderByDesc('c')->limit(5)->pluck('c','provinsi');
+        $byRapot = (clone $query)->selectRaw('rapot, count(*) as c')->groupBy('rapot')->pluck('c','rapot');
+        $list = $query->latest()->paginate(20)->withQueryString();
+
+        $tahunList = Permohonan::select('tahun')->distinct()->pluck('tahun');
+        $wilList = Permohonan::select('wil')->distinct()->pluck('wil');
+
+        return view('permohonan.laporan', compact('total','byStatus','byWil','byProv','byRapot','list','tahun','status','wil','search','tahunList','wilList','isAkhirBulan','canIsi','nextWindow'));
     }
 
     public function export(Request $request)

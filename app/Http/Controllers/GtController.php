@@ -11,7 +11,8 @@ class GtController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:gt,admin');
+        $this->middleware('role:gt,admin')->except(['pjgtBiodata', 'updatePjgtBiodata']);
+        $this->middleware('role:pjgt,admin')->only(['pjgtBiodata', 'updatePjgtBiodata']);
     }
 
     private function tugasUtama()
@@ -89,6 +90,44 @@ class GtController extends Controller
         $biodata->update($data);
 
         return redirect()->route('gt.biodata')->with('success', 'Biodata berhasil disimpan. Nama di dashboard ikut diperbarui.');
+    }
+
+    // === PJGT Biodata — dibedakan dari GT ===
+    public function pjgtBiodata()
+    {
+        $user = auth()->user();
+        $tugasUtama = $this->tugasUtama();
+        $biodata = GtBiodata::firstOrCreate(['user_id' => $user->id]);
+        // Ambil permohonan terbaru milik PJGT untuk info madrasah
+        $permohonan = Permohonan::where('username', $user->username)->latest()->first();
+        return view('pjgt.biodata', compact('user', 'biodata', 'tugasUtama', 'permohonan'));
+    }
+
+    public function updatePjgtBiodata(Request $request)
+    {
+        $user = auth()->user();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user->id)],
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'tempat_lahir' => 'nullable|string|max:100',
+            'tanggal_lahir' => 'nullable|date',
+            'nik' => 'nullable|string|max:30',
+            'telepon' => 'nullable|string|max:20',
+            'hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string|max:500',
+            'kelurahan' => 'nullable|string|max:100',
+            'kecamatan' => 'nullable|string|max:100',
+            'kode_pos' => 'nullable|string|max:10',
+        ]);
+        $user->update(['name' => $validated['name'], 'email' => $validated['email']]);
+        $biodata = GtBiodata::firstOrCreate(['user_id' => $user->id]);
+        $data = collect($validated)->except(['name', 'email', 'foto'])->toArray();
+        if ($request->hasFile('foto')) {
+            $data['foto_path'] = $request->file('foto')->store('foto-gt', 'public');
+        }
+        $biodata->update($data);
+        return redirect()->route('pjgt.biodata')->with('success', 'Biodata PJGT berhasil disimpan.');
     }
 
     public function kegiatan()

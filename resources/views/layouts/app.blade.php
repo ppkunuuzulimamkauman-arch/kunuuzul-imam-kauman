@@ -14,7 +14,7 @@
         *{ -webkit-tap-highlight-color:transparent }
         html{scroll-behavior:smooth}
         body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1a1a1a;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
-        body::before{content:'';position:fixed;inset:0;background-image:url("{{ asset('images/madin.png') }}");background-size:180px;background-repeat:repeat;opacity:.025;pointer-events:none;z-index:0}
+        body::before{content:'';position:fixed;inset:0;background-image:url("{{ asset('images/madin.png?v=2') }}");background-size:180px;background-repeat:repeat;opacity:.025;pointer-events:none;z-index:0}
         .arab{font-family:'Amiri',serif}
         /* Sidebar world-class */
         .sidebar{width:260px;min-height:100vh;min-height:100dvh;background:linear-gradient(180deg,#0a3d1f 0%, #0e4d26 40%, #0a3d1f 100%);position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column;overflow:hidden;border-right:3px solid var(--gold);box-shadow:4px 0 28px rgba(0,0,0,0.18);z-index:1050;transition:transform .32s cubic-bezier(.4,0,.2,1);overscroll-behavior:contain}
@@ -150,7 +150,7 @@
 
 <div class="sidebar" id="sidebar">
     <div class="brand">
-        <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.2))"></div>
+        <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.2))"></div>
         <div style="line-height:1.1;flex:1"><strong style="font-size:13px;color:var(--green)">TMTB & DAI <span style="color:#b8941f">KIK</span></strong><br><span class="arab" style="font-size:10px;color:#5d4037">PP KUNUUZUL IMAM KAUMAN</span></div>
         <button class="sidebar-close" onclick="closeSidebar()" aria-label="Tutup menu"><i class="bi bi-x-lg"></i></button>
     </div>
@@ -158,32 +158,45 @@
     <div class="sidebar-search"><i class="bi bi-search"></i><input id="sidebarSearch" type="text" placeholder="Cari menu... ( / )" autocomplete="off"><span class="small" style="color:rgba(253,246,227,0.5);padding-right:8px;font-size:10px">⌘K</span></div>
     <div class="menu mt-2">
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+        @if((auth()->user()->role ?? '')==='pjgt')
+        <a href="{{ route('pjgt.biodata') }}" class="{{ request()->routeIs('pjgt.biodata*') ? 'active':'' }}"><i class="bi bi-person-vcard-fill"></i> Biodata PJGT</a>
+        @endif
         @if((auth()->user()->role ?? '')!=='gt')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
-        <a href="#permohonanMenu" data-bs-toggle="collapse" aria-expanded="true" aria-controls="permohonanMenu" class="collapse-toggle" style="justify-content:space-between;">
-            <span><i class="bi bi-journal-bookmark-fill"></i> Permohonan</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s" id="permohonanChevron"></i>
-        </a>
-        <div id="permohonanMenu" class="collapse show">
             @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
-            <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }} submenu"><i class="bi bi-feather"></i> Form Permohonan</a>
+            <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}"><i class="bi bi-feather"></i> Form Permohonan</a>
             @endif
-            <a href="{{ route('permohonan.lama', ['status' => 'Proses']) }}" class="{{ request()->routeIs('permohonan.lama') && request('status')==='Proses' ? 'active':'' }} submenu"><i class="bi bi-inbox-fill"></i> Permohonan Baru</a>
-            <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') && request('status')!=='Proses' ? 'active':'' }} submenu"><i class="bi bi-database-fill"></i> Data Permohonan</a>
-            <a href="{{ route('form.ijin') }}" class="{{ request()->routeIs('form.ijin*') ? 'active':'' }} submenu"><i class="bi bi-file-earmark-check-fill"></i> Form Ijin GT</a>
             @if((auth()->user()->role ?? '')==='admin')
-            <a href="{{ route('form-questions.index') }}" class="{{ request()->routeIs('form-questions*') ? 'active':'' }} submenu"><i class="bi bi-patch-question-fill"></i> Kelola Pertanyaan</a>
+            <a href="{{ route('form-questions.index') }}" class="{{ request()->routeIs('form-questions*') ? 'active':'' }}"><i class="bi bi-patch-question-fill"></i> Kelola Pertanyaan</a>
             @endif
-        </div>
+        @if((auth()->user()->role ?? '')==='pjgt')
+        <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
+        <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan</a>
+        <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan</a>
+        @endif
         @endif
         @if((auth()->user()->role ?? '')==='admin')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">ADMIN</div>
         <a href="{{ route('landing-contents.index') }}" class="{{ request()->routeIs('landing-contents*') ? 'active':'' }}"><i class="bi bi-pencil-square"></i> Kelola Landing</a>
+        <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active':'' }}"><i class="bi bi-megaphone-fill"></i> Laporan Permohonan</a>
+        <a href="{{ route('permohonan.rekap') }}" class="{{ request()->routeIs('permohonan.rekap') ? 'active':'' }}"><i class="bi bi-bar-chart-fill"></i> Rekap Permohonan</a>
+        <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
+        <a href="#adminAbsensiMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('gt.absensi*') ? 'true':'false' }}" aria-controls="adminAbsensiMenu" class="collapse-toggle" style="justify-content:space-between;">
+            <span><i class="bi bi-fingerprint"></i> Kelola Absensi GT</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s"></i>
+        </a>
+        <div id="adminAbsensiMenu" class="collapse {{ request()->routeIs('gt.absensi*') ? 'show':'' }}" style="margin-left:18px;border-left:1px dashed rgba(212,175,55,.4);padding-left:8px">
+            <a href="{{ route('gt.absensi.mengajar') }}" class="{{ request()->routeIs('gt.absensi.mengajar') ? 'active':'' }}" style="margin:2px 6px;padding:8px 10px;min-height:40px;font-size:12.5px"><i class="bi bi-journal-check"></i> Mengajar</a>
+            <a href="{{ route('gt.absensi.shalat') }}" class="{{ request()->routeIs('gt.absensi.shalat') ? 'active':'' }}" style="margin:2px 6px;padding:8px 10px;min-height:40px;font-size:12.5px"><i class="bi bi-moon-stars-fill"></i> Shalat 5 Waktu</a>
+        </div>
+        <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan GT</a>
+        <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan — Saran</a>
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(253,246,227,.4);font-size:10px;letter-spacing:1.5px">SEGERA HADIR</div>
-        <a href="#" style="opacity:.55"><i class="bi bi-megaphone-fill"></i> Laporan <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         <a href="#" style="opacity:.55"><i class="bi bi-calendar-event"></i> Rapat <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         <a href="#" style="opacity:.55"><i class="bi bi-mosque"></i> Supervisi <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         @elseif((auth()->user()->role ?? '')==='gt')
         <a href="{{ route('gt.biodata') }}" class="{{ request()->routeIs('gt.biodata') ? 'active':'' }}"><i class="bi bi-person-badge-fill"></i> Biodata</a>
+        <a href="{{ route('form.ijin') }}" class="{{ request()->routeIs('form.ijin*') ? 'active':'' }}"><i class="bi bi-file-earmark-check-fill"></i> Form Ijin GT</a>
+        <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Aduan Saya</a>
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">KEGIATAN</div>
         <a href="#absensiMenu" data-bs-toggle="collapse" aria-expanded="true" aria-controls="absensiMenu" class="collapse-toggle" style="justify-content:space-between;">
             <span><i class="bi bi-fingerprint"></i> Absensi Kehadiran</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s" id="absensiChevron"></i>

@@ -45,7 +45,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <body>
 <div class="card-reg">
   <div class="header-reg">
-    <div class="logo-madin" onclick="this.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:500,easing:'cubic-bezier(.34,1.56,.64,1)'}); if(navigator.vibrate) try{navigator.vibrate(15)}catch(e){}" title="MADRASAH DINIYAH TAKMILIYAH TASHWIRUL AFKAR AL-HASANI"><img src="{{ asset('images/madin.png') }}" alt="Logo Madin"></div>
+    <div class="logo-madin" onclick="this.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:500,easing:'cubic-bezier(.34,1.56,.64,1)'}); if(navigator.vibrate) try{navigator.vibrate(15)}catch(e){}" title="MADRASAH DINIYAH TAKMILIYAH TASHWIRUL AFKAR AL-HASANI"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin"></div>
     <h5 class="fw-bold mb-0" style="color:#0a3d1f">TMTB & DAI KIK</h5>
     <div class="small text-muted">PP KUNUUZUL IMAM KAUMAN • Kauman Bondowoso 68213</div>
     <div class="small fw-bold" style="color:#b8941f">Daftar akun baru — Heritage Pesantren</div>

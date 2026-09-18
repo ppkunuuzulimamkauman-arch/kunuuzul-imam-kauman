@@ -156,7 +156,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
   <div id="glare"></div>
 
   <div class="card-head">
-    <div class="logo-ring" onclick="this.classList.remove('pulse');void this.offsetWidth;this.classList.add('pulse'); if(navigator.vibrate) try{navigator.vibrate(20)}catch(e){}" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar Al-Hasani"><img src="{{ asset('images/madin.png') }}" alt="Logo Madin Tashwirul Afkar"></div>
+    <div class="logo-ring" onclick="this.classList.remove('pulse');void this.offsetWidth;this.classList.add('pulse'); if(navigator.vibrate) try{navigator.vibrate(20)}catch(e){}" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar Al-Hasani"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin Tashwirul Afkar"></div>
     <h4>TMTB &amp; DAI KIK</h4>
     <div class="sub">PP KUNUUZUL IMAM KAUMAN<br>Jln KH Zainul Arifin 165, Bondowoso</div>
     <div class="pill-row">
