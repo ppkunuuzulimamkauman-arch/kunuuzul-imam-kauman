@@ -6,16 +6,22 @@ use App\Http\Controllers\FormQuestionController;
 use App\Http\Controllers\GtController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\LandingContentController;
+use App\Http\Controllers\PenempatanController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PermohonanController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PjgtLaporanController;
 use App\Models\Permohonan;
 use Illuminate\Support\Facades\Route;
 
-// Landing Page Modern PP KUNUUZUL IMAM KAUMAN - Public
+// Landing Page Modern PP KUNUUZUL IMAM KAUMAN - Public (dinamis dari Kelola Landing)
 Route::get('/', function () {
     $total = Permohonan::count();
-    return view('landing', compact('total'));
+    $landingInfos = \App\Models\LandingContent::where('is_active', true)
+        ->whereIn('section', ['informasi','pengumuman','panduan'])
+        ->orderBy('sort_order')->orderBy('id')
+        ->get();
+    return view('landing', compact('total','landingInfos'));
 })->name('landing');
 
 // Auth - Single login + role (admin/pjgt/gt) + Register
@@ -54,6 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/export-permohonan', [PermohonanController::class, 'export'])->name('permohonan.export');
     Route::get('/laporan', [PermohonanController::class, 'laporan'])->name('laporan')->middleware('role:admin,pjgt');
 
+    // Pengaturan — admin only (tahun ajaran aktif, dll)
+    Route::get('/pengaturan', [SettingController::class, 'index'])->name('setting.index')->middleware('role:admin');
+    Route::put('/pengaturan', [SettingController::class, 'update'])->name('setting.update')->middleware('role:admin');
+
     // Kelola Landing Page - admin only
     Route::resource('landing-contents', LandingContentController::class)->except(['show'])->parameters(['landing-contents'=>'landingContent']);
     // Kelola Pertanyaan Form - admin only
@@ -64,13 +74,32 @@ Route::middleware('auth')->group(function () {
     Route::post('/form-ijin-gt', [PermohonanController::class, 'storeIjin'])->name('form.ijin.store')->middleware('role:gt');
 
     // Guru Tugas - Biodata, Kegiatan, Absensi (gt & admin)
+    // Absensi GT masuk DB → Admin terima via Rekap Absensi
     Route::prefix('gt')->name('gt.')->middleware('role:gt,admin')->group(function () {
         Route::get('/biodata', [GtController::class, 'biodata'])->name('biodata');
         Route::put('/biodata', [GtController::class, 'updateBiodata'])->name('biodata.update');
         Route::get('/kegiatan', [GtController::class, 'kegiatan'])->name('kegiatan');
         Route::get('/absensi-mengajar', [GtController::class, 'absensiMengajar'])->name('absensi.mengajar');
+        Route::post('/absensi-mengajar', [GtController::class, 'storeAbsensiMengajar'])->name('absensi.mengajar.store')->middleware('role:gt');
         Route::get('/absensi-shalat', [GtController::class, 'absensiShalat'])->name('absensi.shalat');
+        Route::post('/absensi-shalat', [GtController::class, 'storeAbsensiShalat'])->name('absensi.shalat.store')->middleware('role:gt');
     });
+
+    // Rekap Absensi GT — Admin terima semua (gt tidak boleh)
+    Route::get('/absensi-rekap', [GtController::class, 'rekapAbsensi'])->name('absensi.rekap')->middleware('role:admin');
+
+    // Daftar Biodata GT/PJGT — Admin lihat semua terpusat + edit + hapus akun
+    Route::get('/biodata-rekap', [GtController::class, 'rekapBiodata'])->name('biodata.rekap')->middleware('role:admin');
+    Route::get('/biodata-rekap/{user}/edit', [GtController::class, 'editBiodata'])->name('biodata.edit')->middleware('role:admin');
+    Route::put('/biodata-rekap/{user}', [GtController::class, 'updateBiodataAdmin'])->name('biodata.update')->middleware('role:admin');
+    Route::delete('/biodata-rekap/{user}', [GtController::class, 'destroyUser'])->name('biodata.destroy')->middleware('role:admin');
+    Route::get('/biodata-rekap/{user}', [GtController::class, 'showBiodata'])->name('biodata.show')->middleware('role:admin');
+
+    // Penempatan GT ke Lembaga — Admin tempatkan/pindahkan/lepas
+    Route::get('/penempatan', [PenempatanController::class, 'index'])->name('penempatan.index')->middleware('role:admin');
+    Route::get('/penempatan/tempatkan', [PenempatanController::class, 'create'])->name('penempatan.create')->middleware('role:admin');
+    Route::post('/penempatan', [PenempatanController::class, 'store'])->name('penempatan.store')->middleware('role:admin');
+    Route::delete('/penempatan/{penempatan}', [PenempatanController::class, 'destroy'])->name('penempatan.destroy')->middleware('role:admin');
 
     // PJGT - Biodata dibedakan dari GT (pjgt & admin)
     Route::prefix('pjgt')->name('pjgt.')->middleware('role:pjgt,admin')->group(function () {

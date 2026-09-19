@@ -4,7 +4,6 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
   <div>
-    <div class="arab small" style="color:#d4af37">بِسْمِ اللهِ — إذن المعلم</div>
     <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-file-earmark-check-fill" style="color:#d4af37"></i> Form Ijin GT</h4>
     <div class="small" style="color:#fdf6e3;opacity:.8">Formulir Permohonan Izin Resmi Guru Tugas • Tahun Ajaran 1448/1449 H</div>
   </div>

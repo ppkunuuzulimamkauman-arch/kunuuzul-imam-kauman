@@ -58,11 +58,45 @@
         </ul>
         <div class="tab-content py-3">
           <div class="tab-pane fade show active" id="pane-umum" role="tabpanel">
+            {{-- Sapaan statis selalu tampil --}}
             <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:linear-gradient(135deg,#fdf6e3,#faf0c8);border:1px solid #e8d9a0;color:#5d4037"><i class="bi bi-patch-check-fill mt-1" style="color:#1d7a3d;font-size:16px"></i><span><strong style="color:#0a3d1f">Assalamualaikum {{ explode(' ', $u->name)[0] }},</strong><br>Anda terdaftar sebagai {{ ($isPjgt ?? false) ? 'PJGT' : 'Guru Tugas' }} TMTB &amp; DAI KIK tahun 1448/1449 H. Absensi mengajar &amp; shalat 5 waktu diisi lewat menu Absensi Kehadiran.</span></div>
+            {{-- Dinamis dari Kelola Landing → info_umum --}}
+            @if(isset($infoUmum) && $infoUmum->count())
+              @foreach($infoUmum as $inf)
+              <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:#fff;border:1px solid #e8d9a0;color:#5d4037;border-left:4px solid #d4af37">
+                <i class="bi bi-megaphone-fill mt-1" style="color:#b8941f;font-size:16px"></i>
+                <span style="flex:1;min-width:0">
+                  <strong style="color:#0a3d1f">{{ $inf->title }}</strong>
+                  @if(!empty($inf->subtitle))<br><span style="color:#b8941f;font-weight:700">{{ $inf->subtitle }}</span>@endif
+                  @if(!empty($inf->content))<br>{{ $inf->content }}@endif
+                  @if(!empty($inf->date_label))<br><span class="small" style="color:#8a7a3a"><i class="bi bi-calendar3"></i> {{ $inf->date_label }}</span>@endif
+                  @if(!empty($inf->link_text))<br><a href="{{ $inf->link_url ? $inf->link_url : '#' }}" style="color:#0a3d1f;font-weight:700">{{ $inf->link_text }} <i class="bi bi-arrow-right"></i></a>@endif
+                </span>
+              </div>
+              @endforeach
+            @else
             <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:#fff;border:1px solid #eee;color:#5d4037"><i class="bi bi-calendar-event mt-1" style="color:#d4af37;font-size:16px"></i><span><strong>Apel &amp; Pembekalan:</strong> koordinasi dengan koordinator / PJGT sebelum berangkat ke lokasi tugas.</span></div>
             <div class="small p-3 rounded-3 d-flex gap-2" style="background:#fff;border:1px solid #eee;color:#5d4037"><i class="bi bi-book-half mt-1" style="color:#0a3d1f;font-size:16px"></i><span><strong>Kurikulum:</strong> Aqidah • Fiqh • Ilmu Alat • Qur'an • Akhlaq.</span></div>
+            @endif
           </div>
           <div class="tab-pane fade" id="pane-gt" role="tabpanel">
+            {{-- Dinamis role: info_pjgt untuk PJGT, info_gt untuk GT --}}
+            @php $infoRole = ($isPjgt ?? false) ? ($infoPjgt ?? collect()) : ($infoGt ?? collect()); @endphp
+            @if($infoRole->count())
+              @foreach($infoRole as $inf)
+              <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:linear-gradient(135deg,#eef7f0,#fff);border:1px solid #bfe0c9;color:#5d4037;border-left:4px solid #198754">
+                <i class="bi bi-person-check-fill mt-1" style="color:#198754;font-size:16px"></i>
+                <span style="flex:1;min-width:0">
+                  <strong style="color:#0a3d1f">{{ $inf->title }}</strong>
+                  @if(!empty($inf->subtitle))<br><span style="color:#198754;font-weight:700">{{ $inf->subtitle }}</span>@endif
+                  @if(!empty($inf->content))<br>{{ $inf->content }}@endif
+                  @if(!empty($inf->date_label))<br><span class="small" style="color:#8a7a3a"><i class="bi bi-calendar3"></i> {{ $inf->date_label }}</span>@endif
+                  @if(!empty($inf->link_text))<br><a href="{{ $inf->link_url ? $inf->link_url : '#' }}" style="color:#0a3d1f;font-weight:700">{{ $inf->link_text }} <i class="bi bi-arrow-right"></i></a>@endif
+                </span>
+              </div>
+              @endforeach
+              <div class="small fw-bold mt-3 mb-2" style="color:#0a3d1f;letter-spacing:.5px"><i class="bi bi-bank" style="color:#b8941f"></i> PENEMPATAN TERBARU</div>
+            @endif
             @forelse($recent as $p)
             <div class="p-3 mb-2 rounded-3" style="background:#fff;border:1px solid #e9e2cb;border-left:4px solid #198754;box-shadow:0 2px 10px rgba(0,0,0,.04)">
               <div class="d-flex justify-content-between align-items-center gap-2"><span class="badge-pendaftaran">{{ $p->pjgt_id }}</span><span class="badge" style="background:#fdf0c7;color:#0a3d1f;border:1px solid #d4af37">{{ $p->butuh_gt }} GT • {{ $p->wil }}</span></div>
@@ -138,7 +172,7 @@
       <a href="{{ route('pengaduan.show',$ad) }}" class="btn btn-sm align-self-center" style="background:var(--cream);border:1px solid var(--gold);color:var(--green);border-radius:20px;font-size:11px">Detail</a>
     </div>
     @empty
-    <div class="text-center small py-3" style="color:#8a7a3a"><i class="bi bi-inbox" style="font-size:20px;color:#d4af37"></i><br>Belum ada pengaduan selama di tempat tugas. <span class="arab" style="color:#d4af37">الحمد لله</span></div>
+ <div class="text-center small py-3" style="color:#8a7a3a"><i class="bi bi-inbox" style="font-size:20px;color:#d4af37"></i><br>Belum ada pengaduan selama di tempat tugas. </div>
     @endforelse
   </div>
 </div>
@@ -181,13 +215,12 @@
   <div style="min-width:0;position:relative;z-index:1" class="d-flex align-items-center gap-3">
     <img src="{{ asset('images/madin.png?v=2') }}" alt="Madin" style="width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(10,61,31,.12));flex-shrink:0" class="d-none d-sm-block">
     <div>
-      <h4 class="mb-1 fw-bold" style="color:var(--green);font-size:clamp(18px,5vw,22px)">Dashboard <span style="color:var(--gold)">KIK</span> <span class="arab small d-none d-sm-inline" style="color:var(--gold);font-size:13px">— لوحة التحكم</span></h4>
+ <h4 class="mb-1 fw-bold" style="color:var(--green);font-size:clamp(18px,5vw,22px)">Dashboard <span style="color:var(--gold)">KIK</span> </h4>
       <p class="small mb-0" style="color:#5d4037;line-height:1.4">
         @if($isAdmin) Admin • Kelola {{ $allTotal }} permohonan • <span style="color:#dc3545;font-weight:700">{{ $allProses }} pending</span>
         @elseif($isPjgt) PJGT • {{ $total }} permohonan milik Anda
         @else GT • {{ $total }} tugas penempatan (Diterima)
         @endif
-        <span class="arab" style="color:var(--gold)"> — بارك الله</span>
       </p>
     </div>
   </div>
@@ -201,7 +234,7 @@
     <div class="card h-100" style="border:2px solid var(--gold);border-radius:16px;background:#fff;box-shadow:0 4px 16px rgba(10,61,31,.06)">
       <div class="card-body p-3 d-flex align-items-center gap-2">
         <div style="width:46px;height:46px;background:var(--green);color:var(--gold);border:2px solid var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="bi bi-journal-bookmark-fill"></i></div>
-        <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">@if(($isGt ?? false) || ($isPjgt ?? false)) Tugas Saya @else Total @endif</div><div class="fw-bold" style="color:var(--green);font-size:20px;line-height:1">{{ $total }}</div><div class="small arab" style="color:var(--gold);font-size:10px">الكل</div></div>
+ <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">@if(($isGt ?? false) || ($isPjgt ?? false)) Tugas Saya @else Total @endif</div><div class="fw-bold" style="color:var(--green);font-size:20px;line-height:1">{{ $total }}</div></div>
       </div>
     </div>
   </div>
@@ -220,7 +253,7 @@
     <div class="card h-100" style="border:2px solid #198754;border-radius:16px;background:#fff;">
       <div class="card-body p-3 d-flex align-items-center gap-2">
         <div style="width:46px;height:46px;background:#198754;color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="bi bi-check-circle-fill"></i></div>
-        <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">@if(($isGt ?? false) || ($isPjgt ?? false)) Tugas Aktif @else Diterima @endif</div><div class="fw-bold" style="color:#198754;font-size:20px;line-height:1">{{ $diterima }}</div><div class="small arab" style="color:#198754;font-size:10px">مقبول</div></div>
+ <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">@if(($isGt ?? false) || ($isPjgt ?? false)) Tugas Aktif @else Diterima @endif</div><div class="fw-bold" style="color:#198754;font-size:20px;line-height:1">{{ $diterima }}</div></div>
       </div>
     </div>
   </div>
@@ -229,7 +262,7 @@
     <div class="card h-100" style="border:2px solid #dc3545;border-radius:16px;background:#fff;">
       <div class="card-body p-3 d-flex align-items-center gap-2">
         <div style="width:46px;height:46px;background:#dc3545;color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="bi bi-x-circle-fill"></i></div>
-        <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">Ditolak</div><div class="fw-bold" style="color:#dc3545;font-size:20px;line-height:1">{{ $ditolak }}</div><div class="small arab" style="color:#dc3545;font-size:10px">مرفوض</div></div>
+ <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">Ditolak</div><div class="fw-bold" style="color:#dc3545;font-size:20px;line-height:1">{{ $ditolak }}</div></div>
       </div>
     </div>
   </div>
@@ -246,7 +279,7 @@
     <div class="card h-100" style="border:2px solid var(--gold);border-radius:16px;background:#fff;">
       <div class="card-body p-3 d-flex align-items-center gap-2">
         <div style="width:46px;height:46px;background:var(--gold);color:var(--green);border:2px solid var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="bi bi-mortarboard-fill"></i></div>
-        <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">Madrasah</div><div class="fw-bold" style="color:var(--green);font-size:20px;line-height:1">{{ $madrasahDistinct }}</div><div class="small arab" style="color:var(--gold);font-size:10px">مدرسة</div></div>
+ <div><div class="small" style="color:#8a7a3a;font-weight:600;font-size:11px">Madrasah</div><div class="fw-bold" style="color:var(--green);font-size:20px;line-height:1">{{ $madrasahDistinct }}</div></div>
       </div>
     </div>
   </div>
@@ -259,7 +292,7 @@
     @if($isAdmin)
     <div class="card-form h-100">
       <div class="card-form-header d-flex justify-content-between align-items-center gap-2 flex-wrap">
-        <span><i class="bi bi-hourglass-top" style="color:#dc3545"></i> Antrian Persetujuan <span class="badge" style="background:#dc3545;color:#fff">{{ $pending->count() }}</span> <span class="arab small d-none d-sm-inline" style="color:var(--gold)">— في الانتظار</span></span>
+ <span><i class="bi bi-hourglass-top" style="color:#dc3545"></i> Antrian Persetujuan <span class="badge" style="background:#dc3545;color:#fff">{{ $pending->count() }}</span> </span>
         <a href="{{ route('permohonan.lama',['status'=>'Proses']) }}" class="btn btn-sm" style="background:var(--green);color:var(--gold);border:1.5px solid var(--gold);border-radius:50px;font-size:11px;font-weight:700">Lihat Semua Proses <i class="bi bi-arrow-right"></i></a>
       </div>
       <div class="table-responsive d-none d-md-block">
@@ -279,7 +312,7 @@
               </td>
             </tr>
             @empty
-            <tr><td colspan="5" class="text-center py-4" style="color:var(--brown)">Tidak ada antrian. Semua sudah diproses <span class="arab" style="color:var(--gold)">الحمد لله</span></td></tr>
+ <tr><td colspan="5" class="text-center py-4" style="color:var(--brown)">Tidak ada antrian. Semua sudah diproses </td></tr>
             @endforelse
           </tbody>
         </table>
@@ -400,9 +433,10 @@
       <div class="col-6 col-md-3">
         <div class="p-3 rounded-3 text-center" style="background:#fdf6e3;border:1.5px solid #d4af37">
           <div class="small fw-bold" style="color:#0a3d1f">Absensi GT</div>
-          <div class="small" style="color:#8a7a3a">Kehadiran</div>
+          <div class="small" style="color:#8a7a3a">Kehadiran masuk DB</div>
           <div class="d-grid gap-1 mt-2">
-            <a href="{{ route('gt.absensi.mengajar') }}" class="btn btn-sm" style="background:#0a3d1f;color:#d4af37;border-radius:20px;font-size:11px"><i class="bi bi-journal-check"></i> Mengajar</a>
+            <a href="{{ route('absensi.rekap') }}" class="btn btn-sm" style="background:#0a3d1f;color:#d4af37;border-radius:20px;font-size:11px"><i class="bi bi-bar-chart-fill"></i> Rekap Absensi</a>
+            <a href="{{ route('gt.absensi.mengajar') }}" class="btn btn-sm" style="background:#fff;border:1px solid #0a3d1f;color:#0a3d1f;border-radius:20px;font-size:11px"><i class="bi bi-journal-check"></i> Mengajar</a>
             <a href="{{ route('gt.absensi.shalat') }}" class="btn btn-sm" style="background:#d4af37;color:#0a3d1f;border-radius:20px;font-size:11px"><i class="bi bi-moon-stars-fill"></i> Shalat</a>
           </div>
         </div>
@@ -443,7 +477,7 @@
   </div>
   <div class="col-12 col-lg-6">
     <div class="card-form">
-      <div class="card-form-header"><i class="bi bi-clock-history" style="color:var(--gold)"></i> Aktivitas Terbaru <span class="arab small" style="color:var(--gold)">— النشاط</span></div>
+ <div class="card-form-header"><i class="bi bi-clock-history" style="color:var(--gold)"></i> Aktivitas Terbaru </div>
       <div class="p-2">
         @forelse($recent as $p)
         <div class="d-flex gap-3 p-2 rounded-3 mb-2" style="background:linear-gradient(135deg,#fff 0%, #fdfdf7 100%);border:1px solid #e8d9a0">

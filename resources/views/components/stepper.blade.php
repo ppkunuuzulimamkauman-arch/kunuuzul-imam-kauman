@@ -1,11 +1,11 @@
 @props(['current' => 1])
 @php
 $steps = [
-  1 => ['label'=>'Identitas', 'icon'=>'bi-house-door','arab'=>'١','route'=>'permohonan.step1'],
-  2 => ['label'=>'Pengelola', 'icon'=>'bi-people','arab'=>'٢','route'=>'permohonan.step2'],
-  3 => ['label'=>'Madrasah', 'icon'=>'bi-book','arab'=>'٣','route'=>'permohonan.step3'],
-  4 => ['label'=>'Murid', 'icon'=>'bi-person-badge','arab'=>'٤','route'=>'permohonan.step4'],
-  5 => ['label'=>'Selesai', 'icon'=>'bi-patch-check-fill','arab'=>'٥','route'=>null],
+  1 => ['label'=>'Identitas', 'icon'=>'bi-house-door','arab'=>'1','route'=>'permohonan.step1'],
+  2 => ['label'=>'Pengelola', 'icon'=>'bi-people','arab'=>'2','route'=>'permohonan.step2'],
+  3 => ['label'=>'Madrasah', 'icon'=>'bi-book','arab'=>'3','route'=>'permohonan.step3'],
+  4 => ['label'=>'Murid', 'icon'=>'bi-person-badge','arab'=>'4','route'=>'permohonan.step4'],
+  5 => ['label'=>'Selesai', 'icon'=>'bi-patch-check-fill','arab'=>'5','route'=>null],
 ];
 $progress = min(100, max(0, ($current-1)/4*100));
 @endphp
@@ -29,7 +29,7 @@ $progress = min(100, max(0, ($current-1)/4*100));
     @endforeach
 </div>
 <div class="text-center py-1 arab small d-flex justify-content-center align-items-center gap-2" style="background:#0a3d1f;color:#d4af37;font-size:11px;letter-spacing:1px">
-  <span>بِسْمِ اللهِ — Formulir Pendaftaran • TMTB & DAI KIK</span>
+ <span>Formulir Pendaftaran • TMTB & DAI KIK</span>
   <span class="badge" style="background:var(--gold);color:var(--green);font-size:9px">{{ $current }}/5</span>
   <span class="d-none d-sm-inline" style="opacity:.7">— klik langkah hijau untuk kembali</span>
 </div>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -46,7 +46,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 .step-heritage:hover{border-color:var(--gold);background:#fffdf0}
 .step-num{width:42px;height:42px;background:var(--green);color:var(--gold);border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
 .footer-heritage{background:var(--green);color:var(--cream);border-top:4px solid var(--gold);position:relative;padding-bottom:env(safe-area-inset-bottom)}
-.footer-heritage::before{content:'بسم الله الرحمن الرحيم';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--green);padding:4px 16px;border-radius:50px;font-family:'Amiri',serif;font-weight:700;font-size:13px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+
 .navbar-toggler{border:2px solid var(--gold) !important;border-radius:10px;padding:8px 10px;background:var(--cream2)}
 .navbar-toggler:focus{box-shadow:0 0 0 3px rgba(212,175,55,0.25)}
 .navbar-toggler-icon{width:22px;height:22px}
@@ -98,7 +98,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
   #alur{padding-top:28px !important;padding-bottom:calc(28px + 76px) !important}
   .mobile-sticky-cta{display:flex;gap:10px}
   .footer-heritage{padding-bottom:calc(18px + env(safe-area-inset-bottom)) !important;margin-bottom:0 !important}
-  .footer-heritage::before{font-size:11px;padding:3px 12px;top:-12px}
+  
   .footer-heritage .container{padding-left:16px;padding-right:16px}
   /* step preview di HP: bisa di-swipe horizontal */
   #previewSteps{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:8px !important;padding-bottom:6px}
@@ -113,7 +113,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 </head>
 <body>
 
-<div class="text-center py-1 arab" style="background:var(--green);color:var(--gold);font-size:clamp(12px,3vw,15px);letter-spacing:1px;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ • ﴿ وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ ﴾</div>
 
 <nav class="navbar navbar-expand-lg navbar-heritage sticky-top py-2">
 <div class="container">
@@ -142,7 +141,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <div class="row align-items-center g-4">
   <div class="col-lg-6">
     <div class="badge-utama mb-3"><i class="bi bi-moon-stars-fill"></i> TAHUN AJARAN 1448/1449 H • PENDAFTARAN TMTB & DAI</div>
-    <div class="arab mb-2" style="color:var(--gold2);font-size:clamp(16px,4vw,20px);font-weight:700">المعهد الإسلامي كونوز الإمام قومان</div>
     <h1 class="lh-1 mb-3 display-hero" style="font-weight:800;color:var(--green);font-size:2.6rem">TMTB & DAI <span style="color:var(--gold2)">KIK</span><br><span class="arab" style="font-size:1.4em;color:var(--green2)">PP KUNUUZUL IMAM</span><br><span style="font-size:0.9em;color:var(--brown)">KAUMAN — Bondowoso</span></h1>
     <p class="mb-4" style="color:var(--brown);font-size:clamp(14px,3.5vw,1.05rem);line-height:1.6">Sistem Pendaftaran Resmi TMTB & Dai untuk Madrasah dan Lembaga Mitra PP Kunuuzul Imam Kauman — proses terstruktur, transparan & terverifikasi.</p>
     <div class="d-flex flex-wrap gap-2 mb-4 hero-actions">
@@ -163,7 +161,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
   <div class="col-lg-6">
     <div class="card-pendaftaran p-4">
       <div class="text-center mb-3">
-        <div class="arab" style="color:var(--gold2);font-size:18px;font-weight:700">نظام طلب المعلم • Guru Tugas</div>
+ <div class="arab" style="color:var(--gold2);font-size:18px;font-weight:700">Guru Tugas</div>
         <strong style="color:var(--green)">Form Permohonan Heritage</strong>
         <div class="small" style="color:var(--brown)">PP KUNUUZUL IMAM KAUMAN • TMTB & DAI KIK</div>
       </div>
@@ -205,7 +203,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
         </div>
       </div>
       <a href="{{ route('login') }}" class="btn-heritage w-100 mt-3 text-center d-block text-decoration-none"><span>Mulai Pengajuan</span> <i class="bi bi-arrow-right"></i></a>
-      <div class="text-center small mt-2 arab" style="color:var(--gold2)">بارك الله فيكم • Semoga Barokah</div>
+ <div class="text-center small mt-2 arab" style="color:var(--gold2)">Semoga Barokah</div>
     </div>
   </div>
 </div>
@@ -215,10 +213,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <section id="statistik" class="py-4" style="background:var(--cream);margin-top:-20px;position:relative;z-index:2">
 <div class="container">
 <div class="row g-2 g-md-3">
-  <div class="col-6 col-lg-3"><div class="stat-heritage reveal"><div style="width:48px;height:48px;background:var(--green);color:var(--gold);border:2px solid var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-send-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="{{ $total ?? 12 }}" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Permohonan</div><div class="arab small" style="color:var(--gold2)">طلب</div></div></div>
-  <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-1"><div style="width:48px;height:48px;background:var(--gold);color:var(--green);border:2px solid var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-file-earmark-check-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="1200" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Formulir Masuk</div><div class="arab small" style="color:var(--gold2)">استمارة</div></div></div>
-  <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-2"><div style="width:48px;height:48px;background:#fff;border:2px solid var(--gold);color:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-people-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="3500" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Santri Mukim</div><div class="arab small" style="color:var(--gold2)">طالب</div></div></div>
-  <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-3"><div style="width:48px;height:48px;background:var(--cream2);border:2px solid var(--gold);color:var(--brown);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-mosque-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="34" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Provinsi</div><div class="arab small" style="color:var(--gold2)">ولاية</div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-heritage reveal"><div style="width:48px;height:48px;background:var(--green);color:var(--gold);border:2px solid var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-send-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="{{ $total ?? 12 }}" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Permohonan</div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-1"><div style="width:48px;height:48px;background:var(--gold);color:var(--green);border:2px solid var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-file-earmark-check-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="1200" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Formulir Masuk</div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-2"><div style="width:48px;height:48px;background:#fff;border:2px solid var(--gold);color:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-people-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="3500" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Santri Mukim</div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-heritage reveal delay-3"><div style="width:48px;height:48px;background:var(--cream2);border:2px solid var(--gold);color:var(--brown);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-mosque-fill"></i></div><div class="h4 fw-bold mb-0 count" data-count="34" style="color:var(--green)">0</div><div class="small" style="color:var(--brown)">Provinsi</div></div></div>
 </div>
 </div>
 </section>
@@ -226,11 +224,35 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <section id="informasi" class="py-5" style="background:#fff;border-top:2px solid var(--gold);border-bottom:2px solid var(--gold)">
 <div class="container">
 <div class="text-center mb-4 px-2">
-  <div class="arab" style="color:var(--gold2);font-size:clamp(18px,5vw,22px)">المعلومات والإعلانات</div>
   <h2 class="fw-bold" style="color:var(--green);font-size:clamp(22px,6vw,32px)">Informasi & Pengumuman</h2>
   <p style="color:var(--brown);max-width:640px;margin:0 auto;font-size:clamp(13px,3.5vw,15px)">Update resmi seputar pendaftaran TMTB & DAI, jadwal verifikasi, dan pengumuman dari PP Kunuuzul Imam Kauman.</p>
 </div>
 <div class="row g-3">
+  {{-- Dinamis dari Kelola Landing (admin) — fallback ke 3 kartu bawaan jika kosong --}}
+  @if(isset($landingInfos) && $landingInfos->count())
+    @foreach($landingInfos as $i => $info)
+    @php
+      $sec = strtolower($info->section);
+      $badgeStyle = $sec==='pengumuman' ? 'background:var(--gold);color:var(--green);border:1px solid var(--green)' : ($sec==='panduan' ? 'background:#fff;border:1px solid var(--gold);color:var(--green)' : 'background:var(--green);color:var(--gold);border:1px solid var(--gold)');
+      $borderColor = $sec==='pengumuman' ? 'var(--green)' : ($sec==='panduan' ? '#b8941f' : 'var(--gold)');
+      $icon = $sec==='pengumuman' ? 'bi-clipboard2-check-fill' : ($sec==='panduan' ? 'bi-journals' : 'bi-megaphone-fill');
+      $delay = $i===1 ? 'delay-1' : ($i>=2 ? 'delay-2' : '');
+    @endphp
+    <div class="col-md-4">
+      <div class="feature-heritage h-100 d-flex flex-column reveal {{ $delay }}" style="border-left:4px solid {{ $borderColor }}">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge" style="{{ $badgeStyle }};font-size:10px">{{ strtoupper($info->category ?: $info->section) }}</span>
+          @if($info->date_label)<span class="small" style="color:#8a7a3a"><i class="bi bi-calendar3"></i> {{ $info->date_label }}</span>@endif
+        </div>
+        <div style="width:54px;height:54px;background:var(--cream2);border:2px solid var(--gold);color:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px"><i class="bi {{ $icon }}"></i></div>
+        <h5 class="fw-bold mt-3" style="color:var(--green)">{{ $info->title }}</h5>
+        @if($info->subtitle)<div class="small fw-bold" style="color:var(--gold2)">{{ $info->subtitle }}</div>@endif
+        @if($info->content)<p class="small flex-grow-1" style="color:var(--brown)">{{ $info->content }}</p>@endif
+        @if($info->link_text)<a href="{{ $info->link_url ?: '#' }}" class="small fw-bold mt-2" style="color:var(--gold2);text-decoration:none">{{ $info->link_text }} <i class="bi bi-arrow-right"></i></a>@endif
+      </div>
+    </div>
+    @endforeach
+  @else
   <!-- Info 1 -->
   <div class="col-md-4">
     <div class="feature-heritage h-100 d-flex flex-column reveal" style="border-left:4px solid var(--gold)">
@@ -270,6 +292,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
       <a href="#alur" class="small fw-bold mt-2" style="color:var(--gold2);text-decoration:none">Buka Panduan <i class="bi bi-arrow-right"></i></a>
     </div>
   </div>
+  @endif
 </div>
 <div class="text-center mt-4">
   <a href="#" class="btn-heritage px-4 py-2 d-inline-flex" style="font-size:13px;width:auto"><i class="bi bi-newspaper"></i> Lihat Semua Informasi</a>
@@ -282,11 +305,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
 <div class="container">
 <div class="row g-4 align-items-start">
   <div class="col-lg-6">
-    <div class="arab" style="color:var(--gold2);font-size:20px">مراحل الطلب</div>
     <h3 class="fw-bold" style="color:var(--green)">Alur Permohonan 1448/1449 H</h3>
     <p class="small" style="color:var(--brown)">Mengikuti tartib pesantren — step by step, tidak tergesa, penuh kehati-hatian.</p>
     <div class="d-flex flex-column gap-3 mt-4">
-      @php $alur=[['١','Identitas Madrasah','Nama, alamat Kauman 68213','bi-house-door'],['٢','Data Pengelola','Pengasuh - Ketua - PJGT + WA','bi-people'],['٣','Kondisi Madrasah','Bahasa, mapel kuning, guru','bi-book'],['٤','Jumlah Santri','Sifir, Ibtidaiyah, Tsanawiyah','bi-person-badge'],['٥','Verifikasi KIK','Majelis KIK verifikasi & distribusi','bi-patch-check-fill']]; @endphp
+      @php $alur=[['1','Identitas Madrasah','Nama, alamat Kauman 68213','bi-house-door'],['2','Data Pengelola','Pengasuh - Ketua - PJGT + WA','bi-people'],['3','Kondisi Madrasah','Bahasa, mapel kuning, guru','bi-book'],['4','Jumlah Santri','Sifir, Ibtidaiyah, Tsanawiyah','bi-person-badge'],['5','Verifikasi KIK','Majelis KIK verifikasi & distribusi','bi-patch-check-fill']]; @endphp
       @foreach($alur as $a)
       <div class="step-heritage">
         <div class="step-num arab">{{$a[0]}}</div>
@@ -306,10 +328,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:#1
         <li><strong style="color:var(--green)">Jumlah santri</strong> per kelas Putra/Putri — jangan dilebih-lebihkan</li>
         <li>Status: <span class="badge" style="background:var(--gold);color:var(--green)">Proses</span> <span class="badge bg-success">Diterima</span> <span class="badge bg-danger">Ditolak</span></li>
       </ul>
-      <div class="alert small mt-3 mb-0 arab text-center" style="background:var(--cream2);border:1px solid var(--gold);color:var(--green)">بارك الله في جهودكم • Semoga menjadi amal jariyah</div>
+ <div class="alert small mt-3 mb-0 arab text-center" style="background:var(--cream2);border:1px solid var(--gold);color:var(--green)">Semoga menjadi amal jariyah</div>
       <div class="text-center small mt-2" style="color:var(--brown)">Kendala? <a href="#" style="color:var(--green);font-weight:700">Hubungi Admin KIK via WA</a></div>
     </div>
-    <div class="text-center mt-3 arab" style="color:var(--gold2);font-size:16px">العلم نور • Ilmu adalah Cahaya</div>
+ <div class="text-center mt-3 arab" style="color:var(--gold2);font-size:16px">Ilmu adalah Cahaya</div>
   </div>
 </div>
 </div>

@@ -9,7 +9,7 @@
     <div class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Section *</label>
-        <select name="section" class="form-select" required><option value="">-- Pilih --</option><option value="hero" @selected($content->section=='hero')>hero</option><option value="informasi" @selected($content->section=='informasi')>informasi</option><option value="pengumuman" @selected($content->section=='pengumuman')>pengumuman</option><option value="panduan" @selected($content->section=='panduan')>panduan</option><option value="alur" @selected($content->section=='alur')>alur</option></select>
+        <select name="section" class="form-select" required><option value="">-- Pilih --</option><option value="hero" @selected($content->section=='hero')>hero — Hero Landing Publik</option><option value="informasi" @selected($content->section=='informasi')>informasi — Kartu Informasi (landing /)</option><option value="pengumuman" @selected($content->section=='pengumuman')>pengumuman — Kartu Pengumuman (landing /)</option><option value="panduan" @selected($content->section=='panduan')>panduan — Kartu Panduan (landing /)</option><option value="alur" @selected($content->section=='alur')>alur — Langkah Alur (landing /)</option><option value="info_umum" @selected($content->section=='info_umum')>info_umum — Tab Informasi Umum (Dashboard GT/PJGT)</option><option value="info_pjgt" @selected($content->section=='info_pjgt')>info_pjgt — Tab Informasi PJGT (Dashboard PJGT)</option><option value="info_gt" @selected($content->section=='info_gt')>info_gt — Tab Informasi Guru Tugas (Dashboard GT)</option></select>
       </div>
       <div class="col-md-6">
         <label class="form-label">Kategori</label>

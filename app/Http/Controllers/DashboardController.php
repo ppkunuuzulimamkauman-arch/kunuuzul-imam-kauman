@@ -16,9 +16,14 @@ class DashboardController extends Controller
         $isGt = $user->role === 'gt';
 
         // Base query filtered by role
+        // GT yang sudah ditempatkan admin hanya lihat lembaganya (via penempatans)
         $base = Permohonan::query();
         if ($isPjgt) $base->where('username', $user->username);
-        elseif ($isGt) $base->where('status', 'Diterima');
+        elseif ($isGt) {
+            $placedId = \App\Models\Penempatan::where('gt_user_id', $user->id)->value('permohonan_id');
+            if ($placedId) $base->whereKey($placedId);
+            else $base->where('status', 'Diterima');
+        }
 
         $total = (clone $base)->count();
         $proses = (clone $base)->where('status','Proses')->count();
@@ -51,6 +56,10 @@ class DashboardController extends Controller
         $pengaduanMenunggu = \App\Models\Pengaduan::where('status','Menunggu')->count();
         $layananTotal = \App\Models\LayananSaran::count();
         $laporanGtTotal = \App\Models\PjgtLaporanGt::count();
+        // Informasi dinamis dari Kelola Landing (admin) untuk tab GT/PJGT
+        $infoUmum = \App\Models\LandingContent::where('section','info_umum')->where('is_active',true)->orderBy('sort_order')->orderBy('id')->get();
+        $infoPjgt = \App\Models\LandingContent::where('section','info_pjgt')->where('is_active',true)->orderBy('sort_order')->orderBy('id')->get();
+        $infoGt = \App\Models\LandingContent::where('section','info_gt')->where('is_active',true)->orderBy('sort_order')->orderBy('id')->get();
         // Pengaduan — dipisah: GT punya aduan sendiri ke Admin, PJGT punya laporan GT melanggar
         $pengaduanGt = collect();
         $pengaduanGtCount = 0;
@@ -74,7 +83,8 @@ class DashboardController extends Controller
             'total','proses','diterima','ditolak','butuhGt','madrasahDistinct','pjgtDistinct',
             'allTotal','allProses','byStatus','byRapot','byWil','byProv','recent','pending','topPjgt','gtCount','pjgtUserCount','isAdmin','isPjgt','isGt','tugasUtama',
             'pengaduanGt','pengaduanGtCount','pengaduanPjgt','pengaduanPjgtCount',
-            'pengaduanTotal','pengaduanMenunggu','layananTotal','laporanGtTotal'
+            'pengaduanTotal','pengaduanMenunggu','layananTotal','laporanGtTotal',
+            'infoUmum','infoPjgt','infoGt'
         ));
     }
 }

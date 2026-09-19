@@ -3,7 +3,6 @@
 @section('breadcrumb','Shalat 5 Waktu')
 @section('content')
 <div class="p-3 mb-3 rounded-3 text-center" style="background:linear-gradient(135deg,#0a3d1f,#0f5a2e);color:#fff;border:2px solid var(--gold)">
-  <div class="arab" style="color:var(--gold);font-size:18px">الصَّلَوَاتُ الْخَمْسُ</div>
   <h4 class="fw-bold mb-0">Shalat 5 Waktu</h4>
   <div class="small" style="opacity:.8">{{ $user->name }} • catat shalat yang sudah dikerjakan hari ini</div>
 </div>
@@ -31,6 +30,14 @@
     <div class="card-form h-100">
       <div class="card-form-header"><i class="bi bi-moon-stars-fill" style="color:var(--gold)"></i> Absen Shalat Hari Ini</div>
       <div class="p-3">
+        @if(isset($serverHariIni) && $serverHariIni->count())
+        <div class="small p-2 mb-2 rounded-3" style="background:#e8f5e9;border:1px solid #22c55e;color:#0a3d1f">
+          <div class="fw-bold mb-1">Server — terkirim ke Admin ({{ $serverHariIni->count() }}/5)</div>
+          @foreach($serverHariIni as $s)
+          <div class="d-flex justify-content-between small"><span><strong>{{ $s->shalat }}</strong> • {{ $s->peran }} • {{ $s->cara }}</span><span>{{ $s->jam }}</span></div>
+          @endforeach
+        </div>
+        @endif
         <div class="d-flex justify-content-between small mb-2" style="color:#5d4037"><span id="shTanggal">-</span><span id="shJam">-</span></div>
         <div class="mb-2">
           <label class="form-label">Shalat</label>
@@ -152,7 +159,7 @@
     else if(done){ info2.style.background='#e8f5e9'; info2.style.border='1px solid #22c55e'; info2.innerHTML='✅ <strong>'+done+'/5</strong> shalat tercatat hari ini'; }
     else { info2.style.background='#fdf6e3'; info2.style.border='1px dashed #d4af37'; info2.textContent='Belum ada yang dicatat hari ini'; }
     document.getElementById('shBar').style.width=(done/5*100)+'%';
-    document.getElementById('shInfo').textContent=done+'/5 selesai'+(done===5?' — ماشاء الله':'');
+    document.getElementById('shInfo').textContent=done+'/5 selesai';
     const todayBox=document.getElementById('shToday');
     const keys=Object.keys(cur);
     todayBox.innerHTML=keys.length ? keys.map(function(w){
@@ -170,10 +177,24 @@
       }
       const peran=document.getElementById('shPeran').value, cara=document.getElementById('shCara').value;
       const jam=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}).replaceAll('.',':');
-      const d=all(); const c=d[k]||{}; c[w]=jam+' • '+peran+' • '+cara+(ket?' • '+ket:''); d[k]=c; save(d);
-      document.getElementById('shKet').value='';
-      render(); tickJadwal();
-      if(window.showToast) showToast('Shalat '+w+' tersimpan');
+      const btn=document.getElementById('shBtn');
+      btn.disabled=true; btn.style.opacity='.6';
+      fetch("{{ route('gt.absensi.shalat.store') }}", {
+        method:'POST',
+        headers:{'Content-Type':'application/json','X-CSRF-TOKEN':"{{ csrf_token() }}",'Accept':'application/json'},
+        body: JSON.stringify({shalat:w, peran:peran, cara:cara, keterangan:ket})
+      }).then(async function(res){
+        const js=await res.json().catch(function(){ return {}; });
+        if(!res.ok){ throw new Error(js.message || 'Gagal simpan ke server'); }
+        const d=all(); const c=d[k]||{}; c[w]=jam+' • '+peran+' • '+cara+(ket?' • '+ket:''); d[k]=c; save(d);
+        document.getElementById('shKet').value='';
+        render(); tickJadwal();
+        if(window.showToast) showToast('Shalat '+w+' tersimpan & terkirim ke Admin');
+        setTimeout(function(){ location.reload(); }, 800);
+      }).catch(function(err){
+        btn.disabled=false; btn.style.opacity='1';
+        if(window.showToast) showToast(err.message, 'error');
+      });
     };
     const rows=[];
     for(let i=0;i<14;i++){ const d=new Date(); d.setDate(d.getDate()-i); const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); const v=data[key]||{}; const c=WAKTU.filter(function(w){return v[w];}).length; rows.push('<div class="d-flex justify-content-between align-items-center p-2 mb-1 rounded-3 small" style="background:'+(c?'#e8f5e9':'#f7f7f7')+';border:1px solid '+(c?'#22c55e':'#eee')+'"><span>'+d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'})+'</span><strong style="color:'+(c===5?'#198754':c?'#b8941f':'#999')+'">'+c+'/5</strong></div>'); }

@@ -10,7 +10,7 @@
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
   <div class="d-flex justify-content-between flex-wrap gap-2">
     <div>
-      <div class="arab small" style="color:#d4af37">تعبئة التقرير — Isi Laporan</div>
+ <div class="arab small" style="color:#d4af37">Isi Laporan</div>
       <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-pencil-square" style="color:#d4af37"></i> Checklist Laporan Kegiatan GT</h4>
       <div class="small" style="color:#fdf6e3;opacity:.8">Hanya GT yang ditugaskan di lembaga Anda (biasanya 1 GT) • Pilihan: Sangat Baik / Baik / Kurang • Bisa diisi kapan saja — apa aja (opsional)</div>
     </div>

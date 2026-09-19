@@ -113,6 +113,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Tahun Ajaran Aktif (TMTB & DAI KIK)
+    |--------------------------------------------------------------------------
+    |
+    | Tahun yang dipakai sebagai "tahun berjalan" untuk pendaftaran PJGT
+    | baru, laporan GT, dan arsip. Ganti lewat .env TAHUN_AJARAN untuk
+    | membuka gelombang pendaftaran tahun berikutnya. Data tahun lama
+    | tetap tersimpan dengan label tahunnya masing-masing.
+    |
+    */
+
+    'tahun_ajaran' => env('TAHUN_AJARAN', '1448/1449'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

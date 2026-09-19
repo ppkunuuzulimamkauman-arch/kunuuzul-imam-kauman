@@ -29,9 +29,33 @@ class PengaduanController extends Controller
                 $query->whereRaw('1=0');
             }
         }
-        // admin lihat semua
+        // admin lihat semua — rekap status sesuai scope role (reorder: hilangkan ORDER BY latest agar lolos ONLY_FULL_GROUP_BY)
+        $byStatus = (clone $query)->reorder()->selectRaw('status, count(*) as c')->groupBy('status')->pluck('c','status');
+        $total = (clone $query)->count();
+
+        $status = $request->query('status');
+        $search = $request->query('search');
+        $sumber = $request->query('sumber');
+        if ($status && in_array($status, Pengaduan::STATUS)) {
+            $query->where('status', $status);
+        }
+        if ($sumber === 'gt') {
+            $query->whereColumn('pjgt_user_id', 'gt_user_id');
+        } elseif ($sumber === 'pjgt') {
+            $query->where(function ($q) {
+                $q->whereNull('gt_user_id')->orWhereColumn('pjgt_user_id', '!=', 'gt_user_id');
+            });
+        }
+        if ($search) {
+            $query->where(function($q) use ($search){
+                $q->where('judul','like',"%{$search}%")
+                    ->orWhere('nama_madrasah','like',"%{$search}%")
+                    ->orWhere('nama_terlapor','like',"%{$search}%")
+                    ->orWhere('kategori','like',"%{$search}%");
+            });
+        }
         $pengaduans = $query->paginate(15)->withQueryString();
-        return view('pengaduan.index', compact('pengaduans'));
+        return view('pengaduan.index', compact('pengaduans','byStatus','total','status','search','sumber'));
     }
 
     public function create()

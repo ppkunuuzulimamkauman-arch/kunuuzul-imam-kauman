@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class PjgtLaporanController extends Controller
 {
-    private function tahunAjaran(): string { return config('app.tahun_ajaran','1448/1449'); }
+    private function tahunAjaran(): string { return \App\Models\Setting::tahunAjaran(); }
 
     // Sekarang laporan bisa diisi kapan saja (apa aja) — bebas
     private function isAkhirBulan(): bool { return true; }

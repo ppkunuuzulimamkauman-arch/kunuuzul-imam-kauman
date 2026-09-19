@@ -4,7 +4,7 @@
 @section('content')
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#7a0a0a 0%, #a81414 100%);color:#fff;border:2px solid #d4af37">
   <div>
-    <div class="arab small" style="color:#d4af37">تقديم شكوى — Buat Pengaduan</div>
+ <div class="arab small" style="color:#d4af37">Buat Pengaduan</div>
     <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-flag-fill" style="color:#d4af37"></i> @if((auth()->user()->role ?? '')==='gt') Pengaduan GT ke Admin @else Pengaduan GT di Lembaga @endif</h4>
     <div class="small" style="color:#fff;opacity:.85">@if((auth()->user()->role ?? '')==='gt') Ceritakan apa yang Anda alami selama di tempat tugas — hal tak terduga untuk diadukan ke Admin @else Lengkapi seperti form: A. Data Pelapor — B. Data Terlapor — C. Uraian Pelanggaran — D. Bukti — E. Tindak Lanjut @endif</div>
   </div>

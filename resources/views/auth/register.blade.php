@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -49,7 +49,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <h5 class="fw-bold mb-0" style="color:#0a3d1f">TMTB & DAI KIK</h5>
     <div class="small text-muted">PP KUNUUZUL IMAM KAUMAN • Kauman Bondowoso 68213</div>
     <div class="small fw-bold" style="color:#b8941f">Daftar akun baru — Heritage Pesantren</div>
-    <div class="arab small" style="color:#d4af37">بِسْمِ اللهِ — التسجيل</div>
   </div>
   <div class="p-4">
     @if($errors->any())
@@ -96,7 +95,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <input type="password" name="password_confirmation" class="form-control" placeholder="ulangi password" required autocomplete="new-password">
         </div>
         <div class="col-12">
-          <div class="form-check small p-3 rounded-3" style="background:#fdf6e3;border:1.5px solid #e8d9a0"><input class="form-check-input" type="checkbox" required id="agree" style="accent-color:#0a3d1f;width:18px;height:18px"><label for="agree" class="form-check-label ms-1" style="color:#0a3d1f">Saya menyetujui data akan diverifikasi TMTB & DAI KIK — <span class="arab" style="color:#b8941f">أوافق</span></label></div>
+  <label for="agree" class="d-flex align-items-start gap-2 p-3 rounded-3 small" style="background:linear-gradient(135deg,#fffdf4,#fdf6e3);border:1.5px solid var(--gold);cursor:pointer;margin:0">
+    <input class="form-check-input flex-shrink-0 mt-0" type="checkbox" required id="agree" style="accent-color:#0a3d1f;width:20px;height:20px;cursor:pointer">
+    <span style="color:#0a3d1f;line-height:1.5"><i class="bi bi-shield-check-fill" style="color:#b8941f"></i> Saya menyetujui data akan <strong>diverifikasi TMTB & DAI KIK</strong></span>
+  </label>
         </div>
       </div>
       <button class="btn-green mt-3">Daftar Sekarang <i class="bi bi-arrow-right ms-1"></i></button>
@@ -104,7 +106,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="text-center mt-3 small d-none d-sm-block">Sudah punya akun? <a href="{{ route('login') }}" class="fw-bold text-decoration-none" style="color:#0a3d1f">Masuk di sini</a></div>
     <div class="text-center mt-3 d-none d-sm-block"><a href="{{ route('landing') }}" class="btn btn-sm rounded-pill px-4" style="background:#fdf6e3;border:1.5px solid #d4af37;color:#0a3d1f;font-weight:700"><i class="bi bi-arrow-left"></i> Kembali ke Beranda</a></div>
   </div>
-  <div class="text-center small py-3" style="background:linear-gradient(135deg,#fdf6e3,#fdf0c7);border-top:2px solid #d4af37;color:#5d4037">© 1448 TMTB & DAI KIK • PP KUNUUZUL IMAM KAUMAN<br><span class="arab" style="color:#b8941f">بارك الله في جهودكم</span></div>
+ <div class="text-center small py-3" style="background:linear-gradient(135deg,#fdf6e3,#fdf0c7);border-top:2px solid #d4af37;color:#5d4037">© 1448 TMTB & DAI KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
 </div>
 <script>
 function selectRole(v){

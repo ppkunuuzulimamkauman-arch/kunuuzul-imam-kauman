@@ -5,7 +5,7 @@
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
   <div class="d-flex justify-content-between flex-wrap gap-2">
     <div>
-      <div class="arab small" style="color:#d4af37">الخدمة — Layanan</div>
+ <div class="arab small" style="color:#d4af37">Layanan</div>
       <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-headset" style="color:#d4af37"></i> Layanan</h4>
       <div class="small" style="color:#fdf6e3;opacity:.85">Saran / masukan & kontak yang bisa dihubungi — TMTB & DAI KIK</div>
     </div>

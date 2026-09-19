@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
@@ -162,7 +162,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
     <div class="pill-row">
       <span class="pill"><i class="bi bi-calendar-heart"></i> 1448/1449 H</span>
     </div>
-    <div class="arab small mt-2">بِسْمِ اللهِ — Masuk</div>
+ <div class="arab small mt-2">Masuk</div>
   </div>
 
   <div class="divider"><i class="bi bi-stars"></i></div>
@@ -214,7 +214,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
     </div>
   </div>
 
-  <div class="card-foot">Copyright © 1448 TMTB &amp; DAI KIK • PP KUNUUZUL IMAM KAUMAN<br><span class="arab">بارك الله فيكم</span></div>
+ <div class="card-foot">Copyright © 1448 TMTB &amp; DAI KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
 </div>
 
 <div id="toastWrap"></div>

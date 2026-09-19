@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(GtBiodata::class);
     }
+
+    public function penempatan()
+    {
+        return $this->hasOne(Penempatan::class, 'gt_user_id');
+    }
 }

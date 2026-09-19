@@ -5,13 +5,12 @@
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <div class="arab small" style="color:#d4af37">خلاصة الطلبات — Rekap Pendaftaran</div>
+ <div class="arab small" style="color:#d4af37">Rekap Pendaftaran</div>
             <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-bar-chart-fill" style="color:#d4af37"></i> Rekap Permohonan</h4>
             <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • 1448/1449 H • TMTB & DAI</div>
         </div>
         <div class="text-end d-none d-md-block">
             <div class="badge-pendaftaran" style="background:#fdf6e3;color:#0a3d1f">Tahun 1448/1449</div>
-            <div class="arab small mt-1" style="color:#d4af37">بارك الله</div>
         </div>
     </div>
 </div>
@@ -21,7 +20,7 @@
         <div class="card text-center" style="border:2px solid #d4af37;border-radius:14px;background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;box-shadow:0 6px 20px rgba(10,61,31,0.15)">
             <div class="card-body">
                 <div style="width:48px;height:48px;background:var(--gold,#d4af37);color:#0a3d1f;border:2px solid #fdf6e3;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px"><i class="bi bi-journals fs-5"></i></div>
-                <div class="small" style="color:#d4af37;font-weight:700;letter-spacing:1px">TOTAL • المجموع</div>
+ <div class="small" style="color:#d4af37;font-weight:700;letter-spacing:1px">TOTAL</div>
                 <div class="fs-1 fw-bold" style="color:#d4af37">{{ $total }}</div>
                 <div class="small" style="opacity:0.8">permohonan tercatat</div>
             </div>
@@ -32,7 +31,7 @@
         <div class="card text-center" style="border:2px solid #d4af37;border-radius:14px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.06)">
             <div class="card-body">
                 <div class="small fw-bold" style="color:#5d4037;letter-spacing:0.5px">{{ strtoupper($status) }}</div>
-                <div class="arab small" style="color:#d4af37">{{ $status=='Diterima' ? 'مقبول' : ($status=='Ditolak' ? 'مرفوض' : 'قيد الانتظار') }}</div>
+ <div class="arab small" style="color:#d4af37">{{ $status=='Diterima' ? '' : ($status=='Ditolak' ? '' : ' ') }}</div>
                 <div class="fs-1 fw-bold mt-1" style="color:{{$status=='Diterima'?'#0a3d1f':($status=='Ditolak'?'#dc3545':'#b8941f')}}">{{ $jml }}</div>
                 <span class="badge mt-1" style="background:{{$status=='Diterima'?'#0a3d1f':($status=='Ditolak'?'#dc3545':'#d4af37')}};color:{{$status=='Diterima'?'#d4af37':'#fff'}};border:1px solid #0a3d1f">{{ $status }}</span>
             </div>
@@ -42,7 +41,7 @@
     @if($byStatus->isEmpty())
     <div class="col-md-8">
         <div class="card text-center" style="border:2px dashed #d4af37;border-radius:14px;background:#fffdf0">
-            <div class="card-body py-4" style="color:#8a7a3a">Belum ada rekap — lengkapi formulir pendaftaran terlebih dahulu<br><span class="arab" style="color:#d4af37">ابدأ بملء الاستمارة</span></div>
+ <div class="card-body py-4" style="color:#8a7a3a">Belum ada rekap — lengkapi formulir pendaftaran terlebih dahulu<br></div>
         </div>
     </div>
     @endif
@@ -52,7 +51,7 @@
     <div class="col-md-6">
         <div class="card" style="border:2px solid #d4af37;border-radius:14px;background:#fff">
             <div class="card-body">
-                <h6 class="fw-bold" style="color:#0a3d1f"><i class="bi bi-pie-chart-fill" style="color:#d4af37"></i> Grafik Status <span class="arab small" style="color:#b8941f">— حالة الطلب</span></h6>
+ <h6 class="fw-bold" style="color:#0a3d1f"><i class="bi bi-pie-chart-fill" style="color:#d4af37"></i> Grafik Status </h6>
                 <canvas id="chartStatus" height="180"></canvas>
             </div>
         </div>
@@ -60,7 +59,7 @@
     <div class="col-md-6">
         <div class="card" style="border:2px solid #d4af37;border-radius:14px;background:#fff">
             <div class="card-body">
-                <h6 class="fw-bold" style="color:#0a3d1f"><i class="bi bi-award-fill" style="color:#d4af37"></i> Grafik Rapot <span class="arab small" style="color:#b8941f">— التقدير</span></h6>
+ <h6 class="fw-bold" style="color:#0a3d1f"><i class="bi bi-award-fill" style="color:#d4af37"></i> Grafik Rapot </h6>
                 <canvas id="chartRapot" height="180"></canvas>
             </div>
         </div>
@@ -86,5 +85,5 @@ new Chart(document.getElementById('chartStatus'), {type:'doughnut', data:{labels
 new Chart(document.getElementById('chartRapot'), {type:'bar', data:{labels:rapotLabels, datasets:[{label:'Rapot', data:rapotData, backgroundColor:['#0a3d1f','#d4af37','#8a7a3a'], borderColor:'#0a3d1f', borderWidth:1}]}, options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, ticks:{color:'#0a3d1f'}}, x:{ticks:{color:'#0a3d1f'}}}}});
 </script>
 @endpush
-<div class="text-center mt-3 arab small" style="color:#b8941f">العلم نور • TMTB & DAI KIK — Heritage</div>
+<div class="text-center mt-3 arab small" style="color:#b8941f">TMTB & DAI KIK — Heritage</div>
 @endsection

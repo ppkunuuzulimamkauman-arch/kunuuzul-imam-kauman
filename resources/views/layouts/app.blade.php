@@ -1,6 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
 <head>
+    <script>
+    (function(){try{var t=localStorage.getItem('tmtb-theme')||'light';window.__tmtbTheme=t;var h=document.documentElement;if(t==='auto'){h.setAttribute('data-theme',window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}else{h.setAttribute('data-theme',t);}}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0a3d1f">
@@ -142,6 +145,43 @@
         .bottom-nav a{transition:background .18s,color .18s,transform .12s}
         .bottom-nav a.active{animation:pageIn .3s ease both}
         @media (prefers-reduced-motion: reduce){ .content,.card,.card-form,.tab-pane.show.active{animation:none !important} }
+        /* ── MODE GELAP ── */
+        html[data-theme="dark"]{color-scheme:dark}
+        html[data-theme="dark"] body{background:#101510;color:#e9e7de}
+        html[data-theme="dark"] body::before{opacity:.05}
+        html[data-theme="dark"] .topbar{background:rgba(16,21,16,.92)}
+        html[data-theme="dark"] .topbar .breadcrumb a{color:#f4e2a0 !important}
+        html[data-theme="dark"] .topbar .breadcrumb .active{color:var(--gold) !important}
+        html[data-theme="dark"] .card,html[data-theme="dark"] .card-form{background:#182018;border-color:var(--gold);color:#e9e7de}
+        html[data-theme="dark"] .card-form-header{background:linear-gradient(135deg,#1c2b1c,#243024) !important;color:#f4e2a0 !important}
+        html[data-theme="dark"] .table{color:#e9e7de}
+        html[data-theme="dark"] .form-control,html[data-theme="dark"] .form-select{background:#10160f;border-color:#3a4a3a;color:#e9e7de}
+        html[data-theme="dark"] .form-label{color:#f4e2a0}
+        html[data-theme="dark"] .dropdown-menu{background:#182018}
+        html[data-theme="dark"] .dropdown-item{color:#e9e7de}
+        html[data-theme="dark"] .dropdown-item:hover{background:rgba(212,175,55,.15)}
+        html[data-theme="dark"] .bottom-nav{background:rgba(16,21,16,.97)}
+        html[data-theme="dark"] .bottom-nav a{color:#b9b5a6}
+        html[data-theme="dark"] .pagination .page-link{background:#182018;border-color:#3a4a3a;color:#e9e7de}
+        html[data-theme="dark"] .alert{filter:brightness(.92)}
+        html[data-theme="dark"] .stepper{background:#182018 !important;border-bottom-color:var(--gold)}
+        /* ── Animasi tema ── */
+        body,.topbar,.card,.card-form,.card-form-header,.table,.form-control,.form-select,.dropdown-menu,.bottom-nav,.stepper{transition:background-color .35s ease,color .35s ease,border-color .35s ease}
+        #themeToggle{transition:transform .18s ease,box-shadow .25s ease}
+        #themeToggle:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(212,175,55,.4)}
+        #themeToggle:active{transform:scale(.92)}
+        #themeIcon{display:inline-block}
+        #themeIcon.swap{animation:themePop .45s cubic-bezier(.34,1.56,.64,1)}
+        @keyframes themePop{0%{transform:scale(.3) rotate(-120deg);opacity:0}60%{transform:scale(1.15) rotate(10deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+        #themeMenu{transform-origin:top right}
+        #themeMenu.show{animation:menuPop .22s cubic-bezier(.22,1,.36,1)}
+        @keyframes menuPop{from{opacity:0;transform:scale(.92) translateY(-6px)}to{opacity:1;transform:none}}
+        .theme-opt{transition:background .18s,transform .12s}
+        .theme-opt:hover{background:var(--cream2) !important}
+        .theme-opt:active{transform:scale(.97)}
+        .theme-opt .theme-check{opacity:0;transform:scale(.5);transition:.2s}
+        .theme-opt.on .theme-check{opacity:1;transform:scale(1)}
+        .theme-opt.on{background:var(--cream2) !important}
     </style>
     @stack('styles')
 </head>
@@ -154,41 +194,29 @@
         <div style="line-height:1.1;flex:1"><strong style="font-size:13px;color:var(--green)">TMTB & DAI <span style="color:#b8941f">KIK</span></strong><br><span class="arab" style="font-size:10px;color:#5d4037">PP KUNUUZUL IMAM KAUMAN</span></div>
         <button class="sidebar-close" onclick="closeSidebar()" aria-label="Tutup menu"><i class="bi bi-x-lg"></i></button>
     </div>
-    <div class="text-center py-2 arab small" style="color:var(--gold);background:rgba(0,0,0,0.15);font-size:11px">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
     <div class="sidebar-search"><i class="bi bi-search"></i><input id="sidebarSearch" type="text" placeholder="Cari menu... ( / )" autocomplete="off"><span class="small" style="color:rgba(253,246,227,0.5);padding-right:8px;font-size:10px">⌘K</span></div>
     <div class="menu mt-2">
         <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
         @if((auth()->user()->role ?? '')==='pjgt')
         <a href="{{ route('pjgt.biodata') }}" class="{{ request()->routeIs('pjgt.biodata*') ? 'active':'' }}"><i class="bi bi-person-vcard-fill"></i> Biodata PJGT</a>
         @endif
-        @if((auth()->user()->role ?? '')!=='gt')
-        <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
-            @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
-            <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}"><i class="bi bi-feather"></i> Form Permohonan</a>
-            @endif
-            @if((auth()->user()->role ?? '')==='admin')
-            <a href="{{ route('form-questions.index') }}" class="{{ request()->routeIs('form-questions*') ? 'active':'' }}"><i class="bi bi-patch-question-fill"></i> Kelola Pertanyaan</a>
-            @endif
         @if((auth()->user()->role ?? '')==='pjgt')
+        <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
+        <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}"><i class="bi bi-feather"></i> Formulir Pengajuan</a>
         <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
         <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan</a>
         <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan</a>
-        @endif
         @endif
         @if((auth()->user()->role ?? '')==='admin')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">ADMIN</div>
         <a href="{{ route('landing-contents.index') }}" class="{{ request()->routeIs('landing-contents*') ? 'active':'' }}"><i class="bi bi-pencil-square"></i> Kelola Landing</a>
         <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active':'' }}"><i class="bi bi-megaphone-fill"></i> Laporan Permohonan</a>
-        <a href="{{ route('permohonan.rekap') }}" class="{{ request()->routeIs('permohonan.rekap') ? 'active':'' }}"><i class="bi bi-bar-chart-fill"></i> Rekap Permohonan</a>
         <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
-        <a href="#adminAbsensiMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('gt.absensi*') ? 'true':'false' }}" aria-controls="adminAbsensiMenu" class="collapse-toggle" style="justify-content:space-between;">
-            <span><i class="bi bi-fingerprint"></i> Kelola Absensi GT</span> <i class="bi bi-chevron-down" style="font-size:10px;transition:transform .25s"></i>
-        </a>
-        <div id="adminAbsensiMenu" class="collapse {{ request()->routeIs('gt.absensi*') ? 'show':'' }}" style="margin-left:18px;border-left:1px dashed rgba(212,175,55,.4);padding-left:8px">
-            <a href="{{ route('gt.absensi.mengajar') }}" class="{{ request()->routeIs('gt.absensi.mengajar') ? 'active':'' }}" style="margin:2px 6px;padding:8px 10px;min-height:40px;font-size:12.5px"><i class="bi bi-journal-check"></i> Mengajar</a>
-            <a href="{{ route('gt.absensi.shalat') }}" class="{{ request()->routeIs('gt.absensi.shalat') ? 'active':'' }}" style="margin:2px 6px;padding:8px 10px;min-height:40px;font-size:12.5px"><i class="bi bi-moon-stars-fill"></i> Shalat 5 Waktu</a>
-        </div>
-        <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan GT</a>
+        <a href="{{ route('absensi.rekap') }}" class="{{ request()->routeIs('absensi.rekap') ? 'active':'' }}"><i class="bi bi-bar-chart-fill"></i> Rekap Absensi</a>
+        <a href="{{ route('penempatan.index') }}" class="{{ request()->routeIs('penempatan*') ? 'active':'' }}"><i class="bi bi-geo-alt-fill"></i> Penempatan GT</a>
+        <a href="{{ route('biodata.rekap') }}" class="{{ request()->routeIs('biodata.rekap', 'biodata.show') ? 'active':'' }}"><i class="bi bi-people-fill"></i> Data Bio</a>
+        <a href="{{ route('setting.index') }}" class="{{ request()->routeIs('setting*') ? 'active':'' }}"><i class="bi bi-gear-fill"></i> Pengaturan</a>
+        <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan</a>
         <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan — Saran</a>
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(253,246,227,.4);font-size:10px;letter-spacing:1.5px">SEGERA HADIR</div>
         <a href="#" style="opacity:.55"><i class="bi bi-calendar-event"></i> Rapat <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
@@ -236,12 +264,26 @@
             <span class="d-sm-none small fw-bold" style="color:var(--green);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">@yield('breadcrumb', 'Form')</span>
         </div>
         <div class="d-flex align-items-center gap-2 flex-shrink-0">
-            <span class="badge-pendaftaran d-none d-md-inline">1448/1449 H</span>
+            <div class="dropdown flex-shrink-0">
+                <button id="themeToggle" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-sm" style="border:2px solid var(--gold);background:var(--cream2);color:var(--green);width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px" title="Pilih mode tampilan">
+                    <i id="themeIcon" class="bi bi-sun-fill" style="font-size:17px"></i>
+                </button>
+                <ul class="dropdown-menu" id="themeMenu" style="border:2px solid var(--gold);border-radius:14px;overflow:hidden;min-width:210px;padding:6px">
+                    <li><button type="button" class="dropdown-item theme-opt d-flex align-items-center gap-2" data-mode="light" style="border-radius:10px;padding:9px 10px"><i class="bi bi-sun-fill" style="color:#b8941f;font-size:17px"></i><span><span class="fw-bold small d-block" style="color:var(--green)">Terang</span><span class="d-block" style="font-size:10px;color:#8a7a3a">Selalu terang</span></span><i class="bi bi-check-lg ms-auto theme-check" style="color:#198754"></i></button></li>
+                    <li><button type="button" class="dropdown-item theme-opt d-flex align-items-center gap-2" data-mode="dark" style="border-radius:10px;padding:9px 10px"><i class="bi bi-moon-stars-fill" style="color:#0a3d1f;font-size:17px"></i><span><span class="fw-bold small d-block" style="color:var(--green)">Gelap</span><span class="d-block" style="font-size:10px;color:#8a7a3a">Nyaman di malam hari</span></span><i class="bi bi-check-lg ms-auto theme-check" style="color:#198754"></i></button></li>
+                    <li><button type="button" class="dropdown-item theme-opt d-flex align-items-center gap-2" data-mode="auto" style="border-radius:10px;padding:9px 10px"><i class="bi bi-circle-half" style="color:#0a3d1f;font-size:17px"></i><span><span class="fw-bold small d-block" style="color:var(--green)">Otomatis</span><span class="d-block" style="font-size:10px;color:#8a7a3a">Ikut pengaturan HP</span></span><i class="bi bi-check-lg ms-auto theme-check" style="color:#198754"></i></button></li>
+                </ul>
+            </div>
+            @if((auth()->user()->role ?? '') === 'admin')
+            <a href="{{ route('setting.index') }}" class="badge-pendaftaran d-none d-md-inline text-decoration-none" title="Ubah tahun ajaran">{{ \App\Models\Setting::tahunAjaran() }} H</a>
+            @else
+            <span class="badge-pendaftaran d-none d-md-inline">{{ \App\Models\Setting::tahunAjaran() }} H</span>
+            @endif
             <a href="{{ route('landing') }}" class="small text-decoration-none d-none d-md-inline" style="color:var(--green);font-weight:700"><i class="bi bi-house"></i> Beranda</a>
             <div class="dropdown d-flex align-items-center gap-2">
                 <a href="#" data-bs-toggle="dropdown" class="d-flex align-items-center gap-2 text-decoration-none" style="min-height:40px">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=0a3d1f&color=d4af37&size=80" class="rounded-circle" width="34" height="34" style="border:2px solid var(--gold);object-fit:cover">
-                    <span class="small d-none d-lg-inline" style="color:var(--green);font-weight:700;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ auth()->user()->name ?? 'Guest' }} <span class="badge-pendaftaran ms-1">{{ strtoupper(auth()->user()->role ?? '-') }}</span></span>
+                    <span class="small d-none d-lg-inline" style="color:var(--green);font-weight:700;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ auth()->user()->name ?? 'Guest' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" style="border:2px solid var(--gold);border-radius:14px;overflow:hidden;min-width:220px">
                     <li><span class="dropdown-item small" style="color:var(--green);white-space:normal;word-break:break-all">{{ auth()->user()->email ?? '' }}<br><span class="text-muted" style="font-size:11px">{{ auth()->user()->username ?? '' }} • {{ strtoupper(auth()->user()->role ?? '') }}</span></span></li>
@@ -265,31 +307,35 @@
 
     <div class="footer">
         <span class="arab">© 1448 TMTB & DAI KIK • PP KUNUUZUL IMAM KAUMAN • Kauman 68213</span>
-        <span class="d-none d-md-inline small" style="color:var(--gold)">بارك الله • Heritage Kuning</span>
+ <span class="d-none d-md-inline small" style="color:var(--gold)">Heritage Kuning</span>
         <span class="d-md-none small" style="color:var(--gold);opacity:0.85">Heritage • 1448H</span>
     </div>
 </div>
 
 <div id="toastWrap" class="toast-wrap"></div>
 <!-- Bottom Nav — Mobile Masterpiece -->
-<nav class="bottom-nav" aria-label="Navigasi bawah" style="@if(!in_array(auth()->user()->role ?? '', ['admin','pjgt']))grid-template-columns:repeat(3,1fr);@endif">
+<nav class="bottom-nav" aria-label="Navigasi bawah" style="@if((auth()->user()->role ?? '')==='pjgt')grid-template-columns:repeat(5,1fr);@else grid-template-columns:repeat(3,1fr);@endif">
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('dashboard*') ? 'bi-house-door-fill' : 'bi-house-door' }}"></i>
         <span>Home</span>
     </a>
     @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
+    @if((auth()->user()->role ?? '')==='pjgt')
     <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('permohonan.step*') ? 'bi-feather' : 'bi-pencil-square' }}"></i>
         <span>Form</span>
     </a>
+    @endif
     <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'bi-collection-fill' : 'bi-collection' }}"></i>
         <span>Arsip</span>
     </a>
+    @if((auth()->user()->role ?? '')==='pjgt')
     <a href="{{ route('permohonan.rekap') }}" class="{{ request()->routeIs('permohonan.rekap') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('permohonan.rekap') ? 'bi-bar-chart-fill' : 'bi-bar-chart' }}"></i>
         <span>Rekap</span>
     </a>
+    @endif
     <a href="{{ route('landing') }}">
         <i class="bi bi-globe2"></i>
         <span>Beranda</span>
@@ -381,6 +427,36 @@ document.querySelectorAll('.btn-green,.btn-yellow,.sidebar .menu a,.topbar .btn'
     this.appendChild(span); setTimeout(()=> span.remove(), 550);
   });
 });
+// ── MODE GELAP / TERANG / OTOMATIS (dropdown pilihan) ──
+(function(){
+  const btn=document.getElementById('themeToggle'), icon=document.getElementById('themeIcon');
+  if(!btn||!icon) return;
+  const META={light:{icon:'bi bi-sun-fill',title:'Terang — klik untuk pilihan',label:'Terang'},dark:{icon:'bi bi-moon-stars-fill',title:'Gelap — klik untuk pilihan',label:'Gelap'},auto:{icon:'bi bi-circle-half',title:'Otomatis — klik untuk pilihan',label:'Otomatis'}};
+  function effective(m){ return m==='auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : m; }
+  function current(){ try{ return localStorage.getItem('tmtb-theme')||'light'; }catch(e){ return 'light'; } }
+  function paint(m, animate){
+    document.documentElement.setAttribute('data-theme', effective(m));
+    icon.className=META[m].icon; icon.style.fontSize='17px';
+    btn.title=META[m].title;
+    document.querySelectorAll('.theme-opt').forEach(function(o){ o.classList.toggle('on', o.dataset.mode===m); });
+    if(animate){ icon.classList.remove('swap'); void icon.offsetWidth; icon.classList.add('swap'); }
+  }
+  function choose(m){
+    try{ localStorage.setItem('tmtb-theme', m); }catch(e){}
+    paint(m, true);
+    if(window.showToast) showToast('Tema: '+META[m].label);
+    if(navigator.vibrate) try{navigator.vibrate(8)}catch(e){}
+  }
+  paint(current(), false);
+  document.querySelectorAll('.theme-opt').forEach(function(o){
+    o.addEventListener('click', function(){ choose(o.dataset.mode); });
+  });
+  try{
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){
+      if(current()==='auto') paint('auto', true);
+    });
+  }catch(e){}
+})();
 // ── TOAST helper ──
 function showToast(msg, type='success'){
   const wrap=document.getElementById('toastWrap'); if(!wrap) return;

@@ -4,7 +4,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
     <div>
-        <div class="arab small" style="color:#d4af37">بِسْمِ اللهِ — Tahap ١</div>
+ <div class="arab small" style="color:#d4af37">Tahap 1</div>
         <h5 class="mb-0 fw-bold" style="color:#d4af37"><i class="bi bi-journal-bookmark-fill"></i> Formulir Pendaftaran</h5>
         <h4 class="fw-bold mb-0" style="color:#fff">Identitas Madrasah — 1448/1449 H</h4>
         <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • TMTB & DAI</div>
@@ -12,7 +12,6 @@
     <div class="text-end">
         <div class="small" style="color:var(--gold)">Username Anda</div>
         <span class="username-badge" style="background:#fdf6e3;color:#0a3d1f;border-color:#d4af37">{{ auth()->user()->username ?? '00007' }} • {{ strtoupper(auth()->user()->role ?? 'PJGT') }}</span>
-        <div class="arab small mt-1" style="color:#d4af37">بارك الله</div>
         @if((auth()->user()->role ?? '')==='admin')
         <a href="{{ route('form-questions.index') }}" class="btn btn-sm mt-2" style="background:rgba(212,175,55,.15);border:1.5px solid #d4af37;color:#d4af37;border-radius:20px;font-size:11px;font-weight:700"><i class="bi bi-gear-fill"></i> Kelola Pertanyaan</a>
         @endif
@@ -100,8 +99,8 @@
             @include('permohonan._custom_fields')
         </div>
         <div class="p-3 border-top d-flex justify-content-between align-items-center" style="background:linear-gradient(135deg,#fdf6e3 0%, #fdf0c7 100%);border-top:2px solid #d4af37">
-            <span class="arab small" style="color:#0a3d1f">العلم نور — langkah ١ dari ٤</span>
-            <button type="submit" class="btn-green">Selanjutnya <i class="bi bi-arrow-right"></i> • Tahap ٢</button>
+ <span class="arab small" style="color:#0a3d1f">langkah 1 dari 4</span>
+            <button type="submit" class="btn-green">Selanjutnya <i class="bi bi-arrow-right"></i> • Tahap 2</button>
         </div>
     </form>
 </div>

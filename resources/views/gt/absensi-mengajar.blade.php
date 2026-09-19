@@ -13,6 +13,11 @@
     <div class="card-form h-100">
       <div class="card-form-header"><i class="bi bi-fingerprint" style="color:var(--gold)"></i> Absen Mengajar Hari Ini <span class="small" style="color:#8a7a3a">• madrasah / kegiatan</span></div>
       <div class="p-3">
+        @if(isset($sudahHariIni) && $sudahHariIni)
+        <div class="small text-center p-2 mb-2 rounded-3" style="background:#e8f5e9;border:1px solid #22c55e;color:#0a3d1f">
+          ✅ Server: <strong>{{ $sudahHariIni->status }}</strong> pukul {{ $sudahHariIni->jam }} — terkirim ke Admin
+        </div>
+        @endif
         <div class="d-flex justify-content-between small mb-2" style="color:#5d4037"><span id="mgTanggal">-</span><span id="mgJam">-</span></div>
         <div class="mb-2">
           <label class="form-label">Status</label>
@@ -37,7 +42,19 @@
       <div class="card-form-header">
         <span><i class="bi bi-clock-history" style="color:var(--gold)"></i> Riwayat 14 hari</span>
       </div>
-      <div class="p-2" id="mgRiwayat"></div>
+      <div class="p-2">
+        @if(isset($serverRiwayat) && $serverRiwayat->count())
+        <div class="small fw-bold mb-2" style="color:#0a3d1f">Server — masuk Admin</div>
+        @foreach($serverRiwayat as $r)
+        <div class="d-flex justify-content-between align-items-center p-2 mb-1 rounded-3 small" style="background:#e8f5e9;border:1px solid #22c55e">
+          <span>{{ $r->tanggal->locale('id')->isoFormat('ddd, D MMM') }}</span>
+          <span><strong style="color:#198754">{{ $r->status }} • {{ $r->jam }}</strong></span>
+        </div>
+        @endforeach
+        <div class="small fw-bold mt-2 mb-2" style="color:#8a7a3a">Lokal (HP ini)</div>
+        @endif
+        <div id="mgRiwayat"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -69,7 +86,23 @@
     rw.innerHTML=rows.join('');
     btn.onclick=function(){
       if(all()[today()]){ if(window.showToast) showToast('Sudah absen hari ini — tidak bisa absen lagi', 'error'); return; }
-      const st=document.getElementById('mgStatus').value, ket=document.getElementById('mgKet').value.trim(); const jam=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); const d=all(); d[k]={status:st,jam:jam,ket:ket}; save(d); render(); if(window.showToast) showToast('Absensi mengajar tersimpan');
+      const st=document.getElementById('mgStatus').value, ket=document.getElementById('mgKet').value.trim();
+      const jam=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+      btn.disabled=true; btn.style.opacity='.6';
+      fetch("{{ route('gt.absensi.mengajar.store') }}", {
+        method:'POST',
+        headers:{'Content-Type':'application/json','X-CSRF-TOKEN':"{{ csrf_token() }}",'Accept':'application/json'},
+        body: JSON.stringify({status:st, keterangan:ket})
+      }).then(async function(res){
+        const js=await res.json().catch(function(){ return {}; });
+        if(!res.ok){ throw new Error(js.message || 'Gagal simpan ke server'); }
+        const d=all(); d[k]={status:st,jam:jam,ket:ket}; save(d); render();
+        if(window.showToast) showToast('Absensi tersimpan & terkirim ke Admin');
+        setTimeout(function(){ location.reload(); }, 800);
+      }).catch(function(err){
+        btn.disabled=false; btn.style.opacity='1';
+        if(window.showToast) showToast(err.message, 'error');
+      });
     };
   }
   document.addEventListener('DOMContentLoaded',render); render();

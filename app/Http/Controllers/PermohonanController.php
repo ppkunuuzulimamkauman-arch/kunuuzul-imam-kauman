@@ -30,8 +30,8 @@ class PermohonanController extends Controller
 
     private function tahunAjaranAktif(): string
     {
-        // Terpusat — ganti di sini / config jika tahun berubah
-        return config('app.tahun_ajaran', '1448/1449');
+        // Terpusat — diubah admin lewat menu Pengaturan (fallback config/.env)
+        return \App\Models\Setting::tahunAjaran();
     }
 
     private function sudahMengajukan(): bool
@@ -174,20 +174,15 @@ class PermohonanController extends Controller
         
         $validated = $request->validate(array_merge([
             'pengasuh' => 'required|string|min:3|max:100',
-            'pengasuh_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
             'ketua_yayasan' => 'required|string|min:3|max:100',
-            'ketua_yayasan_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
             'sekretaris_yayasan' => 'required|string|min:3|max:100',
-            'sekretaris_yayasan_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
             'kepala_madrasah' => 'required|string|min:3|max:100',
-            'kepala_madrasah_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
-            'tata_usaha' => 'required|string|min:1|max:100',
-            'tata_usaha_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
             'pjgt' => 'required|string|min:3|max:100',
             'pjgt_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
         ], $this->customRules(2)), [
             'pengasuh.required' => 'Pengasuh wajib diisi (jika tidak ada isi 0)',
-            'pengasuh_hp.regex' => 'No HP harus format 08... 10-15 digit',
+            'sekretaris_yayasan.required' => 'Sekretaris Yayasan wajib diisi (jika tidak ada isi 0)',
+            'pjgt_hp.regex' => 'No HP/WA PJGT harus format 08... 10-15 digit',
         ]);
 
         $extra = $validated['extra'] ?? [];
@@ -222,16 +217,14 @@ class PermohonanController extends Controller
     {
         
         $validated = $request->validate(array_merge([
-            'situasi_madrasah' => 'required|string',
-            'komunikasi_bahasa' => 'required|string',
-            'komunikasi_lainnya' => 'nullable|string',
+            'situasi_madrasah' => 'required|in:PESANTREN,MADRASAH',
+            'komunikasi_bahasa' => 'required|in:INDONESIA,MADURA,JAWA',
             'mapel_aqidah' => 'required|string',
             'mapel_fiqh' => 'required|string',
             'mapel_ilmu_alat' => 'required|string',
             'mapel_quran' => 'required|string',
             'mapel_akhlaq' => 'required|string',
-            'kbm_bahasa' => 'required|string',
-            'kbm_lainnya' => 'nullable|string',
+            'kbm_bahasa' => 'required|in:INDONESIA,MADURA,JAWA',
             'guru_laki' => 'required|string',
             'guru_perempuan' => 'required|string',
         ], $this->customRules(3)));

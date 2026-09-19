@@ -5,7 +5,7 @@
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
   <div class="d-flex justify-content-between flex-wrap gap-2">
     <div>
-      <div class="arab small" style="color:#d4af37">تفاصيل التقرير — {{ $laporan->periode }}</div>
+ <div class="arab small" style="color:#d4af37">{{ $laporan->periode }}</div>
       <h4 class="fw-bold mb-0" style="color:#fff">{{ $laporan->gt->name ?? '-' }} • {{ $laporan->nama_madrasah }}</h4>
       <div class="small" style="color:#fdf6e3;opacity:.8">PJGT: {{ $laporan->pjgt->name ?? '-' }} ({{ $laporan->pjgt->username ?? '' }}) • {{ $laporan->tahun_ajaran }}</div>
     </div>

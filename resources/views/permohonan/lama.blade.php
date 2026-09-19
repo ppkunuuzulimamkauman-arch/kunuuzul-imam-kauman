@@ -5,25 +5,23 @@
 @if(($via ?? '')==='ijin')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 gap-2" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37;flex-wrap:wrap">
     <div style="min-width:0">
-        <div class="arab small" style="color:#d4af37">موافقة الإذن — Persetujuan Ijin GT</div>
+ <div class="arab small" style="color:#d4af37">Persetujuan Ijin GT</div>
         <h4 class="fw-bold mb-0" style="color:#fff;font-size:clamp(16px,4.5vw,22px)"><i class="bi bi-check2-square" style="color:#d4af37"></i> Persetujuan Ijin GT</h4>
         <div class="small" style="color:#fdf6e3;opacity:0.8">Hanya GT yang ditugaskan di lembaga Anda (biasanya 1 GT) — tanpa filter cari/rapot/status</div>
     </div>
     <div class="text-end d-none d-md-block">
         <div class="badge-pendaftaran" style="background:#fdf6e3;color:#0a3d1f">Khusus GT Lembaga</div>
-        <div class="arab small mt-1" style="color:#d4af37">إذن المعلم</div>
     </div>
 </div>
 @else
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 gap-2" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37;flex-wrap:wrap">
     <div style="min-width:0">
-        <div class="arab small" style="color:#d4af37">سجل الطلبات — Arsip Permohonan</div>
+ <div class="arab small" style="color:#d4af37">Arsip Permohonan</div>
         <h4 class="fw-bold mb-0" style="color:#fff;font-size:clamp(16px,4.5vw,22px)"><i class="bi bi-collection-fill" style="color:#d4af37"></i> Arsip Permohonan</h4>
         <div class="small" style="color:#fdf6e3;opacity:0.8">Daftar permohonan TMTB & DAI yang telah tercatat</div>
     </div>
     <div class="text-end d-none d-md-block">
         <div class="badge-pendaftaran" style="background:#fdf6e3;color:#0a3d1f">Filter Data</div>
-        <div class="arab small mt-1" style="color:#d4af37">تصفية</div>
     </div>
 </div>
 @endif
@@ -108,7 +106,7 @@
                     <td><span class="badge" style="background:{{$p->status=='Diterima'?'#198754':($p->status=='Proses'?'#d4af37':'#dc3545')}};color:#fff;border:1px solid #0a3d1f">{{ $p->status }}</span></td>
                 </tr>
                 @empty
-                    <tr><td colspan="6" class="text-center py-4" style="color:#8a7a3a">Belum ada ijin GT di lembaga Anda — GT belum mengajukan. <span class="arab" style="color:#d4af37">لا يوجد</span></td></tr>
+ <tr><td colspan="6" class="text-center py-4" style="color:#8a7a3a">Belum ada ijin GT di lembaga Anda — GT belum mengajukan. </td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -155,7 +153,7 @@
                 @empty
                     <tr>
                         <td colspan="10" class="text-center py-4" style="color:#8a7a3a">
-                            Tidak ada data untuk filter ini — <span class="arab" style="color:#d4af37">لا يوجد</span><br>
+ Tidak ada data untuk filter ini<br>
                             <a href="{{ route('permohonan.lama') }}" class="btn btn-sm mt-2" style="background:var(--cream2);border:1px solid #d4af37;color:#0a3d1f;border-radius:20px">Reset filter</a>
                             @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
                             <a href="{{ route('permohonan.step1') }}" class="btn btn-sm mt-2" style="background:#0a3d1f;color:#d4af37;border:1px solid #d4af37;border-radius:20px;font-weight:700">Buat Permohonan Baru</a>
@@ -240,5 +238,5 @@
     <div class="p-3" style="background:#fdf6e3;border-top:2px solid #d4af37">{{ $permohonans->links() }}</div>
     @endif
 </div>
-<div class="text-center mt-3 arab small" style="color:#b8941f">العلم نور • Heritage KIK — PP KUNUUZUL IMAM KAUMAN</div>
+<div class="text-center mt-3 arab small" style="color:#b8941f">Heritage KIK — PP KUNUUZUL IMAM KAUMAN</div>
 @endsection

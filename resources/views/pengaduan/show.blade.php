@@ -5,7 +5,7 @@
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#7a0a0a 0%, #a81414 100%);color:#fff;border:2px solid #d4af37">
   <div class="d-flex justify-content-between flex-wrap gap-2">
     <div>
-      <div class="arab small" style="color:#d4af37">تفاصيل الشكوى — Pengaduan</div>
+ <div class="arab small" style="color:#d4af37">Pengaduan</div>
       <h4 class="fw-bold mb-0" style="color:#fff">{{ $pengaduan->judul ?? $pengaduan->kronologi ? substr($pengaduan->kronologi,0,40).'...' : 'Pengaduan GT' }}</h4>
       <div class="small" style="color:#fff;opacity:.85">{{ $pengaduan->nama_madrasah }} • {{ $pengaduan->tempat_tugas ?? '' }}</div>
     </div>
@@ -69,7 +69,7 @@
     </div>
     @endif
   </div>
-  @if(in_array(auth()->user()->role ?? '', ['admin','pjgt']))
+  @if((auth()->user()->role ?? '') === 'admin')
   <form method="POST" action="{{ route('pengaduan.status',$pengaduan) }}" class="p-3" style="background:#fdf6e3;border-top:2px solid #d4af37">
     @csrf
     <div class="row g-2 align-items-end">
@@ -83,7 +83,7 @@
       </div>
       <div class="col-md-6">
         <label class="form-label small fw-bold" style="color:#7a0a0a">Tanggapan</label>
-        <input type="text" name="tanggapan_admin" value="{{ old('tanggapan_admin',$pengaduan->tanggapan_admin) }}" class="form-control form-control-sm" placeholder="Tanggapan admin/pjgt">
+        <input type="text" name="tanggapan_admin" value="{{ old('tanggapan_admin',$pengaduan->tanggapan_admin) }}" class="form-control form-control-sm" placeholder="Tanggapan admin">
       </div>
       <div class="col-md-2">
         <button class="btn btn-sm w-100" style="background:#0a3d1f;color:#d4af37;border:1px solid #d4af37;font-weight:700"><i class="bi bi-check-lg"></i> Update</button>

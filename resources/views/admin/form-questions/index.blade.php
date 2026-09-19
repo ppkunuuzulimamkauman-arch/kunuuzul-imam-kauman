@@ -4,7 +4,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <div>
-    <h4 class="fw-bold mb-1" style="color:var(--green)">Kelola Pertanyaan Form <span class="arab" style="color:var(--gold)">— الأسئلة</span></h4>
+ <h4 class="fw-bold mb-1" style="color:var(--green)">Kelola Pertanyaan Form </h4>
     <p class="small mb-0" style="color:#5d4037">Tambah pertanyaan sendiri per step (1-4). Otomatis muncul di wizard Form Permohonan.</p>
   </div>
   <a href="{{ route('form-questions.create') }}" class="btn-green"><i class="bi bi-plus-circle"></i> Tambah Pertanyaan</a>

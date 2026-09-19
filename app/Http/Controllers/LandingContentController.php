@@ -15,15 +15,17 @@ class LandingContentController extends Controller
         return view('admin.landing.index', compact('contents'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.landing.form', ['content'=>new LandingContent()]);
+        $allowed = ['hero','informasi','pengumuman','panduan','alur','info_umum','info_pjgt','info_gt'];
+        $section = in_array($request->query('section'), $allowed) ? $request->query('section') : null;
+        return view('admin.landing.form', ['content'=>new LandingContent(['section'=>$section])]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'section'=>'required|in:hero,informasi,pengumuman,panduan,alur',
+            'section'=>'required|in:hero,informasi,pengumuman,panduan,alur,info_umum,info_pjgt,info_gt',
             'title'=>'required|string|max:255',
             'subtitle'=>'nullable|string|max:255',
             'category'=>'nullable|string|max:50',
@@ -47,7 +49,7 @@ class LandingContentController extends Controller
     public function update(Request $request, LandingContent $landingContent)
     {
         $data = $request->validate([
-            'section'=>'required|in:hero,informasi,pengumuman,panduan,alur',
+            'section'=>'required|in:hero,informasi,pengumuman,panduan,alur,info_umum,info_pjgt,info_gt',
             'title'=>'required|string|max:255',
             'subtitle'=>'nullable|string|max:255',
             'category'=>'nullable|string|max:50',
