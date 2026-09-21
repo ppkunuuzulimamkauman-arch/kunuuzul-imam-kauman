@@ -45,6 +45,51 @@ class PjgtLaporanController extends Controller
         return view('pjgt.laporan-gt', compact('laporans','isAkhirBulan','canIsi','nextWindow'));
     }
 
+    // Export Laporan GT — Excel (.xls), siap cetak.
+    // Scope: pjgt = buatannya sendiri, gt = yang ditujukan untuknya, admin = semua.
+    public function export(Request $request)
+    {
+        $user = auth()->user();
+        $query = PjgtLaporanGt::with(['pjgt','gt'])->latest();
+        if ($user->role === 'pjgt') $query->where('pjgt_user_id',$user->id);
+        elseif ($user->role === 'gt') $query->where('gt_user_id',$user->id);
+        $data = $query->get();
+
+        $filename = 'Laporan-GT_'.$user->role.'_'.date('Y-m-d_His').'.xls';
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ];
+
+        $callback = function() use ($data) {
+            $score = fn($v) => $v === 'Sangat Baik' ? 3 : ($v === 'Baik' ? 2 : ($v === 'Kurang' ? 1 : 0));
+            echo "\xEF\xBB\xBF";
+            echo "<table border='1'>";
+            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Laporan Kegiatan GT • Total: ".$data->count()."</th></tr>";
+            echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Periode</th><th>GT</th><th>PJGT</th><th>Madrasah</th><th>Tahun Ajaran</th><th>Rata-rata</th><th>Status</th><th>Catatan Umum</th></tr>";
+            foreach ($data as $i => $l) {
+                $vals = collect($l->madrasiyah ?? [])->pluck('nilai')->merge(collect($l->kemasyarakatan ?? [])->pluck('nilai'))->map($score)->filter();
+                $avg = $vals->count() ? round($vals->avg(), 1) : '-';
+                echo "<tr>";
+                echo "<td>".($i + 1)."</td>";
+                echo "<td>".htmlspecialchars($l->periode ?? $l->bulan ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($l->gt->name ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($l->pjgt->name ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($l->nama_madrasah ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($l->tahun_ajaran ?? '-')."</td>";
+                echo "<td>{$avg}</td>";
+                echo "<td>".htmlspecialchars($l->status ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($l->catatan_umum ?? '-')."</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function create()
     {
         $user = auth()->user();

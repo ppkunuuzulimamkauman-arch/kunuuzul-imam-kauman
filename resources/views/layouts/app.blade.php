@@ -203,6 +203,7 @@
         @if((auth()->user()->role ?? '')==='pjgt')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
         <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}"><i class="bi bi-feather"></i> Formulir Pengajuan</a>
+        <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}"><i class="bi bi-collection-fill"></i> Arsip Saya</a>
         <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
         <a href="{{ route('pengaduan.index') }}" class="{{ request()->routeIs('pengaduan*') ? 'active':'' }}"><i class="bi bi-flag-fill"></i> Pengaduan</a>
         <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan</a>
@@ -210,6 +211,8 @@
         @if((auth()->user()->role ?? '')==='admin')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">ADMIN</div>
         <a href="{{ route('landing-contents.index') }}" class="{{ request()->routeIs('landing-contents*') ? 'active':'' }}"><i class="bi bi-pencil-square"></i> Kelola Landing</a>
+        <a href="{{ route('form-questions.index') }}" class="{{ request()->routeIs('form-questions*') ? 'active':'' }}"><i class="bi bi-list-check"></i> Kelola Pertanyaan Form</a>
+        <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}"><i class="bi bi-collection-fill"></i> Arsip Permohonan</a>
         <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active':'' }}"><i class="bi bi-megaphone-fill"></i> Laporan Permohonan</a>
         <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
         <a href="{{ route('absensi.rekap') }}" class="{{ request()->routeIs('absensi.rekap') ? 'active':'' }}"><i class="bi bi-bar-chart-fill"></i> Rekap Absensi</a>
@@ -220,7 +223,7 @@
         <a href="{{ route('layanan.index') }}" class="{{ request()->routeIs('layanan*') ? 'active':'' }}"><i class="bi bi-headset"></i> Layanan — Saran</a>
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(253,246,227,.4);font-size:10px;letter-spacing:1.5px">SEGERA HADIR</div>
         <a href="#" style="opacity:.55"><i class="bi bi-calendar-event"></i> Rapat <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
-        <a href="#" style="opacity:.55"><i class="bi bi-mosque"></i> Supervisi <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
+        <a href="#" style="opacity:.55"><i class="bi bi-eye-fill"></i> Supervisi <span class="badge bg-warning text-dark ms-auto" style="font-size:8px">soon</span></a>
         @elseif((auth()->user()->role ?? '')==='gt')
         <a href="{{ route('gt.biodata') }}" class="{{ request()->routeIs('gt.biodata') ? 'active':'' }}"><i class="bi bi-person-badge-fill"></i> Biodata</a>
         <a href="{{ route('form.ijin') }}" class="{{ request()->routeIs('form.ijin*') ? 'active':'' }}"><i class="bi bi-file-earmark-check-fill"></i> Form Ijin GT</a>
@@ -289,6 +292,7 @@
                     <li><span class="dropdown-item small" style="color:var(--green);white-space:normal;word-break:break-all">{{ auth()->user()->email ?? '' }}<br><span class="text-muted" style="font-size:11px">{{ auth()->user()->username ?? '' }} • {{ strtoupper(auth()->user()->role ?? '') }}</span></span></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item small" href="{{ route('landing') }}" style="color:var(--green)"><i class="bi bi-house"></i> Beranda Landing</a></li>
+                    <li><a class="dropdown-item small" href="{{ route('password.edit') }}" style="color:var(--green)"><i class="bi bi-key"></i> Ganti Password</a></li>
                     <li><form method="POST" action="{{ route('logout') }}">@csrf<button class="dropdown-item small" style="color:#dc3545"><i class="bi bi-box-arrow-right"></i> Keluar</button></form></li>
                 </ul>
             </div>
@@ -314,7 +318,7 @@
 
 <div id="toastWrap" class="toast-wrap"></div>
 <!-- Bottom Nav — Mobile Masterpiece -->
-<nav class="bottom-nav" aria-label="Navigasi bawah" style="@if((auth()->user()->role ?? '')==='pjgt')grid-template-columns:repeat(5,1fr);@else grid-template-columns:repeat(3,1fr);@endif">
+<nav class="bottom-nav" aria-label="Navigasi bawah" style="@if((auth()->user()->role ?? '')==='pjgt')grid-template-columns:repeat(4,1fr);@else grid-template-columns:repeat(3,1fr);@endif">
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('dashboard*') ? 'bi-house-door-fill' : 'bi-house-door' }}"></i>
         <span>Home</span>
@@ -330,12 +334,6 @@
         <i class="bi {{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'bi-collection-fill' : 'bi-collection' }}"></i>
         <span>Arsip</span>
     </a>
-    @if((auth()->user()->role ?? '')==='pjgt')
-    <a href="{{ route('permohonan.rekap') }}" class="{{ request()->routeIs('permohonan.rekap') ? 'active':'' }}">
-        <i class="bi {{ request()->routeIs('permohonan.rekap') ? 'bi-bar-chart-fill' : 'bi-bar-chart' }}"></i>
-        <span>Rekap</span>
-    </a>
-    @endif
     <a href="{{ route('landing') }}">
         <i class="bi bi-globe2"></i>
         <span>Beranda</span>

@@ -36,6 +36,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/index', [DashboardController::class, 'index'])->name('dashboard.index');
 
+    // Ganti password sendiri — semua role (admin/pjgt/gt)
+    Route::get('/ganti-password', [AuthController::class, 'showPassword'])->name('password.edit');
+    Route::put('/ganti-password', [AuthController::class, 'updatePassword'])->name('password.update');
+
     // Wizard Form Permohonan - 4 step sesuai PDF Tutorial-Isi-Permohonan (pjgt & admin)
     Route::prefix('form-permohonan')->name('permohonan.')->middleware('role:admin,pjgt')->group(function () {
         Route::get('/step-1', [PermohonanController::class, 'step1'])->name('step1');
@@ -56,7 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/permohonan/{permohonan}/approve', [PermohonanController::class, 'approve'])->name('permohonan.approve')->middleware('role:admin');
     Route::post('/permohonan/{permohonan}/dokumen', [PermohonanController::class, 'uploadDokumen'])->name('permohonan.dokumen');
     Route::delete('/permohonan/{permohonan}', [PermohonanController::class, 'destroy'])->name('permohonan.destroy')->middleware('role:admin');
-    Route::get('/rekap-permohonan', [PermohonanController::class, 'rekap'])->name('permohonan.rekap');
+    Route::get('/rekap-permohonan', [PermohonanController::class, 'rekap'])->name('permohonan.rekap')->middleware('role:admin,gt');
     Route::get('/export-permohonan', [PermohonanController::class, 'export'])->name('permohonan.export');
     Route::get('/laporan', [PermohonanController::class, 'laporan'])->name('laporan')->middleware('role:admin,pjgt');
 
@@ -87,16 +91,19 @@ Route::middleware('auth')->group(function () {
 
     // Rekap Absensi GT — Admin terima semua (gt tidak boleh)
     Route::get('/absensi-rekap', [GtController::class, 'rekapAbsensi'])->name('absensi.rekap')->middleware('role:admin');
+    Route::get('/absensi-rekap/export', [GtController::class, 'exportRekapAbsensi'])->name('absensi.rekap.export')->middleware('role:admin');
 
-    // Daftar Biodata GT/PJGT — Admin lihat semua terpusat + edit + hapus akun
+    // Daftar Biodata GT/PJGT — Admin lihat semua terpusat + edit + hapus akun + ekspor untuk dicetak
     Route::get('/biodata-rekap', [GtController::class, 'rekapBiodata'])->name('biodata.rekap')->middleware('role:admin');
+    Route::get('/biodata-rekap/export', [GtController::class, 'exportBiodata'])->name('biodata.rekap.export')->middleware('role:admin');
     Route::get('/biodata-rekap/{user}/edit', [GtController::class, 'editBiodata'])->name('biodata.edit')->middleware('role:admin');
     Route::put('/biodata-rekap/{user}', [GtController::class, 'updateBiodataAdmin'])->name('biodata.update')->middleware('role:admin');
     Route::delete('/biodata-rekap/{user}', [GtController::class, 'destroyUser'])->name('biodata.destroy')->middleware('role:admin');
     Route::get('/biodata-rekap/{user}', [GtController::class, 'showBiodata'])->name('biodata.show')->middleware('role:admin');
 
-    // Penempatan GT ke Lembaga — Admin tempatkan/pindahkan/lepas
+    // Penempatan GT ke Lembaga — Admin tempatkan/pindahkan/lepas + ekspor untuk dicetak
     Route::get('/penempatan', [PenempatanController::class, 'index'])->name('penempatan.index')->middleware('role:admin');
+    Route::get('/penempatan/export', [PenempatanController::class, 'export'])->name('penempatan.export')->middleware('role:admin');
     Route::get('/penempatan/tempatkan', [PenempatanController::class, 'create'])->name('penempatan.create')->middleware('role:admin');
     Route::post('/penempatan', [PenempatanController::class, 'store'])->name('penempatan.store')->middleware('role:admin');
     Route::delete('/penempatan/{penempatan}', [PenempatanController::class, 'destroy'])->name('penempatan.destroy')->middleware('role:admin');
@@ -108,8 +115,10 @@ Route::middleware('auth')->group(function () {
     });
 
     // PJGT Laporan Kegiatan GT — checklist (hanya PJGT buat, Admin terima)
+    // Export Excel: pjgt ekspor buatannya sendiri, admin ekspor semua untuk dicetak
     Route::prefix('pjgt/laporan')->name('pjgt.laporan.')->group(function () {
         Route::get('/', [PjgtLaporanController::class, 'index'])->name('index')->middleware('role:pjgt,admin');
+        Route::get('/export', [PjgtLaporanController::class, 'export'])->name('export')->middleware('role:pjgt,admin,gt');
         Route::get('/create', [PjgtLaporanController::class, 'create'])->name('create')->middleware('role:pjgt');
         Route::post('/', [PjgtLaporanController::class, 'store'])->name('store')->middleware('role:pjgt');
         Route::get('/{laporan}', [PjgtLaporanController::class, 'show'])->name('show')->middleware('role:pjgt,admin');
@@ -122,8 +131,10 @@ Route::middleware('auth')->group(function () {
     });
 
     // Pengaduan — PJGT & GT buat, Admin terima (hanya terima hasil)
+    // Export Excel: pjgt/gt ekspor buatannya sendiri, admin ekspor semua untuk dicetak
     Route::middleware('role:pjgt,admin,gt')->group(function () {
         Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
+        Route::get('/pengaduan/export', [PengaduanController::class, 'export'])->name('pengaduan.export');
         Route::get('/pengaduan/create', [PengaduanController::class, 'create'])->name('pengaduan.create')->middleware('role:pjgt,gt');
         Route::post('/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store')->middleware('role:pjgt,gt');
         Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
@@ -131,9 +142,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/pengaduan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy')->middleware('role:admin');
     });
 
-    // Layanan — saran/masukan (PJGT/GT buat, Admin terima)
+    // Layanan — saran/masukan (PJGT/GT buat, Admin terima + ekspor untuk dicetak)
     Route::middleware('role:pjgt,admin,gt')->group(function () {
         Route::get('/layanan', [LayananController::class, 'index'])->name('layanan.index');
+        Route::get('/layanan/export', [LayananController::class, 'export'])->name('layanan.export')->middleware('role:admin');
         Route::post('/layanan', [LayananController::class, 'store'])->name('layanan.store')->middleware('role:pjgt,gt');
         Route::delete('/layanan/{saran}', [LayananController::class, 'destroy'])->name('layanan.destroy')->middleware('role:admin');
     });

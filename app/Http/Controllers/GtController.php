@@ -245,9 +245,10 @@ class GtController extends Controller
 
     // Rekap Admin — matriks bulanan per GT (baris=tanggal, kolom=kegiatan)
     // GT absen lewat HP → otomatis masuk ke matriks ini
-    public function rekapAbsensi(Request $request)
+    // Data builder dipakai bersama halaman + export Excel/Word agar angkanya identik
+    private function buildRekapAbsensiData(?string $bulan, $gtUserId): array
     {
-        $bulan = $request->query('bulan', now()->format('Y-m'));
+        $bulan = $bulan ?: now()->format('Y-m');
         if (! preg_match('/^\d{4}-\d{2}$/', (string) $bulan)) {
             $bulan = now()->format('Y-m');
         }
@@ -258,7 +259,7 @@ class GtController extends Controller
         $shalatCols = ['Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya'];
 
         $gtUsers = \App\Models\User::where('role', 'gt')->orderBy('name')->get();
-        $gtId = (int) $request->query('gt_user_id', optional($gtUsers->first())->id);
+        $gtId = (int) ($gtUserId ?: optional($gtUsers->first())->id);
         $gt = $gtUsers->firstWhere('id', $gtId);
 
         $daysInMonth = \Carbon\Carbon::create($thn, $bln, 1)->daysInMonth;
@@ -307,11 +308,75 @@ class GtController extends Controller
             }
         }
 
-        return view('admin.absensi.index', compact(
+        return compact(
             'bulan', 'gtUsers', 'gtId', 'gt', 'daysInMonth', 'monthLabel',
             'shalatCols', 'byDay', 'totShalat', 'totMengajar',
             'totMunfarid', 'totBerjamaah', 'totImam', 'totMakmum'
-        ));
+        );
+    }
+
+    public function rekapAbsensi(Request $request)
+    {
+        $data = $this->buildRekapAbsensiData($request->query('bulan'), $request->query('gt_user_id'));
+        return view('admin.absensi.index', $data);
+    }
+
+    // Export Rekap Absensi per GT per bulan — Excel (.xls), siap cetak
+    public function exportRekapAbsensi(Request $request)
+    {
+        $data = $this->buildRekapAbsensiData($request->query('bulan'), $request->query('gt_user_id'));
+        extract($data);
+        /** @var \App\Models\User|null $gt */
+
+        $gtSlug = $gt ? preg_replace('/[^A-Za-z0-9]+/', '-', $gt->name) : 'tanpa-GT';
+        $filename = 'Rekap-Absensi-GT_'.$gtSlug.'_'.$bulan.'_'.date('Y-m-d_His').'.xls';
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ];
+
+        $callback = function() use ($data) {
+            extract($data);
+            echo "\xEF\xBB\xBF";
+            echo "<table border='1'>";
+            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Absensi GT</th></tr>";
+            $nama = $gt ? htmlspecialchars($gt->name.' ('.$gt->username.')') : '-';
+            echo "<tr><th colspan='9' style='text-align:center'>GT: {$nama} • Periode: ".htmlspecialchars($monthLabel)." • Mengajar: {$totMengajar} • Shalat: ".array_sum($totShalat)."</th></tr>";
+            echo "<tr style='background:#0a3d1f;color:#d4af37;font-weight:bold'><th>Tanggal</th>";
+            foreach ($shalatCols as $s) { echo "<th>".htmlspecialchars(strtoupper($s))."</th>"; }
+            echo "<th>MUNFARID/BERJAMAAH</th><th>IMAM/MAKMUM</th><th>MENGAJAR</th></tr>";
+            for ($d = 1; $d <= $daysInMonth; $d++) {
+                $row = $byDay[$d] ?? [];
+                $sh = $row['shalat'] ?? [];
+                $m = $b = $im = $mm = 0;
+                foreach ($sh as $rec) {
+                    if ($rec->cara === 'Munfarid') $m++;
+                    if ($rec->cara === 'Berjamaah') $b++;
+                    if ($rec->peran === 'Imam') $im++;
+                    if ($rec->peran === 'Makmum') $mm++;
+                }
+                echo "<tr><td>{$d}</td>";
+                foreach ($shalatCols as $s) {
+                    if (isset($sh[$s])) {
+                        echo "<td>✓ ".htmlspecialchars($sh[$s]->jam ?? '')."</td>";
+                    } else {
+                        echo "<td></td>";
+                    }
+                }
+                echo "<td>".(($m || $b) ? "M:{$m} B:{$b}" : '')."</td>";
+                echo "<td>".(($im || $mm) ? "I:{$im} M:{$mm}" : '')."</td>";
+                echo "<td>".(isset($row['mengajar']) ? "✓ ".htmlspecialchars($row['mengajar']->status ?? '') : '')."</td>";
+                echo "</tr>";
+            }
+            echo "<tr style='font-weight:bold'><td>TOTAL</td>";
+            foreach ($shalatCols as $s) { echo "<td>{$totShalat[$s]}</td>"; }
+            echo "<td>M:{$totMunfarid} B:{$totBerjamaah}</td><td>I:{$totImam} M:{$totMakmum}</td><td>{$totMengajar}</td></tr>";
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     // Daftar Biodata GT/PJGT — Admin lihat semua (terpusat)
@@ -334,6 +399,61 @@ class GtController extends Controller
         $countGt = \App\Models\User::where('role', 'gt')->count();
         $countPjgt = \App\Models\User::where('role', 'pjgt')->count();
         return view('admin.biodata.index', compact('users', 'role', 'search', 'countGt', 'countPjgt'));
+    }
+
+    // Export Data Biodata GT/PJGT — Excel (.xls), khusus admin, siap cetak
+    public function exportBiodata(Request $request)
+    {
+        $role = $request->query('role');
+        $search = $request->query('search');
+        $query = \App\Models\User::with(['biodata', 'penempatan.permohonan'])->whereIn('role', ['gt', 'pjgt'])->orderBy('name');
+        if (in_array($role, ['gt', 'pjgt'])) {
+            $query->where('role', $role);
+        }
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        $data = $query->get();
+
+        $filename = 'Data-Biodata-GT-PJGT_'.date('Y-m-d_His').'.xls';
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ];
+
+        $callback = function() use ($data) {
+            echo "\xEF\xBB\xBF";
+            echo "<table border='1'>";
+            echo "<tr><th colspan='10' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Data Biodata GT/PJGT • Total: ".$data->count()."</th></tr>";
+            echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>Role</th><th>Telepon/HP</th><th>Tempat/Tgl Lahir</th><th>NIK</th><th>Alamat</th><th>Penempatan</th></tr>";
+            foreach ($data as $i => $u) {
+                $b = $u->biodata;
+                $tel = trim(($b->telepon ?? '').'/'.($b->hp ?? ''), '/') ?: '-';
+                $ttl = trim(($b->tempat_lahir ?? '').', '.($b->tanggal_lahir ?? ''), ', ') ?: '-';
+                $lembaga = $u->penempatan && $u->penempatan->permohonan ? $u->penempatan->permohonan->nama_madrasah : '-';
+                echo "<tr>";
+                echo "<td>".($i + 1)."</td>";
+                echo "<td>".htmlspecialchars($u->name ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($u->username ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($u->email ?? '-')."</td>";
+                echo "<td>".htmlspecialchars(strtoupper($u->role ?? '-'))."</td>";
+                echo "<td>".htmlspecialchars($tel)."</td>";
+                echo "<td>".htmlspecialchars($ttl)."</td>";
+                echo "<td>".htmlspecialchars($b->nik ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($b->alamat ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($lembaga)."</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function showBiodata(\App\Models\User $user)
@@ -448,6 +568,7 @@ class GtController extends Controller
                 'kebutuhan_gt' => 'nullable|string|max:100',
                 'kebutuhan_ayah' => 'nullable|string|max:100',
                 'kebutuhan_ibu' => 'nullable|string|max:100',
+                'password' => 'nullable|string|min:6|confirmed',
             ]);
         } else {
             $validated = $request->validate([
@@ -463,11 +584,16 @@ class GtController extends Controller
                 'kelurahan' => 'nullable|string|max:100',
                 'kecamatan' => 'nullable|string|max:100',
                 'kode_pos' => 'nullable|string|max:10',
+                'password' => 'nullable|string|min:6|confirmed',
             ]);
         }
-        $user->update(['name' => $validated['name'], 'email' => $validated['email']]);
+        $userUpdate = ['name' => $validated['name'], 'email' => $validated['email']];
+        if (!empty($validated['password'])) {
+            $userUpdate['password'] = $validated['password'];
+        }
+        $user->update($userUpdate);
         $biodata = GtBiodata::firstOrCreate(['user_id' => $user->id]);
-        $data = collect($validated)->except(['name', 'email', 'foto'])->toArray();
+        $data = collect($validated)->except(['name', 'email', 'foto', 'password', 'password_confirmation'])->toArray();
         if ($request->hasFile('foto')) {
             $data['foto_path'] = $request->file('foto')->store('foto-gt', 'public');
         }

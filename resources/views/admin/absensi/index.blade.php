@@ -7,7 +7,10 @@
  <h4 class="fw-bold mb-1" style="color:var(--green)">Rekap Absensi GT </h4>
     <p class="small mb-0" style="color:#5d4037">Matriks bulanan per GT — GT absen lewat HP, otomatis masuk ke sini.</p>
   </div>
-  <button onclick="window.print()" class="btn btn-sm d-none d-md-inline" style="background:#fff;color:var(--green);border:1.5px solid var(--gold);border-radius:50px"><i class="bi bi-printer"></i> Cetak</button>
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="{{ route('absensi.rekap.export', ['bulan'=>$bulan,'gt_user_id'=>$gtId]) }}" class="btn btn-sm" style="background:var(--green);color:var(--gold);border:1.5px solid var(--gold);border-radius:50px;font-weight:700"><i class="bi bi-file-excel"></i> Export Excel</a>
+    <button onclick="window.print()" class="btn btn-sm d-none d-md-inline" style="background:#fff;color:var(--green);border:1.5px solid var(--gold);border-radius:50px"><i class="bi bi-printer"></i> Cetak</button>
+  </div>
 </div>
 
 <div class="card-form mb-3">

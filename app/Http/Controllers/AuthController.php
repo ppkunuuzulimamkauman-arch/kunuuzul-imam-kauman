@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -72,5 +71,25 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('landing')->with('success', 'Berhasil logout');
+    }
+
+    public function showPassword()
+    {
+        return view('auth.password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => 'required|string|current_password',
+            'password' => ['required', 'confirmed', Password::min(6), 'different:current_password'],
+        ], [
+            'current_password.current_password' => 'Password saat ini salah.',
+            'password.different' => 'Password baru harus berbeda dari password saat ini.',
+        ]);
+
+        $request->user()->update(['password' => $validated['password']]);
+
+        return back()->with('success', 'Password berhasil diganti. Gunakan password baru saat login berikutnya.');
     }
 }

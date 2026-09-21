@@ -59,7 +59,7 @@
 
   <div class="col-lg-7">
     <div class="card-form" style="border:2px solid #d4af37">
-      <div class="card-form-header d-flex justify-content-between"><span><i class="bi bi-chat-dots-fill" style="color:var(--gold)"></i> Arsip Saran ({{ $sarans->total() }})</span><span class="small" style="color:#8a7a3a">{{ $sarans->currentPage() }}/{{ $sarans->lastPage() }}</span></div>
+      <div class="card-form-header d-flex justify-content-between align-items-center flex-wrap gap-2"><span><i class="bi bi-chat-dots-fill" style="color:var(--gold)"></i> Arsip Saran ({{ $sarans->total() }})</span><span class="d-flex gap-1 align-items-center"><span class="small" style="color:#8a7a3a">{{ $sarans->currentPage() }}/{{ $sarans->lastPage() }}</span>@if((auth()->user()->role ?? '')==='admin')<a href="{{ route('layanan.export') }}" class="btn btn-sm" style="background:var(--green);color:var(--gold);border-radius:20px;font-size:11px;font-weight:700"><i class="bi bi-file-excel"></i> Export Excel</a>@endif</span></div>
       <div class="p-2">
         @forelse($sarans as $s)
         <div class="p-3 mb-2 rounded-3" style="background:#fff;border:1.5px solid #e8d9a0;border-left:4px solid var(--gold)">

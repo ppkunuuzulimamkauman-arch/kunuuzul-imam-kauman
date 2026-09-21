@@ -17,17 +17,8 @@ class PengaduanController extends Controller
             // GT melihat pengaduan yang dia buat sendiri (diisi GT apa yang dialami untuk admin)
             $query->where('pjgt_user_id', $user->id);
         } elseif ($user->role === 'pjgt') {
-            // PJGT melihat pengaduan GT di lembaganya
-            $myMadrasah = Permohonan::where('username',$user->username)
-                ->where(function($q){ $q->whereNull('extra_answers')->orWhere('extra_answers','not like','%form-ijin-gt%'); })
-                ->latest()->value('nama_madrasah');
-            if ($myMadrasah) {
-                $query->where(function($q) use ($myMadrasah){
-                    $q->where('nama_madrasah',$myMadrasah)->orWhere('tempat_tugas',$myMadrasah);
-                });
-            } else {
-                $query->whereRaw('1=0');
-            }
+            // PJGT hanya melihat pengaduan buatannya sendiri (bukan dari GT)
+            $query->where('pjgt_user_id', $user->id);
         }
         // admin lihat semua — rekap status sesuai scope role (reorder: hilangkan ORDER BY latest agar lolos ONLY_FULL_GROUP_BY)
         $byStatus = (clone $query)->reorder()->selectRaw('status, count(*) as c')->groupBy('status')->pluck('c','status');
@@ -56,6 +47,70 @@ class PengaduanController extends Controller
         }
         $pengaduans = $query->paginate(15)->withQueryString();
         return view('pengaduan.index', compact('pengaduans','byStatus','total','status','search','sumber'));
+    }
+
+    // Export Pengaduan — Excel (.xls), siap cetak.
+    // Scope: pjgt/gt = buatannya sendiri, admin = semua. Filter status/sumber/cari dihormati.
+    public function export(Request $request)
+    {
+        $user = auth()->user();
+        $query = Pengaduan::with(['pjgt','gt'])->latest();
+        if (in_array($user->role, ['pjgt', 'gt'])) {
+            $query->where('pjgt_user_id', $user->id);
+        }
+        $status = $request->query('status');
+        $search = $request->query('search');
+        $sumber = $request->query('sumber');
+        if ($status && in_array($status, Pengaduan::STATUS)) {
+            $query->where('status', $status);
+        }
+        if ($sumber === 'gt') {
+            $query->whereColumn('pjgt_user_id', 'gt_user_id');
+        } elseif ($sumber === 'pjgt') {
+            $query->where(function ($q) {
+                $q->whereNull('gt_user_id')->orWhereColumn('pjgt_user_id', '!=', 'gt_user_id');
+            });
+        }
+        if ($search) {
+            $query->where(function($q) use ($search){
+                $q->where('judul','like',"%{$search}%")
+                    ->orWhere('nama_madrasah','like',"%{$search}%")
+                    ->orWhere('nama_terlapor','like',"%{$search}%")
+                    ->orWhere('kategori','like',"%{$search}%");
+            });
+        }
+        $data = $query->get();
+
+        $filename = 'Pengaduan-GT_'.$user->role.'_'.date('Y-m-d_His').'.xls';
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ];
+
+        $callback = function() use ($data) {
+            echo "\xEF\xBB\xBF";
+            echo "<table border='1'>";
+            echo "<tr><th colspan='9' style='background:#7a0a0a;color:#fff;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Pengaduan GT • Total: ".$data->count()."</th></tr>";
+            echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Judul</th><th>Pelapor</th><th>Terlapor</th><th>Madrasah</th><th>Jenis</th><th>Tgl Kejadian</th><th>Status</th><th>Tanggapan Admin</th></tr>";
+            foreach ($data as $i => $p) {
+                echo "<tr>";
+                echo "<td>".($i + 1)."</td>";
+                echo "<td>".htmlspecialchars($p->judul ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->nama_pelapor ?? $p->pjgt->name ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->nama_terlapor ?? $p->gt->name ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->nama_madrasah ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->jenis_pelanggaran ?? $p->kategori ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->tanggal_kejadian ? $p->tanggal_kejadian->format('d-m-Y') : '-')."</td>";
+                echo "<td>".htmlspecialchars($p->status ?? '-')."</td>";
+                echo "<td>".htmlspecialchars($p->tanggapan_admin ?? '-')."</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function create()
@@ -167,14 +222,8 @@ class PengaduanController extends Controller
     public function show(Pengaduan $pengaduan)
     {
         $user = auth()->user();
-        if ($user->role === 'pjgt') {
-            // PJGT lihat pengaduan GT di lembaganya — cek madrasah
-            $myMadrasah = Permohonan::where('username',$user->username)->latest()->value('nama_madrasah');
-            if ($myMadrasah && $pengaduan->nama_madrasah !== $myMadrasah && $pengaduan->tempat_tugas !== $myMadrasah) {
-                // tetap boleh lihat jika admin, tapi batasi pjgt beda lembaga? skip abort untuk sekarang
-            }
-        }
-        if ($user->role === 'gt' && $pengaduan->pjgt_user_id !== $user->id) abort(403);
+        // PJGT & GT hanya boleh lihat pengaduan buatannya sendiri
+        if (in_array($user->role, ['pjgt', 'gt']) && $pengaduan->pjgt_user_id !== $user->id) abort(403);
         $pengaduan->load(['pjgt','gt']);
         return view('pengaduan.show', compact('pengaduan'));
     }

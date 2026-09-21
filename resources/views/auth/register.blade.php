@@ -9,10 +9,19 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+:root{ --green:#0a3d1f; --gold:#d4af37; --gold2:#b8941f; --cream:#fdf6e3; }
 *{ -webkit-tap-highlight-color:transparent }
-body{font-family:'Plus Jakarta Sans',sans-serif;background:radial-gradient(1000px 500px at 80% -10%, #1a7a45 0%, transparent 60%), linear-gradient(135deg,#0a3d1f 0%,#0b5d2e 55%,#198754 100%);min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom));position:relative;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/svg%3E");background-size:120px;pointer-events:none}
-.card-reg{max-width:560px;width:100%;border:2px solid #d4af37;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,0.28);overflow:hidden;background:#fff;animation:pop .45s cubic-bezier(.34,1.56,.64,1)}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom));position:relative;overflow-x:hidden}
+/* ===== BACKGROUND FOTO — sama seperti halaman login ===== */
+.bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(135deg,#0a3d1f,#14532d)}
+.bg-wrap img.bg-photo{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;object-position:center 38%;animation:kenburns 32s ease-in-out infinite alternate;will-change:transform;filter:saturate(1.08) contrast(1.06) brightness(1.04)}
+@keyframes kenburns{ from{transform:scale(1)} to{transform:scale(1.08) translate(-1%,1%)} }
+.bg-overlay{position:absolute;inset:0;background:
+  radial-gradient(900px 520px at 50% 38%, rgba(10,61,31,.06), rgba(10,61,31,.18) 72%),
+  linear-gradient(180deg, rgba(10,61,31,.04) 0%, rgba(10,61,31,.02) 45%, rgba(6,22,13,.14) 100%)}
+.bg-vignette{position:absolute;inset:0;box-shadow:inset 0 0 130px rgba(0,0,0,.24);pointer-events:none}
+#stars{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.35}
+.card-reg{position:relative;z-index:5;max-width:560px;width:100%;border:2px solid #d4af37;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,0.28);overflow:hidden;background:#fff;animation:pop .45s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pop{from{opacity:0;transform:translateY(14px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)}}
 .header-reg{background:linear-gradient(135deg,#fdf6e3 0%, #fff 60%, #fdf0c7 100%);padding:24px;text-align:center;border-bottom:2px solid #d4af37;position:relative}
 .header-reg::after{content:'◆';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:#fff;color:#d4af37;padding:0 8px;font-size:12px}
@@ -43,6 +52,15 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </style>
 </head>
 <body>
+
+<!-- BACKGROUND: sama seperti halaman login (public/images/login-bg.jpg) -->
+<div class="bg-wrap">
+  <img class="bg-photo" src="{{ asset('images/login-bg.jpg') }}" alt="" onerror="this.style.display='none'">
+  <div class="bg-overlay"></div>
+  <div class="bg-vignette"></div>
+</div>
+<canvas id="stars"></canvas>
+
 <div class="card-reg">
   <div class="header-reg">
     <div class="logo-madin" onclick="this.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:500,easing:'cubic-bezier(.34,1.56,.64,1)'}); if(navigator.vibrate) try{navigator.vibrate(15)}catch(e){}" title="MADRASAH DINIYAH TAKMILIYAH TASHWIRUL AFKAR AL-HASANI"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin"></div>
@@ -97,7 +115,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="col-12">
   <label for="agree" class="d-flex align-items-start gap-2 p-3 rounded-3 small" style="background:linear-gradient(135deg,#fffdf4,#fdf6e3);border:1.5px solid var(--gold);cursor:pointer;margin:0">
     <input class="form-check-input flex-shrink-0 mt-0" type="checkbox" required id="agree" style="accent-color:#0a3d1f;width:20px;height:20px;cursor:pointer">
-    <span style="color:#0a3d1f;line-height:1.5"><i class="bi bi-shield-check-fill" style="color:#b8941f"></i> Saya menyetujui data akan <strong>diverifikasi TMTB & DAI KIK</strong></span>
+    <span style="color:#0a3d1f;line-height:1.5"><i class="bi bi-shield-check" style="color:#b8941f"></i> Saya menyetujui data akan <strong>diverifikasi TMTB & DAI KIK</strong></span>
   </label>
         </div>
       </div>
@@ -114,6 +132,31 @@ function selectRole(v){
   document.querySelector(`input[value="${v}"]`).closest('.role-card').classList.add('active');
   if(navigator.vibrate) try{navigator.vibrate(8)}catch(e){}
 }
+// partikel lembut — sama seperti halaman login
+(function(){
+  const cv=document.getElementById('stars');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  let W,H; const pts=[]; let mx=-9999,my=-9999;
+  function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; }
+  resize(); addEventListener('resize',resize);
+  const N = innerWidth<700 ? 25 : 45;
+  for(let i=0;i<N;i++) pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.8+.5,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,o:Math.random()*.5+.15});
+  addEventListener('pointermove', function(e){mx=e.clientX;my=e.clientY;},{passive:true});
+  (function loop(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(function(p){
+      p.x+=p.vx; p.y+=p.vy;
+      const dx=p.x-mx, dy=p.y-my, d=Math.hypot(dx,dy);
+      if(d<110 && d>0){ p.x+=dx/d*.8; p.y+=dy/d*.8; }
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7);
+      ctx.fillStyle='rgba(240,214,120,'+p.o+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

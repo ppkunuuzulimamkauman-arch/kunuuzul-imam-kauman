@@ -76,6 +76,9 @@
         <button class="btn-green flex-fill" style="min-height:44px"><i class="bi bi-search"></i> Filter</button>
         <a href="{{ route('pengaduan.index') }}" class="btn btn-sm" style="background:#fff;border:1.5px solid var(--gold);color:var(--green);border-radius:10px;min-height:44px;display:flex;align-items:center">Reset</a>
       </div>
+      <div class="col-12 d-flex gap-2 flex-wrap">
+        <a href="{{ route('pengaduan.export', request()->query()) }}" class="btn btn-sm" style="background:#7a0a0a;color:#fff;border-radius:10px;font-weight:700"><i class="bi bi-file-excel"></i> Export Excel</a>
+      </div>
     </div>
   </form>
 </div>

@@ -70,13 +70,9 @@ class DashboardController extends Controller
             $pengaduanGtCount = Pengaduan::where('pjgt_user_id',$user->id)->count();
         }
         if ($isPjgt) {
-            $myMadrasah = Permohonan::where('username',$user->username)
-                ->where(function($q){ $q->whereNull('extra_answers')->orWhere('extra_answers','not like','%form-ijin-gt%'); })
-                ->latest()->value('nama_madrasah');
-            if ($myMadrasah) {
-                $pengaduanPjgt = Pengaduan::with(['gt'])->where(function($q) use ($myMadrasah){ $q->where('nama_madrasah',$myMadrasah)->orWhere('tempat_tugas',$myMadrasah); })->latest()->take(3)->get();
-                $pengaduanPjgtCount = Pengaduan::where(function($q) use ($myMadrasah){ $q->where('nama_madrasah',$myMadrasah)->orWhere('tempat_tugas',$myMadrasah); })->count();
-            }
+            // PJGT hanya lihat pengaduan buatannya sendiri (bukan dari GT)
+            $pengaduanPjgt = Pengaduan::with(['gt'])->where('pjgt_user_id',$user->id)->latest()->take(3)->get();
+            $pengaduanPjgtCount = Pengaduan::where('pjgt_user_id',$user->id)->count();
         }
 
         return view('dashboard.index', compact(

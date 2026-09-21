@@ -355,7 +355,9 @@ class PermohonanController extends Controller
         }
         $validated = $request->validate(array_merge([
             'pjgt_nama' => 'required|string|min:3|max:100',
+            'nama_madrasah' => 'nullable|string|max:255',
             'telepon' => 'required|string|min:9|max:20',
+            'butuh_gt' => 'nullable|integer|min:1|max:10',
             'tanggal_ijin' => 'required|date',
             'tanggal_sampai' => 'required|date|after_or_equal:tanggal_ijin',
             'keterangan' => 'nullable|string|max:1000',
@@ -437,6 +439,15 @@ class PermohonanController extends Controller
 
     public function show(Permohonan $permohonan)
     {
+        $user = auth()->user();
+        if ($user->role !== 'admin') {
+            $isOwner = $permohonan->username === $user->username;
+            // GT boleh lihat tugas penempatan (status Diterima) walau bukan miliknya
+            $isTugasGt = $user->role === 'gt' && $permohonan->status === 'Diterima';
+            if (!$isOwner && !$isTugasGt) {
+                abort(403);
+            }
+        }
         return view('permohonan.show', compact('permohonan'));
     }
 
@@ -498,11 +509,18 @@ class PermohonanController extends Controller
 
     public function rekap()
     {
-        $total = Permohonan::count();
-        $byStatus = Permohonan::selectRaw('status, count(*) as total')->groupBy('status')->pluck('total','status');
-        $byRapot = Permohonan::selectRaw('rapot, count(*) as total')->groupBy('rapot')->pluck('total','rapot');
-        $byWil = Permohonan::selectRaw('wil, count(*) as total')->groupBy('wil')->pluck('total','wil');
-        $recent = Permohonan::latest()->take(5)->get();
+        // Scope sama dengan export/arsip: pjgt milik sendiri, gt hanya Diterima, admin semua
+        $base = Permohonan::query();
+        if (auth()->user()->role === 'pjgt') {
+            $base->where('username', auth()->user()->username);
+        } elseif (auth()->user()->role === 'gt') {
+            $base->where('status', 'Diterima');
+        }
+        $total = (clone $base)->count();
+        $byStatus = (clone $base)->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total','status');
+        $byRapot = (clone $base)->selectRaw('rapot, count(*) as total')->groupBy('rapot')->pluck('total','rapot');
+        $byWil = (clone $base)->selectRaw('wil, count(*) as total')->groupBy('wil')->pluck('total','wil');
+        $recent = (clone $base)->latest()->take(5)->get();
         return view('permohonan.rekap', compact('total','byStatus','byRapot','byWil','recent'));
     }
 
@@ -551,6 +569,8 @@ class PermohonanController extends Controller
         $search = $request->query('search');
         $rapot = $request->query('rapot');
         $status = $request->query('status');
+        $tahun = $request->query('tahun');
+        $wil = $request->query('wil');
         $query = Permohonan::query()->latest();
         // Role filter samakan dengan halaman Arsip: pjgt milik sendiri, gt hanya Diterima
         if (auth()->user()->role === 'pjgt') {
@@ -571,9 +591,15 @@ class PermohonanController extends Controller
         if ($status && in_array($status, ['Diterima','Ditolak','Proses'])) {
             $query->where('status', $status);
         }
+        if ($tahun) {
+            $query->where('tahun', $tahun);
+        }
+        if ($wil) {
+            $query->where('wil', $wil);
+        }
         $data = $query->get();
 
-        $filterSuffix = ($search?'_search-'.$search:'').($rapot?'_rapot-'.$rapot:'').($status?'_status-'.$status:'');
+        $filterSuffix = ($search?'_search-'.$search:'').($rapot?'_rapot-'.$rapot:'').($status?'_status-'.$status:'').($tahun?'_tahun-'.$tahun:'').($wil?'_wil-'.$wil:'');
         $filename = 'Rekap_TMTB-DAI-KIK_PP-KUNUUZUL'.$filterSuffix.'_'.date('Y-m-d_His').'.xls';
         $headers = [
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
@@ -584,11 +610,11 @@ class PermohonanController extends Controller
 
         $columns = ['ID PJGT','Nama PJGT','Madrasah','Pesantren','Alamat','Desa','Kec','Kab','Prov','Wil','Tahun','Status','Butuh GT','Rapot','Sifir L/P','Ibtidaiyah 1 L/P','Ibtidaiyah 6 L/P','Tsanawiyah 3 L/P','Mukim L/P','Tidak Mukim L/P',' Telepon','Email','Guru L/P'];
 
-        $callback = function() use ($data, $columns, $search, $rapot, $status) {
+        $callback = function() use ($data, $columns, $search, $rapot, $status, $tahun, $wil) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
             echo "<tr><th colspan='23' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Permohonan Guru Tugas 1448/1449 H • heritage</th></tr>";
-            $filterText = "Filter: ".($search?"search=$search ":"").($rapot?"rapot=$rapot ":"").($status?"status=$status ":"").($search||$rapot||$status?"• ":"Tidak ada filter • ");
+            $filterText = "Filter: ".($search?"search=$search ":"").($rapot?"rapot=$rapot ":"").($status?"status=$status ":"").($tahun?"tahun=$tahun ":"").($wil?"wil=$wil ":"").($search||$rapot||$status||$tahun||$wil?"• ":"Tidak ada filter • ");
             echo "<tr><th colspan='23' style='background:#fdf6e3;color:#0a3d1f;text-align:center'>Jln KH Zainul Arifin No.165 Kauman Bondowoso 68213 • ".$filterText."Export: ".date('d-m-Y H:i')." • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#fdf0c7;color:#0a3d1f;font-weight:bold'>";
             foreach($columns as $c){ echo "<th style='background:#d4af37;color:#0a3d1f;border:1px solid #0a3d1f;padding:6px'>".htmlspecialchars($c)."</th>"; }

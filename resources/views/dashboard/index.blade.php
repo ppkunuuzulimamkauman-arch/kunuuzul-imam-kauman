@@ -178,36 +178,6 @@
 </div>
 @endif
 
-{{-- Pengaduan PJGT — GT melanggar di lembaga (khusus PJGT, dipisah dari GT) --}}
-@if($isPjgt ?? false)
-<div class="card mb-3" style="border:2px solid #b8941f;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(184,148,31,.10)">
-  <div class="p-3 d-flex align-items-center justify-content-between" style="background:linear-gradient(135deg,#b8941f 0%, #d4af37 100%);color:#0a3d1f">
-    <div class="d-flex align-items-center gap-2">
-      <div style="width:38px;height:38px;border-radius:10px;background:#0a3d1f;color:#d4af37;display:flex;align-items:center;justify-content:center"><i class="bi bi-shield-exclamation"></i></div>
-      <div>
-        <div class="fw-bold" style="font-size:14px">Pengaduan GT di Lembaga</div>
-        <div class="small" style="color:#0a3d1f;opacity:.8">Khusus PJGT — laporkan jika GT melanggar • {{ $pengaduanPjgtCount }} pengaduan</div>
-      </div>
-    </div>
-    <a href="{{ route('pengaduan.index') }}" class="btn btn-sm" style="background:#0a3d1f;color:#d4af37;border-radius:20px;font-weight:700;font-size:11px">Kelola <i class="bi bi-arrow-right"></i></a>
-  </div>
-  <div class="p-3">
-    @forelse($pengaduanPjgt as $ad)
-    <div class="d-flex gap-3 p-2 rounded-3 mb-2" style="background:#fffdf0;border:1px solid #e8d9a0">
-      <div style="width:36px;height:36px;background:#b8941f;color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="bi bi-flag-fill"></i></div>
-      <div style="min-width:0;flex:1">
-        <div class="small fw-bold" style="color:#0a3d1f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ $ad->judul ?? $ad->kategori }} • {{ $ad->jenis_pelanggaran ?? '' }}</div>
-        <div class="small" style="color:#5d4037;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ $ad->gt->name ?? $ad->nama_terlapor ?? '' }} • {{ $ad->nama_madrasah ?? '' }}</div>
-        <div class="small"><span class="badge" style="background:{{$ad->status==='Menunggu'?'#d4af37':($ad->status==='Selesai'?'#198754':'#dc3545')}};color:#fff">{{ $ad->status }}</span></div>
-      </div>
-      <a href="{{ route('pengaduan.show',$ad) }}" class="btn btn-sm align-self-center" style="background:var(--cream);border:1px solid var(--gold);color:var(--green);border-radius:20px;font-size:11px">Detail</a>
-    </div>
-    @empty
-    <div class="text-center small py-3" style="color:#8a7a3a"><i class="bi bi-shield-check" style="font-size:20px;color:#d4af37"></i><br>Belum ada pengaduan GT di lembaga Anda.</div>
-    @endforelse
-  </div>
-</div>
-@endif
 @else
 {{-- Header --}}
 <div class="d-flex justify-content-between align-items-center mb-3 gap-2 p-3 rounded-3" style="background:linear-gradient(135deg,#fff 0%, var(--cream) 100%);border:2px solid var(--gold);box-shadow:0 4px 16px rgba(10,61,31,.06);position:relative;overflow:hidden">
@@ -367,7 +337,8 @@
           <a href="{{ route('permohonan.lama',['status'=>'Proses']) }}" class="btn-green" style="justify-content:center"><i class="bi bi-check2-square"></i> Proses Persetujuan ({{ $allProses }})</a>
           <a href="{{ route('permohonan.rekap') }}" class="btn-yellow" style="justify-content:center"><i class="bi bi-bar-chart-fill"></i> Lihat Rekap</a>
           <a href="{{ route('permohonan.export') }}" class="btn btn-sm" style="background:var(--cream);border:1.5px solid var(--gold);color:var(--green);border-radius:50px;font-weight:700"><i class="bi bi-download"></i> Export Excel</a>
-          <a href="{{ route('landing') }}" target="_blank" class="btn btn-sm" style="background:#fff;border:1.5px solid #e8d9a0;color:var(--brown);border-radius:50px"><i class="bi bi-pencil-square"></i> Kelola Landing Page</a>
+          <a href="{{ route('landing-contents.index') }}" class="btn btn-sm" style="background:#fff;border:1.5px solid #e8d9a0;color:var(--brown);border-radius:50px"><i class="bi bi-pencil-square"></i> Kelola Landing Page</a>
+          <a href="{{ route('landing') }}" target="_blank" class="btn btn-sm" style="background:#fff;border:1.5px solid #e8d9a0;color:var(--brown);border-radius:50px"><i class="bi bi-eye"></i> Lihat Landing</a>
         </div>
         <hr style="border-color:var(--gold);opacity:.3">
         <div class="small" style="color:#5d4037;line-height:1.6">

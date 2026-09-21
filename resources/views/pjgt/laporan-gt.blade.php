@@ -10,6 +10,7 @@
       <div class="small" style="color:#fdf6e3;opacity:.8">PJGT mengisi checklist GT di lembaga (biasanya 1 GT) • Bisa diisi kapan saja — apa aja</div>
     </div>
     <div class="d-flex gap-2">
+      <a href="{{ route('pjgt.laporan.export') }}" class="btn btn-sm" style="background:#fff;color:#0a3d1f;border:2px solid #d4af37;border-radius:50px;font-weight:800"><i class="bi bi-file-excel"></i> Export Excel</a>
       @if((auth()->user()->role ?? '')==='pjgt')
         <a href="{{ route('pjgt.laporan.create') }}" class="btn btn-sm" style="background:#d4af37;color:#0a3d1f;border:2px solid #0a3d1f;border-radius:50px;font-weight:800"><i class="bi bi-plus-lg"></i> Isi Laporan</a>
       @else

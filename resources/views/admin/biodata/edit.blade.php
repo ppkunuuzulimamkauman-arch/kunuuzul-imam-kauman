@@ -26,6 +26,15 @@
         @endif
       </div>
       @endforeach
+      <div class="col-12"><hr style="border-color:var(--gold)"><h6 class="fw-bold" style="color:var(--green)"><i class="bi bi-key-fill" style="color:var(--gold)"></i> Reset Password (Admin)</h6><div class="small text-muted mb-2">Kosongkan jika tidak ingin mengganti password {{ $user->username }}.</div></div>
+      <div class="col-12 col-md-6">
+        <label class="form-label">Password Baru (min 6)</label>
+        <input type="password" name="password" class="form-control" placeholder="Kosongkan = tidak ganti" autocomplete="new-password">
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="form-label">Konfirmasi Password Baru</label>
+        <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password baru" autocomplete="new-password">
+      </div>
     </div>
     <div class="d-flex gap-2 mt-4">
       <button class="btn-green flex-fill" style="justify-content:center"><i class="bi bi-check-circle"></i> Simpan Perubahan</button>

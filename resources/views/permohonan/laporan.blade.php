@@ -12,7 +12,7 @@
       <div class="small" style="opacity:.8">PP KUNUUZUL IMAM KAUMAN • 1448/1449 H • {{ $total }} data sesuai filter</div>
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <a href="{{ route('permohonan.export', request()->query()) }}" class="btn btn-sm" style="background:#d4af37;color:#0a3d1f;border-radius:50px;font-weight:800"><i class="bi bi-download"></i> Export</a>
+      <a href="{{ route('permohonan.export', request()->query()) }}" class="btn btn-sm" style="background:#d4af37;color:#0a3d1f;border-radius:50px;font-weight:800"><i class="bi bi-file-excel"></i> Export Excel</a>
       <button onclick="window.print()" class="btn btn-sm d-none d-md-inline" style="background:#fff;color:#0a3d1f;border-radius:50px"><i class="bi bi-printer"></i> Cetak</button>
     </div>
   </div>
