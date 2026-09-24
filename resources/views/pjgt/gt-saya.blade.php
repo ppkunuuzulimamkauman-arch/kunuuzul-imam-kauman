@@ -18,39 +18,36 @@
     </div>
 </div>
 @else
+<div class="d-flex flex-column gap-2">
 @foreach($items as $p)
 @php
   $gt = $p->gt;
   $b = $gt->biodata ?? null;
   $foto = ($b->foto_path ?? null) ? asset('storage/' . $b->foto_path) : 'https://ui-avatars.com/api/?name=' . urlencode($gt->name ?? 'GT') . '&background=d4af37&color=0a3d1f&size=160';
+  $cid = 'bio-' . $p->id;
 @endphp
-<div class="card overflow-hidden mb-3" style="border:2px solid var(--gold);border-radius:16px">
-    <div style="height:70px;background:linear-gradient(135deg,#0a3d1f,#0f5a2e)"></div>
-    <div class="px-3 pb-3" style="margin-top:-30px">
-        <div class="d-flex gap-3 align-items-center flex-wrap">
-            <img src="{{ $foto }}" alt="" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #fff;outline:2px solid var(--gold)">
-            <div class="flex-fill" style="min-width:200px">
-                <div class="fw-bold" style="color:var(--green);font-size:17px">{{ $gt->name ?? '-' }}</div>
-                <div class="small" style="color:#8a7a3a">{{ $gt->username ?? '' }} • {{ $p->permohonan->nama_madrasah ?? '-' }}</div>
-            </div>
-            <span class="badge" style="background:#eef7f0;color:#1d7a3d;border:1px solid #bfe0c9;border-radius:20px;font-size:10px">Ditempatkan {{ $p->updated_at?->format('d/m/Y') }}</span>
+<div class="rounded-3 overflow-hidden" style="border:2px solid var(--gold);background:#fff">
+    <div class="d-flex align-items-center gap-3 p-3">
+        <img src="{{ $foto }}" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0">
+        <div class="flex-fill" style="min-width:0">
+            <div class="fw-bold text-truncate" style="color:#0a3d1f">{{ $gt->name ?? '-' }}</div>
+            <div class="small text-muted text-truncate">{{ $p->permohonan->nama_madrasah ?? '-' }} • {{ $p->updated_at?->format('d/m/Y') }}</div>
         </div>
+        <button class="btn btn-sm fw-bold flex-shrink-0" data-bs-toggle="collapse" data-bs-target="#{{ $cid }}" aria-expanded="false" aria-controls="{{ $cid }}" style="background:var(--green);color:var(--gold);border-radius:20px;padding:6px 14px"><i class="bi bi-eye-fill"></i> Lihat</button>
     </div>
-    <div class="px-3 pb-3">
-        <div class="card-form h-100 mt-0">
-            <div class="card-form-header">Biodata</div>
-            <div class="p-3 small" style="color:#5d4037;line-height:2">
-                <div class="d-flex justify-content-between"><span>Tempat / Tgl Lahir</span><strong style="color:var(--green)">{{ $b->tempat_lahir ?? '-' }} / {{ $b?->tanggal_lahir ? $b->tanggal_lahir->locale('id')->isoFormat('D MMM YYYY') : '-' }}</strong></div>
-                <div class="d-flex justify-content-between"><span>NIK / NISN</span><strong style="color:var(--green)">{{ $b->nik ?? '-' }} / {{ $b->nisn ?? '-' }}</strong></div>
-                <div class="d-flex justify-content-between"><span>Jenis Kelamin / Agama</span><strong style="color:var(--green)">{{ $b->jenis_kelamin ?? '-' }} / {{ $b->agama ?? '-' }}</strong></div>
-                <div class="d-flex justify-content-between"><span>Telepon / HP</span><strong style="color:var(--green)">{{ $b->telepon ?? '-' }} / {{ $b->hp ?? '-' }}</strong></div>
-                <div><span>Alamat</span><br><strong style="color:var(--green)">{{ $b->alamat ?? '-' }}</strong></div>
-                @if($p->catatan)<div class="mt-2 p-2 rounded-3" style="background:#fdf6e3;border:1px solid #e8d9a0"><span>Catatan Admin:</span><br><strong style="color:var(--green)">{{ $p->catatan }}</strong></div>@endif
-            </div>
+    <div class="collapse" id="{{ $cid }}">
+        <div class="mx-3 mb-3 p-3 rounded-3 small" style="background:#fdf6e3;border:1px solid #e8d9a0;color:#5d4037;line-height:2">
+            <div class="d-flex justify-content-between"><span>Tempat / Tgl Lahir</span><strong style="color:var(--green)">{{ $b->tempat_lahir ?? '-' }} / {{ $b?->tanggal_lahir ? $b->tanggal_lahir->locale('id')->isoFormat('D MMM YYYY') : '-' }}</strong></div>
+            <div class="d-flex justify-content-between"><span>NIK / NISN</span><strong style="color:var(--green)">{{ $b->nik ?? '-' }} / {{ $b->nisn ?? '-' }}</strong></div>
+            <div class="d-flex justify-content-between"><span>Jenis Kelamin / Agama</span><strong style="color:var(--green)">{{ $b->jenis_kelamin ?? '-' }} / {{ $b->agama ?? '-' }}</strong></div>
+            <div class="d-flex justify-content-between"><span>Telepon / HP</span><strong style="color:var(--green)">{{ $b->telepon ?? '-' }} / {{ $b->hp ?? '-' }}</strong></div>
+            <div><span>Alamat</span><br><strong style="color:var(--green)">{{ $b->alamat ?? '-' }}</strong></div>
+            @if($p->catatan)<div class="mt-1"><span>Catatan Admin:</span><br><strong style="color:var(--green)">{{ $p->catatan }}</strong></div>@endif
         </div>
     </div>
 </div>
 @endforeach
-<div>{{ $items->links() }}</div>
+</div>
+<div class="mt-3">{{ $items->links() }}</div>
 @endif
 @endsection
