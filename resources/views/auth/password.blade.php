@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Ganti Password - TMTB & DAI KIK')
+@section('title','Ganti Password - TMTB KIK')
 @section('breadcrumb','Ganti Password')
 @section('content')
 <div class="card-form" style="max-width:560px;margin:0 auto">

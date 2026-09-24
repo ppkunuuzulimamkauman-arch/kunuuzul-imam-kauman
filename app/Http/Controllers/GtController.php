@@ -341,7 +341,7 @@ class GtController extends Controller
             extract($data);
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Absensi GT</th></tr>";
+            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Absensi GT</th></tr>";
             $nama = $gt ? htmlspecialchars($gt->name.' ('.$gt->username.')') : '-';
             echo "<tr><th colspan='9' style='text-align:center'>GT: {$nama} • Periode: ".htmlspecialchars($monthLabel)." • Mengajar: {$totMengajar} • Shalat: ".array_sum($totShalat)."</th></tr>";
             echo "<tr style='background:#0a3d1f;color:#d4af37;font-weight:bold'><th>Tanggal</th>";
@@ -430,7 +430,7 @@ class GtController extends Controller
         $callback = function() use ($data) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='10' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Data Biodata GT/PJGT • Total: ".$data->count()."</th></tr>";
+            echo "<tr><th colspan='10' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Data Biodata GT/PJGT • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>Role</th><th>Telepon/HP</th><th>Tempat/Tgl Lahir</th><th>NIK</th><th>Alamat</th><th>Penempatan</th></tr>";
             foreach ($data as $i => $u) {
                 $b = $u->biodata;

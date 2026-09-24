@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Tahap 1 - Identitas | TMTB & DAI KIK')
+@section('title','Tahap 1 - Identitas | TMTB KIK')
 @section('breadcrumb','Tahap 1 • Identitas')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
@@ -7,7 +7,7 @@
  <div class="arab small" style="color:#d4af37">Tahap 1</div>
         <h5 class="mb-0 fw-bold" style="color:#d4af37"><i class="bi bi-journal-bookmark-fill"></i> Formulir Pendaftaran</h5>
         <h4 class="fw-bold mb-0" style="color:#fff">Identitas Madrasah — 1448/1449 H</h4>
-        <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • TMTB & DAI</div>
+        <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • TMTB</div>
     </div>
     <div class="text-end">
         <div class="small" style="color:var(--gold)">Username Anda</div>

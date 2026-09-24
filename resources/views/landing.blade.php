@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0a3d1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>TMTB & DAI KIK - PP KUNUUZUL IMAM KAUMAN | Heritage Pesantren</title>
+<title>TMTB KIK - PP KUNUUZUL IMAM KAUMAN | Heritage Pesantren</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
@@ -141,7 +141,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
 <div class="container">
   <a class="navbar-brand d-flex align-items-center gap-3 fw-bold" href="{{ route('landing') }}" style="color:var(--green)">
     <span class="brand-ornamen" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin"></span>
-    <span style="line-height:1.1"><span style="font-weight:800;letter-spacing:0.5px">TMTB & DAI <span style="color:var(--gold2)">KIK</span></span><br><span class="arab" style="font-size:12px;color:var(--brown);font-weight:700">PP KUNUUZUL IMAM KAUMAN</span></span>
+    <span style="line-height:1.1"><span style="font-weight:800;letter-spacing:0.5px">TMTB <span style="color:var(--gold2)">KIK</span></span><br><span class="arab" style="font-size:12px;color:var(--brown);font-weight:700">PP KUNUUZUL IMAM KAUMAN</span></span>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
   <div class="collapse navbar-collapse" id="nav">
@@ -164,10 +164,10 @@ section[id]:target{animation:sectFlash 1.4s ease}
 <div class="container position-relative" style="z-index:1">
 <div class="row align-items-center g-4">
   <div class="col-lg-6">
-    <div class="badge-utama mb-3"><i class="bi bi-moon-stars-fill"></i> TAHUN AJARAN 1448/1449 H • PENDAFTARAN TMTB & DAI</div>
+    <div class="badge-utama mb-3"><i class="bi bi-moon-stars-fill"></i> TAHUN AJARAN 1448/1449 H • PENDAFTARAN TMTB</div>
     <div class="arab mb-1" style="color:var(--gold2);font-size:clamp(20px,4.5vw,26px);font-weight:700;line-height:1.8">معهد كنوز الإمام كاومان</div>
-    <h1 class="lh-1 mb-3 display-hero" style="font-weight:800;color:var(--green);font-size:2.6rem;letter-spacing:-.5px">TMTB & DAI <span class="grad-gold-text">KIK</span><br><span class="arab" style="font-size:1.4em;color:var(--green2)">PP KUNUUZUL IMAM</span><br><span style="font-size:0.9em;color:var(--brown)">KAUMAN — Bondowoso</span></h1>
-    <p class="mb-4" style="color:var(--brown);font-size:clamp(14px,3.5vw,1.05rem);line-height:1.6">Sistem Pendaftaran Resmi TMTB & Dai untuk Madrasah dan Lembaga Mitra PP Kunuuzul Imam Kauman — proses terstruktur, transparan & terverifikasi.</p>
+    <h1 class="lh-1 mb-3 display-hero" style="font-weight:800;color:var(--green);font-size:2.6rem;letter-spacing:-.5px">TMTB <span class="grad-gold-text">KIK</span><br><span class="arab" style="font-size:1.4em;color:var(--green2)">PP KUNUUZUL IMAM</span><br><span style="font-size:0.9em;color:var(--brown)">KAUMAN — Bondowoso</span></h1>
+    <p class="mb-4" style="color:var(--brown);font-size:clamp(14px,3.5vw,1.05rem);line-height:1.6">Sistem Pendaftaran Resmi TMTB untuk Madrasah dan Lembaga Mitra PP Kunuuzul Imam Kauman — proses terstruktur, transparan & terverifikasi.</p>
     <div class="d-flex flex-wrap gap-2 mb-4 hero-actions">
       @auth
         <a href="{{ route('permohonan.step1') }}" class="btn-heritage"><i class="bi bi-feather"></i> Buat Permohonan Baru</a>
@@ -179,7 +179,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
     </div>
     <div class="d-flex flex-wrap gap-3 small" style="color:var(--green)">
       <span><i class="bi bi-patch-check-fill" style="color:var(--gold2)"></i> Sanad Muttasil</span>
-      <span><i class="bi bi-person-badge" style="color:var(--gold2)"></i> TMTB & DAI</span>
+      <span><i class="bi bi-person-badge" style="color:var(--gold2)"></i> TMTB</span>
       <span><i class="bi bi-geo-alt-fill" style="color:var(--gold2)"></i> Kauman 68213</span>
     </div>
   </div>
@@ -189,7 +189,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
         <span class="badge mb-2" style="background:var(--green);color:var(--gold);border:1px solid var(--gold);font-size:10px;letter-spacing:1.5px"><i class="bi bi-eye-fill"></i> LIVE PREVIEW</span>
  <div class="arab" style="color:var(--gold2);font-size:18px;font-weight:700">Guru Tugas</div>
         <strong style="color:var(--green)">Form Permohonan Heritage</strong>
-        <div class="small" style="color:var(--brown)">PP KUNUUZUL IMAM KAUMAN • TMTB & DAI KIK</div>
+        <div class="small" style="color:var(--brown)">PP KUNUUZUL IMAM KAUMAN • TMTB KIK</div>
       </div>
       <div class="progress-preview mb-2" id="previewProgress"></div>
       <div class="d-flex gap-2 mb-3 justify-content-center" id="previewSteps">
@@ -255,7 +255,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
 <div class="text-center mb-4 px-2">
   <span class="sect-eyebrow">Kabar Terkini</span>
   <h2 class="fw-bold mt-2" style="color:var(--green);font-size:clamp(22px,6vw,32px)">Informasi & Pengumuman</h2>
-  <p style="color:var(--brown);max-width:640px;margin:0 auto;font-size:clamp(13px,3.5vw,15px)">Update resmi seputar pendaftaran TMTB & DAI, jadwal verifikasi, dan pengumuman dari PP Kunuuzul Imam Kauman.</p>
+  <p style="color:var(--brown);max-width:640px;margin:0 auto;font-size:clamp(13px,3.5vw,15px)">Update resmi seputar pendaftaran TMTB, jadwal verifikasi, dan pengumuman dari PP Kunuuzul Imam Kauman.</p>
 </div>
 <div class="row g-3">
   {{-- Dinamis dari Kelola Landing (admin) — fallback ke 3 kartu bawaan jika kosong --}}
@@ -291,7 +291,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
         <span class="small" style="color:#8a7a3a"><i class="bi bi-calendar3"></i> 10 Sep 2026</span>
       </div>
       <div style="width:54px;height:54px;background:var(--cream2);border:2px solid var(--gold);color:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px"><i class="bi bi-megaphone-fill"></i></div>
-      <h5 class="fw-bold mt-3" style="color:var(--green)">Pendaftaran TMTB & DAI 1448/1449 H Dibuka</h5>
+      <h5 class="fw-bold mt-3" style="color:var(--green)">Pendaftaran TMTB 1448/1449 H Dibuka</h5>
       <p class="small flex-grow-1" style="color:var(--brown)">Gelombang 1 dibuka <strong>10 Sep – 30 Nov 2026</strong> untuk seluruh lembaga mitra. Lengkapi Formulir 4 Tahap dan upload berkas sebelum batas akhir.</p>
       <a href="{{ route('register') }}" class="small fw-bold mt-2" style="color:var(--gold2);text-decoration:none">Daftar Sekarang <i class="bi bi-arrow-right"></i></a>
     </div>
@@ -374,9 +374,9 @@ section[id]:target{animation:sectFlash 1.4s ease}
   <div class="col-md-7">
     <div class="d-flex gap-3 align-items-center mb-2">
       <span style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,.2))"></span>
-      <div><strong style="color:var(--gold)">TMTB & DAI KIK</strong><br><span class="arab small" style="color:var(--cream)">PP KUNUUZUL IMAM KAUMAN</span></div>
+      <div><strong style="color:var(--gold)">TMTB KIK</strong><br><span class="arab small" style="color:var(--cream)">PP KUNUUZUL IMAM KAUMAN</span></div>
     </div>
-    <div class="small" style="color:var(--cream);opacity:0.9">Jln KH Zainul Arifin No.165, Kauman, Bondowoso - Jawa Timur 68213<br>Pendaftaran TMTB & DAI • Resmi • Terverifikasi • © 1448 H</div>
+    <div class="small" style="color:var(--cream);opacity:0.9">Jln KH Zainul Arifin No.165, Kauman, Bondowoso - Jawa Timur 68213<br>Pendaftaran TMTB • Resmi • Terverifikasi • © 1448 H</div>
   </div>
   <div class="col-md-5 text-md-end small" style="color:var(--cream);opacity:0.8">
     <a class="footer-link" href="#informasi"><i class="bi bi-chevron-right"></i> Informasi</a>

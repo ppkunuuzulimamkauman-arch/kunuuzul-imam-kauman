@@ -29,7 +29,7 @@ $progress = min(100, max(0, ($current-1)/4*100));
     @endforeach
 </div>
 <div class="text-center py-1 arab small d-flex justify-content-center align-items-center gap-2" style="background:#0a3d1f;color:#d4af37;font-size:11px;letter-spacing:1px">
- <span>Formulir Pendaftaran • TMTB & DAI KIK</span>
+ <span>Formulir Pendaftaran • TMTB KIK</span>
   <span class="badge" style="background:var(--gold);color:var(--green);font-size:9px">{{ $current }}/5</span>
   <span class="d-none d-sm-inline" style="opacity:.7">— klik langkah hijau untuk kembali</span>
 </div>

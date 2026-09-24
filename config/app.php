@@ -113,7 +113,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Tahun Ajaran Aktif (TMTB & DAI KIK)
+    | Tahun Ajaran Aktif (TMTB KIK)
     |--------------------------------------------------------------------------
     |
     | Tahun yang dipakai sebagai "tahun berjalan" untuk pendaftaran PJGT

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0a3d1f">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>@yield('title', 'TMTB & DAI KIK - PP KUNUUZUL IMAM KAUMAN')</title>
+    <title>@yield('title', 'TMTB KIK - PP KUNUUZUL IMAM KAUMAN')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
@@ -191,7 +191,7 @@
 <div class="sidebar" id="sidebar">
     <div class="brand">
         <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.2))"></div>
-        <div style="line-height:1.1;flex:1"><strong style="font-size:13px;color:var(--green)">TMTB & DAI <span style="color:#b8941f">KIK</span></strong><br><span class="arab" style="font-size:10px;color:#5d4037">PP KUNUUZUL IMAM KAUMAN</span></div>
+        <div style="line-height:1.1;flex:1"><strong style="font-size:13px;color:var(--green)">TMTB <span style="color:#b8941f">KIK</span></strong><br><span class="arab" style="font-size:10px;color:#5d4037">PP KUNUUZUL IMAM KAUMAN</span></div>
         <button class="sidebar-close" onclick="closeSidebar()" aria-label="Tutup menu"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="sidebar-search"><i class="bi bi-search"></i><input id="sidebarSearch" type="text" placeholder="Cari menu... ( / )" autocomplete="off"><span class="small" style="color:rgba(253,246,227,0.5);padding-right:8px;font-size:10px">⌘K</span></div>
@@ -310,7 +310,7 @@
     </div>
 
     <div class="footer">
-        <span class="arab">© 1448 TMTB & DAI KIK • PP KUNUUZUL IMAM KAUMAN • Kauman 68213</span>
+        <span class="arab">© 1448 TMTB KIK • PP KUNUUZUL IMAM KAUMAN • Kauman 68213</span>
  <span class="d-none d-md-inline small" style="color:var(--gold)">Heritage Kuning</span>
         <span class="d-md-none small" style="color:var(--gold);opacity:0.85">Heritage • 1448H</span>
     </div>

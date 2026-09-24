@@ -76,7 +76,7 @@ class PenempatanController extends Controller
         $callback = function() use ($data) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='7' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Penempatan GT • Total: ".$data->count()."</th></tr>";
+            echo "<tr><th colspan='7' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Penempatan GT • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>GT</th><th>Username</th><th>Email</th><th>Lembaga Penempatan</th><th>Wilayah</th><th>Catatan</th></tr>";
             foreach ($data as $i => $g) {
                 $p = $g->penempatan && $g->penempatan->permohonan ? $g->penempatan->permohonan : null;

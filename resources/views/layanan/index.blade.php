@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Layanan • TMTB & DAI')
+@section('title','Layanan • TMTB')
 @section('breadcrumb','Layanan')
 @section('content')
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
@@ -7,7 +7,7 @@
     <div>
  <div class="arab small" style="color:#d4af37">Layanan</div>
       <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-headset" style="color:#d4af37"></i> Layanan</h4>
-      <div class="small" style="color:#fdf6e3;opacity:.85">Saran / masukan & kontak yang bisa dihubungi — TMTB & DAI KIK</div>
+      <div class="small" style="color:#fdf6e3;opacity:.85">Saran / masukan & kontak yang bisa dihubungi — TMTB KIK</div>
     </div>
     <span class="badge-pendaftaran align-self-center" style="background:#fdf6e3;color:#0a3d1f">PP KUNUUZUL IMAM KAUMAN</span>
   </div>
@@ -22,7 +22,7 @@
         @csrf
         <div class="mb-3">
           <label class="form-label fw-bold" style="color:var(--green)">Saran / Masukan <span class="text-danger">*</span></label>
-          <textarea name="saran" rows="4" class="form-control @error('saran') is-invalid @enderror" placeholder="Tuliskan saran, masukan, atau keluhan untuk layanan TMTB & DAI..." required>{{ old('saran') }}</textarea>
+          <textarea name="saran" rows="4" class="form-control @error('saran') is-invalid @enderror" placeholder="Tuliskan saran, masukan, atau keluhan untuk layanan TMTB..." required>{{ old('saran') }}</textarea>
           @error('saran')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="mb-3">

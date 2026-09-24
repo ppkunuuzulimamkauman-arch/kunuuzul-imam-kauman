@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a3d1f">
-<title>Daftar - TMTB & DAI KIK</title>
+<title>Daftar - TMTB KIK</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -64,7 +64,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);min-heig
 <div class="card-reg">
   <div class="header-reg">
     <div class="logo-madin" onclick="this.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:500,easing:'cubic-bezier(.34,1.56,.64,1)'}); if(navigator.vibrate) try{navigator.vibrate(15)}catch(e){}" title="MADRASAH DINIYAH TAKMILIYAH TASHWIRUL AFKAR AL-HASANI"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin"></div>
-    <h5 class="fw-bold mb-0" style="color:#0a3d1f">TMTB & DAI KIK</h5>
+    <h5 class="fw-bold mb-0" style="color:#0a3d1f">TMTB KIK</h5>
     <div class="small text-muted">PP KUNUUZUL IMAM KAUMAN • Kauman Bondowoso 68213</div>
     <div class="small fw-bold" style="color:#b8941f">Daftar akun baru — Heritage Pesantren</div>
   </div>
@@ -115,7 +115,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);min-heig
         <div class="col-12">
   <label for="agree" class="d-flex align-items-start gap-2 p-3 rounded-3 small" style="background:linear-gradient(135deg,#fffdf4,#fdf6e3);border:1.5px solid var(--gold);cursor:pointer;margin:0">
     <input class="form-check-input flex-shrink-0 mt-0" type="checkbox" required id="agree" style="accent-color:#0a3d1f;width:20px;height:20px;cursor:pointer">
-    <span style="color:#0a3d1f;line-height:1.5"><i class="bi bi-shield-check" style="color:#b8941f"></i> Saya menyetujui data akan <strong>diverifikasi TMTB & DAI KIK</strong></span>
+    <span style="color:#0a3d1f;line-height:1.5"><i class="bi bi-shield-check" style="color:#b8941f"></i> Saya menyetujui data akan <strong>diverifikasi TMTB KIK</strong></span>
   </label>
         </div>
       </div>
@@ -124,7 +124,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);min-heig
     <div class="text-center mt-3 small d-none d-sm-block">Sudah punya akun? <a href="{{ route('login') }}" class="fw-bold text-decoration-none" style="color:#0a3d1f">Masuk di sini</a></div>
     <div class="text-center mt-3 d-none d-sm-block"><a href="{{ route('landing') }}" class="btn btn-sm rounded-pill px-4" style="background:#fdf6e3;border:1.5px solid #d4af37;color:#0a3d1f;font-weight:700"><i class="bi bi-arrow-left"></i> Kembali ke Beranda</a></div>
   </div>
- <div class="text-center small py-3" style="background:linear-gradient(135deg,#fdf6e3,#fdf0c7);border-top:2px solid #d4af37;color:#5d4037">© 1448 TMTB & DAI KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
+ <div class="text-center small py-3" style="background:linear-gradient(135deg,#fdf6e3,#fdf0c7);border-top:2px solid #d4af37;color:#5d4037">© 1448 TMTB KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
 </div>
 <script>
 function selectRole(v){

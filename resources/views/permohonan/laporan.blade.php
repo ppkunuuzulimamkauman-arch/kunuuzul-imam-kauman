@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Laporan - TMTB & DAI KIK')
+@section('title','Laporan - TMTB KIK')
 @section('breadcrumb','Laporan')
 @section('content')
 <div class="p-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden" style="background:linear-gradient(135deg,#0a3d1f 0%,#0f5a2e 60%,#083d1e 100%);color:#fdf6e3;border:1px solid rgba(212,175,55,.4);box-shadow:0 12px 32px rgba(6,43,21,.3)">

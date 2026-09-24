@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Rekap Pendaftaran • TMTB & DAI KIK')
+@section('title','Rekap Pendaftaran • TMTB KIK')
 @section('breadcrumb','Rekap Permohonan')
 @section('content')
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">
@@ -7,7 +7,7 @@
         <div>
  <div class="arab small" style="color:#d4af37">Rekap Pendaftaran</div>
             <h4 class="fw-bold mb-0" style="color:#fff"><i class="bi bi-bar-chart-fill" style="color:#d4af37"></i> Rekap Permohonan</h4>
-            <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • 1448/1449 H • TMTB & DAI</div>
+            <div class="small" style="color:#fdf6e3;opacity:0.8">PP KUNUUZUL IMAM KAUMAN • 1448/1449 H • TMTB</div>
         </div>
         <div class="text-end d-none d-md-block">
             <div class="badge-pendaftaran" style="background:#fdf6e3;color:#0a3d1f">Tahun 1448/1449</div>
@@ -85,5 +85,5 @@ new Chart(document.getElementById('chartStatus'), {type:'doughnut', data:{labels
 new Chart(document.getElementById('chartRapot'), {type:'bar', data:{labels:rapotLabels, datasets:[{label:'Rapot', data:rapotData, backgroundColor:['#0a3d1f','#d4af37','#8a7a3a'], borderColor:'#0a3d1f', borderWidth:1}]}, options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, ticks:{color:'#0a3d1f'}}, x:{ticks:{color:'#0a3d1f'}}}}});
 </script>
 @endpush
-<div class="text-center mt-3 arab small" style="color:#b8941f">TMTB & DAI KIK — Heritage</div>
+<div class="text-center mt-3 arab small" style="color:#b8941f">TMTB KIK — Heritage</div>
 @endsection

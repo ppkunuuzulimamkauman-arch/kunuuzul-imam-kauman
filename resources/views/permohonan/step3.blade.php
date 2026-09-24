@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Tahap 3 - Madrasah | TMTB & DAI KIK')
+@section('title','Tahap 3 - Madrasah | TMTB KIK')
 @section('breadcrumb','Tahap 3 • Madrasah')
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37">

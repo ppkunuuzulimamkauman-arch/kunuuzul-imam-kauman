@@ -600,7 +600,7 @@ class PermohonanController extends Controller
         $data = $query->get();
 
         $filterSuffix = ($search?'_search-'.$search:'').($rapot?'_rapot-'.$rapot:'').($status?'_status-'.$status:'').($tahun?'_tahun-'.$tahun:'').($wil?'_wil-'.$wil:'');
-        $filename = 'Rekap_TMTB-DAI-KIK_PP-KUNUUZUL'.$filterSuffix.'_'.date('Y-m-d_His').'.xls';
+        $filename = 'Rekap_TMTB-KIK_PP-KUNUUZUL'.$filterSuffix.'_'.date('Y-m-d_His').'.xls';
         $headers = [
             'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
@@ -613,7 +613,7 @@ class PermohonanController extends Controller
         $callback = function() use ($data, $columns, $search, $rapot, $status, $tahun, $wil) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='23' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Permohonan Guru Tugas 1448/1449 H • heritage</th></tr>";
+            echo "<tr><th colspan='23' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Rekap Permohonan Guru Tugas 1448/1449 H • heritage</th></tr>";
             $filterText = "Filter: ".($search?"search=$search ":"").($rapot?"rapot=$rapot ":"").($status?"status=$status ":"").($tahun?"tahun=$tahun ":"").($wil?"wil=$wil ":"").($search||$rapot||$status||$tahun||$wil?"• ":"Tidak ada filter • ");
             echo "<tr><th colspan='23' style='background:#fdf6e3;color:#0a3d1f;text-align:center'>Jln KH Zainul Arifin No.165 Kauman Bondowoso 68213 • ".$filterText."Export: ".date('d-m-Y H:i')." • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#fdf0c7;color:#0a3d1f;font-weight:bold'>";

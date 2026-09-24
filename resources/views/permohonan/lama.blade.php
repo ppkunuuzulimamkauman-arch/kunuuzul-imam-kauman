@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT • TMTB & DAI' : 'Arsip Permohonan • TMTB & DAI'))
+@section('title', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT • TMTB' : 'Arsip Permohonan • TMTB'))
 @section('breadcrumb', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT' : 'Arsip Permohonan'))
 @section('content')
 @if(($via ?? '')==='ijin')
@@ -18,7 +18,7 @@
     <div style="min-width:0">
  <div class="arab small" style="color:#d4af37">Arsip Permohonan</div>
         <h4 class="fw-bold mb-0" style="color:#fff;font-size:clamp(16px,4.5vw,22px)"><i class="bi bi-collection-fill" style="color:#d4af37"></i> Arsip Permohonan</h4>
-        <div class="small" style="color:#fdf6e3;opacity:0.8">Daftar permohonan TMTB & DAI yang telah tercatat</div>
+        <div class="small" style="color:#fdf6e3;opacity:0.8">Daftar permohonan TMTB yang telah tercatat</div>
     </div>
     <div class="text-end d-none d-md-block">
         <div class="badge-pendaftaran" style="background:#fdf6e3;color:#0a3d1f">Filter Data</div>

@@ -67,7 +67,7 @@ class PjgtLaporanController extends Controller
             $score = fn($v) => $v === 'Sangat Baik' ? 3 : ($v === 'Baik' ? 2 : ($v === 'Kurang' ? 1 : 0));
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Laporan Kegiatan GT • Total: ".$data->count()."</th></tr>";
+            echo "<tr><th colspan='9' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Laporan Kegiatan GT • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Periode</th><th>GT</th><th>PJGT</th><th>Madrasah</th><th>Tahun Ajaran</th><th>Rata-rata</th><th>Status</th><th>Catatan Umum</th></tr>";
             foreach ($data as $i => $l) {
                 $vals = collect($l->madrasiyah ?? [])->pluck('nilai')->merge(collect($l->kemasyarakatan ?? [])->pluck('nilai'))->map($score)->filter();

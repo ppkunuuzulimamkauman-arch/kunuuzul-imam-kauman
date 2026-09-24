@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Isi Laporan GT • TMTB & DAI')
+@section('title','Isi Laporan GT • TMTB')
 @section('breadcrumb','Isi Laporan')
 @section('content')
 @php

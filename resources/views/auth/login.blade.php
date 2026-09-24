@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a3d1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Masuk - TMTB & DAI KIK</title>
+<title>Masuk - TMTB KIK</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -157,7 +157,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
 
   <div class="card-head">
     <div class="logo-ring" onclick="this.classList.remove('pulse');void this.offsetWidth;this.classList.add('pulse'); if(navigator.vibrate) try{navigator.vibrate(20)}catch(e){}" title="Madrasah Diniyah Takmiliyah Tashwirul Afkar Al-Hasani"><img src="{{ asset('images/madin.png?v=2') }}" alt="Logo Madin Tashwirul Afkar"></div>
-    <h4>TMTB &amp; DAI KIK</h4>
+    <h4>TMTB KIK</h4>
     <div class="sub">PP KUNUUZUL IMAM KAUMAN<br>Jln KH Zainul Arifin 165, Bondowoso</div>
     <div class="pill-row">
       <span class="pill"><i class="bi bi-calendar-heart"></i> 1448/1449 H</span>
@@ -214,7 +214,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
     </div>
   </div>
 
- <div class="card-foot">Copyright © 1448 TMTB &amp; DAI KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
+ <div class="card-foot">Copyright © 1448 TMTB KIK • PP KUNUUZUL IMAM KAUMAN<br></div>
 </div>
 
 <div id="toastWrap"></div>

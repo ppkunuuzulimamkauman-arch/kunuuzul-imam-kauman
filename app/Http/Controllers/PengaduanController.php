@@ -92,7 +92,7 @@ class PengaduanController extends Controller
         $callback = function() use ($data) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='9' style='background:#7a0a0a;color:#fff;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Pengaduan GT • Total: ".$data->count()."</th></tr>";
+            echo "<tr><th colspan='9' style='background:#7a0a0a;color:#fff;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Pengaduan GT • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Judul</th><th>Pelapor</th><th>Terlapor</th><th>Madrasah</th><th>Jenis</th><th>Tgl Kejadian</th><th>Status</th><th>Tanggapan Admin</th></tr>";
             foreach ($data as $i => $p) {
                 echo "<tr>";

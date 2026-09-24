@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Biodata PJGT - TMTB & DAI KIK')
+@section('title','Biodata PJGT - TMTB KIK')
 @section('breadcrumb','Biodata PJGT')
 @push('styles')
 <style>

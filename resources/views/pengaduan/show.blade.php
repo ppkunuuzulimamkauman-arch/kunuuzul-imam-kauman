@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Detail Pengaduan • TMTB & DAI')
+@section('title','Detail Pengaduan • TMTB')
 @section('breadcrumb','Detail Pengaduan')
 @section('content')
 <div class="p-3 rounded-3 mb-3" style="background:linear-gradient(135deg,#7a0a0a 0%, #a81414 100%);color:#fff;border:2px solid #d4af37">

@@ -17,7 +17,7 @@
       </div>
       <div class="col-12">
         <label class="form-label">Judul *</label>
-        <input name="title" value="{{ old('title',$content->title) }}" class="form-control" required placeholder="Pendaftaran TMTB & DAI 1448/1449 H Dibuka">
+        <input name="title" value="{{ old('title',$content->title) }}" class="form-control" required placeholder="Pendaftaran TMTB 1448/1449 H Dibuka">
       </div>
       <div class="col-md-6">
         <label class="form-label">Subtitle</label>

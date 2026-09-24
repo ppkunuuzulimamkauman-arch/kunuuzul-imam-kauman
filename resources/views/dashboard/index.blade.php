@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Dashboard - TMTB & DAI KIK')
+@section('title','Dashboard - TMTB KIK')
 @section('breadcrumb','Dashboard')
 @push('styles')
 <style>
@@ -35,7 +35,7 @@
     <div style="width:72px;height:72px;border-radius:20px;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(0,0,0,.25)"><img src="{{ asset('images/madin.png?v=2') }}" alt="" style="width:58px;height:58px;object-fit:contain"></div>
     <div class="flex-fill" style="min-width:0">
       <span class="fw-bold" style="font-size:10px;letter-spacing:1.5px;color:#0a3d1f;background:linear-gradient(90deg,#d4af37,#f4e2a0);border-radius:20px;padding:3px 10px">1448/1449 GANJIL</span>
-      <div class="fw-bold mt-1" style="font-size:clamp(18px,5vw,24px);letter-spacing:.3px">TMTB &amp; DAI KIK</div>
+      <div class="fw-bold mt-1" style="font-size:clamp(18px,5vw,24px);letter-spacing:.3px">TMTB KIK</div>
       <div class="small" style="opacity:.7">PP KUNUUZUL IMAM KAUMAN • KAUMAN BONDOWOSO</div>
     </div>
   </div>
@@ -59,7 +59,7 @@
         <div class="tab-content py-3">
           <div class="tab-pane fade show active" id="pane-umum" role="tabpanel">
             {{-- Sapaan statis selalu tampil --}}
-            <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:linear-gradient(135deg,#fdf6e3,#faf0c8);border:1px solid #e8d9a0;color:#5d4037"><i class="bi bi-patch-check-fill mt-1" style="color:#1d7a3d;font-size:16px"></i><span><strong style="color:#0a3d1f">Assalamualaikum {{ explode(' ', $u->name)[0] }},</strong><br>Anda terdaftar sebagai {{ ($isPjgt ?? false) ? 'PJGT' : 'Guru Tugas' }} TMTB &amp; DAI KIK tahun 1448/1449 H. Absensi mengajar &amp; shalat 5 waktu diisi lewat menu Absensi Kehadiran.</span></div>
+            <div class="small p-3 mb-2 rounded-3 d-flex gap-2" style="background:linear-gradient(135deg,#fdf6e3,#faf0c8);border:1px solid #e8d9a0;color:#5d4037"><i class="bi bi-patch-check-fill mt-1" style="color:#1d7a3d;font-size:16px"></i><span><strong style="color:#0a3d1f">Assalamualaikum {{ explode(' ', $u->name)[0] }},</strong><br>Anda terdaftar sebagai {{ ($isPjgt ?? false) ? 'PJGT' : 'Guru Tugas' }} TMTB KIK tahun 1448/1449 H. Absensi mengajar &amp; shalat 5 waktu diisi lewat menu Absensi Kehadiran.</span></div>
             {{-- Dinamis dari Kelola Landing → info_umum --}}
             @if(isset($infoUmum) && $infoUmum->count())
               @foreach($infoUmum as $inf)
@@ -121,7 +121,7 @@
         <div style="width:42px;height:42px;border-radius:13px;background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.5);display:flex;align-items:center;justify-content:center;color:#f4e2a0;font-size:18px"><i class="bi bi-person-video3"></i></div>
         <div>
           <div class="small" style="opacity:.7;letter-spacing:1px;font-size:10px">KOORDINATOR</div>
-          <div class="fw-bold" style="font-size:16px">{{ strtoupper(($tugasUtama->pjgt_nama ?? 'TMTB & DAI KIK')) }}</div>
+          <div class="fw-bold" style="font-size:16px">{{ strtoupper(($tugasUtama->pjgt_nama ?? 'TMTB KIK')) }}</div>
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@
       <div class="text-center px-3" style="margin-top:-32px;position:relative;z-index:1">
         <img src="https://ui-avatars.com/api/?name={{ urlencode($u->name) }}&background=d4af37&color=0a3d1f&size=160" alt="" style="width:64px;height:64px;border-radius:50%;border:3px solid #fff;outline:2px solid #d4af37;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.2)">
         <div class="mt-2 fw-bold" style="color:#22335e;font-size:17px;letter-spacing:1.5px">{{ strtoupper($u->name) }}</div>
-        <div><span class="badge mt-1" style="background:#eef7f0;color:#1d7a3d;border:1px solid #bfe0c9;font-size:11px">{{ ($isPjgt ?? false) ? 'PJGT' : 'Guru Tugas' }} • TMTB &amp; DAI KIK</span></div>
+        <div><span class="badge mt-1" style="background:#eef7f0;color:#1d7a3d;border:1px solid #bfe0c9;font-size:11px">{{ ($isPjgt ?? false) ? 'PJGT' : 'Guru Tugas' }} • TMTB KIK</span></div>
         <div class="small mt-1" style="color:#aaa">{{ $u->username }}</div>
       </div>
       <div class="p-3">
@@ -194,7 +194,7 @@
       </p>
     </div>
   </div>
-  <span class="badge-pendaftaran d-none d-md-inline flex-shrink-0" style="position:relative;z-index:1">1448/1449 H • TMTB & DAI</span>
+  <span class="badge-pendaftaran d-none d-md-inline flex-shrink-0" style="position:relative;z-index:1">1448/1449 H • TMTB</span>
   <span class="badge-pendaftaran d-md-none flex-shrink-0" style="font-size:11px;position:relative;z-index:1">1448 H</span>
 </div>
 

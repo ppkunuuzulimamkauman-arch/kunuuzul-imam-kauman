@@ -60,7 +60,7 @@ class LayananController extends Controller
         $callback = function() use ($data) {
             echo "\xEF\xBB\xBF";
             echo "<table border='1'>";
-            echo "<tr><th colspan='6' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB & DAI KIK — PP KUNUUZUL IMAM KAUMAN • Layanan Saran/Masukan • Total: ".$data->count()."</th></tr>";
+            echo "<tr><th colspan='6' style='background:#0a3d1f;color:#d4af37;text-align:center;font-size:14px'>TMTB KIK — PP KUNUUZUL IMAM KAUMAN • Layanan Saran/Masukan • Total: ".$data->count()."</th></tr>";
             echo "<tr style='background:#d4af37;color:#0a3d1f;font-weight:bold'><th>No</th><th>Nama</th><th>Kontak</th><th>Saran/Masukan</th><th>Status</th><th>Tanggal</th></tr>";
             foreach ($data as $i => $s) {
                 echo "<tr>";
