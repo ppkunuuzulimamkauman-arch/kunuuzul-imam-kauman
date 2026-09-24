@@ -203,7 +203,7 @@
         @if((auth()->user()->role ?? '')==='pjgt')
         <div class="px-4 mt-3 mb-1 small fw-bold" style="color:rgba(212,175,55,.7);font-size:10px;letter-spacing:1.5px">PERMOHONAN</div>
         <a href="{{ route('permohonan.step1') }}" class="{{ request()->routeIs('permohonan.step*') ? 'active':'' }}"><i class="bi bi-feather"></i> Formulir Pengajuan</a>
-        <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}"><i class="bi bi-collection-fill"></i> Arsip Saya</a>
+        <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}"><i class="bi bi-collection-fill"></i> Pengajuan Saya</a>
         @php $gtSayaCount = \App\Models\Penempatan::unreadUntukPjgt(auth()->user()); @endphp
         <a href="{{ route('pjgt.gt-saya') }}" class="{{ request()->routeIs('pjgt.gt-saya') ? 'active':'' }}"><i class="bi bi-people-fill"></i> Guru Tugas @if($gtSayaCount>0)<span class="badge ms-auto" style="background:#dc3545;color:#fff;font-size:10px;border-radius:20px;padding:2px 8px">{{ $gtSayaCount }}</span>@endif</a>
         <a href="{{ route('pjgt.laporan.index') }}" class="{{ request()->routeIs('pjgt.laporan*') ? 'active':'' }}"><i class="bi bi-clipboard2-check-fill"></i> Laporan GT</a>
@@ -334,7 +334,7 @@
     @endif
     <a href="{{ route('permohonan.lama') }}" class="{{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'active':'' }}">
         <i class="bi {{ request()->routeIs('permohonan.lama','permohonan.show','permohonan.edit') ? 'bi-collection-fill' : 'bi-collection' }}"></i>
-        <span>Arsip</span>
+        <span>{{ (auth()->user()->role ?? '')==='pjgt' ? 'Pengajuan' : 'Arsip' }}</span>
     </a>
     <a href="{{ route('landing') }}">
         <i class="bi bi-globe2"></i>

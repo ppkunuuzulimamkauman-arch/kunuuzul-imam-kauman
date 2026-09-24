@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('title', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT • TMTB' : 'Arsip Permohonan • TMTB'))
-@section('breadcrumb', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT' : 'Arsip Permohonan'))
+@php $judulArsip = ((auth()->user()->role ?? '')==='pjgt' ? 'Pengajuan Saya' : 'Arsip Permohonan'); @endphp
+@section('title', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT • TMTB' : $judulArsip.' • TMTB'))
+@section('breadcrumb', (($via ?? '')==='ijin' ? 'Persetujuan Ijin GT' : $judulArsip))
 @section('content')
 @if(($via ?? '')==='ijin')
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 gap-2" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37;flex-wrap:wrap">
@@ -16,8 +17,8 @@
 @else
 <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 gap-2" style="background:linear-gradient(135deg,#0a3d1f 0%, #0f5a2e 100%);color:#fdf6e3;border:2px solid #d4af37;flex-wrap:wrap">
     <div style="min-width:0">
- <div class="arab small" style="color:#d4af37">Arsip Permohonan</div>
-        <h4 class="fw-bold mb-0" style="color:#fff;font-size:clamp(16px,4.5vw,22px)"><i class="bi bi-collection-fill" style="color:#d4af37"></i> Arsip Permohonan</h4>
+ <div class="arab small" style="color:#d4af37">{{ $judulArsip }}</div>
+        <h4 class="fw-bold mb-0" style="color:#fff;font-size:clamp(16px,4.5vw,22px)"><i class="bi bi-collection-fill" style="color:#d4af37"></i> {{ $judulArsip }}</h4>
         <div class="small" style="color:#fdf6e3;opacity:0.8">Daftar permohonan TMTB yang telah tercatat</div>
     </div>
     <div class="text-end d-none d-md-block">

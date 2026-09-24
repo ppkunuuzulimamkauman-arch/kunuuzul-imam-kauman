@@ -103,21 +103,21 @@ class PermohonanController extends Controller
         } else {
             $data = $sessionData;
         }
-        // default values - PP KUNUUZUL IMAM KAUMAN
+        // default values - kosong untuk pengajuan baru (data lama tetap terisi dari DB/session)
         $defaults = [
-            'nama_madrasah' => $data['nama_madrasah'] ?? 'PP KUNUUZUL IMAM KAUMAN',
-            'nama_pesantren' => $data['nama_pesantren'] ?? 'PP KUNUUZUL IMAM KAUMAN',
-            'negara' => $data['negara'] ?? 'INDONESIA',
-            'provinsi' => $data['provinsi'] ?? 'JAWA TIMUR',
-            'kabupaten' => $data['kabupaten'] ?? 'KABUPATEN BONDOWOSO',
-            'kecamatan' => $data['kecamatan'] ?? 'BONDOWOSO',
-            'desa' => $data['desa'] ?? 'KAUMAN',
-            'jalan_dusun' => $data['jalan_dusun'] ?? 'JLN KH ZAINUL ARIFIN NO. 165',
-            'kode_pos' => $data['kode_pos'] ?? '68213',
-            'rt' => $data['rt'] ?? '01',
-            'rw' => $data['rw'] ?? '02',
-            'telepon' => $data['telepon'] ?? '085236680680',
-            'email' => $data['email'] ?? 'kunuzulimam@gmail.com',
+            'nama_madrasah' => $data['nama_madrasah'] ?? '',
+            'nama_pesantren' => $data['nama_pesantren'] ?? '',
+            'negara' => $data['negara'] ?? '',
+            'provinsi' => $data['provinsi'] ?? '',
+            'kabupaten' => $data['kabupaten'] ?? '',
+            'kecamatan' => $data['kecamatan'] ?? '',
+            'desa' => $data['desa'] ?? '',
+            'jalan_dusun' => $data['jalan_dusun'] ?? '',
+            'kode_pos' => $data['kode_pos'] ?? '',
+            'rt' => $data['rt'] ?? '',
+            'rw' => $data['rw'] ?? '',
+            'telepon' => $data['telepon'] ?? '',
+            'email' => $data['email'] ?? '',
         ];
         $customQuestions = $this->customQuestions(1);
         $extraData = $this->getExtra();

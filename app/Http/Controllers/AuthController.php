@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -80,7 +81,9 @@ class AuthController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $user = $request->user();
         $validated = $request->validate([
+            'username' => ['required', 'alpha_dash', 'min:3', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
             'current_password' => 'required|string|current_password',
             'password' => ['required', 'confirmed', Password::min(6), 'different:current_password'],
         ], [
@@ -88,8 +91,12 @@ class AuthController extends Controller
             'password.different' => 'Password baru harus berbeda dari password saat ini.',
         ]);
 
-        $request->user()->update(['password' => $validated['password']]);
+        $akun = ['password' => $validated['password'], 'username' => $validated['username']];
+        if ($validated['username'] !== $user->username) {
+            \App\Models\Permohonan::where('username', $user->username)->update(['username' => $validated['username']]);
+        }
+        $user->update($akun);
 
-        return back()->with('success', 'Password berhasil diganti. Gunakan password baru saat login berikutnya.');
+        return back()->with('success', 'Username & password berhasil diganti. Gunakan data baru saat login berikutnya.');
     }
 }

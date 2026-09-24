@@ -67,6 +67,7 @@
       <ul class="nav nav-tabs pjgt-tabs mt-3">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-pjgt-diri" type="button">Data Diri & Kontak</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pjgt-madrasah" type="button">Info Madrasah</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pjgt-akun" type="button">Akun Login</button></li>
       </ul>
 
       <div class="tab-content py-3">
@@ -95,6 +96,15 @@
           @else
           <div class="text-center py-4 small" style="color:#8a7a3a"><i class="bi bi-inbox"></i><br>Belum ada permohonan. Buat permohonan dulu untuk menampilkan info madrasah.</div>
           @endif
+        </div>
+        <div class="tab-pane fade" id="tab-pjgt-akun">
+          <div class="row g-3">
+            <div class="col-12 col-md-6"><label class="bio-label">Username <span class="req">*</span></label><input type="text" name="username" value="{{ old('username', $user->username) }}" class="form-control form-control-sm bio-input" disabled required></div>
+            <div class="col-12 col-md-6"><label class="bio-label">Password Saat Ini <small style="color:#999">(wajib bila ganti password)</small></label><input type="password" name="current_password" class="form-control form-control-sm bio-input" disabled autocomplete="current-password"></div>
+            <div class="col-12 col-md-6"><label class="bio-label">Password Baru <small style="color:#999">(kosongkan bila tidak ganti)</small></label><input type="password" name="password" class="form-control form-control-sm bio-input" disabled autocomplete="new-password" placeholder="min 6 karakter"></div>
+            <div class="col-12 col-md-6"><label class="bio-label">Konfirmasi Password Baru</label><input type="password" name="password_confirmation" class="form-control form-control-sm bio-input" disabled autocomplete="new-password"></div>
+          </div>
+          <div class="small mt-2" style="color:#999">Mengganti username tidak memutus arsip permohonan milik Anda.</div>
         </div>
       </div>
 

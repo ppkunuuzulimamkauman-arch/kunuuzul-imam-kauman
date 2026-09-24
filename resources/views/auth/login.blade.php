@@ -97,15 +97,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
 .shake{animation:shakeX .45s}
 @keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
 
-/* akun demo heritage */
-.demo{margin-top:16px;border:1.5px dashed var(--gold);border-radius:14px;background:var(--cream);overflow:hidden}
-.demo summary{list-style:none;cursor:pointer;padding:11px 14px;font-size:12.5px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px;user-select:none}
-.demo summary::-webkit-details-marker{display:none}
-.demo summary .chev{margin-left:auto;transition:transform .25s;font-size:11px;color:var(--gold2)}
-.demo[open] summary .chev{transform:rotate(180deg)}
-.demo-body{padding:0 14px 13px;font-size:12.5px;line-height:2.1;color:var(--brown)}
-.demo-body code{background:#fff;border:1px solid var(--gold);color:var(--green);padding:2px 8px;border-radius:8px;font-size:11.5px;cursor:pointer;transition:.2s;white-space:nowrap}
-.demo-body code:hover{background:var(--cream2)}
 .role{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;color:#fff}
 
 .foot-links{text-align:center;margin-top:16px;font-size:13px;color:var(--brown)}
@@ -178,7 +169,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
         <label class="form-label">Username atau Email</label>
         <div class="input-glass">
           <span class="addon"><i class="bi bi-person-fill"></i></span>
-          <input type="text" name="login" value="{{ old('login') }}" placeholder="admin / admin@kunuuzul.test" required autofocus autocomplete="username" inputmode="text">
+          <input type="text" name="login" value="{{ old('login') }}" placeholder="Username atau email" required autofocus autocomplete="username" inputmode="text">
         </div>
       </div>
       <div class="mb-2">
@@ -199,15 +190,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;margin:0;min-height:100vh;min-he
       <button class="btn-masuk" id="btnMasuk" type="submit"><span class="shine"></span><span id="btnLabel">Masuk <i class="bi bi-box-arrow-in-right ms-1"></i></span></button>
     </form>
 
-    <details class="demo">
-      <summary><i class="bi bi-lightbulb-fill"></i> Akun demo <i class="bi bi-chevron-down chev"></i></summary>
-      <div class="demo-body">
-        <div><span class="role" style="background:#dc3545">ADMIN</span> <code onclick="fill('admin@kunuuzul.test','admin123')">admin@kunuuzul.test / admin123</code></div>
-        <div><span class="role" style="background:#198754">PJGT</span> <code onclick="fill('pjgt@kunuuzul.test','pjgt123')">pjgt@kunuuzul.test / pjgt123</code></div>
-        <div><span class="role" style="background:#0d6efd">GT</span> <code onclick="fill('gt@kunuuzul.test','gt123456')">gt@kunuuzul.test / gt123456</code></div>
-      </div>
-    </details>
-
     <div class="foot-links">
       Belum punya akun? <a href="{{ route('register') }}">Daftar sebagai PJGT/GT</a><br>
       <a href="{{ route('landing') }}" class="back-home"><i class="bi bi-arrow-left"></i> Kembali ke Beranda</a>
@@ -225,11 +207,6 @@ function togglePwd(){
   const i=document.getElementById('pwd'), e=document.getElementById('eye');
   if(i.type==='password'){ i.type='text'; e.className='bi bi-eye-slash'; } else { i.type='password'; e.className='bi bi-eye'; }
   i.focus();
-}
-function fill(u,p){
-  document.querySelector('input[name="login"]').value=u;
-  document.getElementById('pwd').value=p;
-  toast('Akun demo terisi — tinggal tekan Masuk');
 }
 document.getElementById('pwd').addEventListener('keyup', function(e){
   const on = e.getModifierState && e.getModifierState('CapsLock');

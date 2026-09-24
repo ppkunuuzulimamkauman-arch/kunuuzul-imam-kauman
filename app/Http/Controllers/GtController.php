@@ -38,6 +38,9 @@ class GtController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'username' => ['required', 'alpha_dash', 'min:3', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+            'current_password' => 'required_with:password|current_password',
+            'password' => 'nullable|min:6|confirmed',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tempat_lahir' => 'nullable|string|max:100',
             'tanggal_lahir' => 'nullable|date',
@@ -77,13 +80,22 @@ class GtController extends Controller
         ]);
 
         // Nama & email tersimpan di users → dashboard (auth()->user()->name) ikut terganti otomatis
-        $user->update([
+        // Username ikut menautkan permohonan miliknya → ikut diperbarui agar tidak lepas
+        $akun = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-        ]);
+            'username' => $validated['username'],
+        ];
+        if ($validated['username'] !== $user->username) {
+            Permohonan::where('username', $user->username)->update(['username' => $validated['username']]);
+        }
+        if ($request->filled('password')) {
+            $akun['password'] = $validated['password'];
+        }
+        $user->update($akun);
 
         $biodata = GtBiodata::firstOrCreate(['user_id' => $user->id]);
-        $data = collect($validated)->except(['name', 'email', 'foto'])->toArray();
+        $data = collect($validated)->except(['name', 'email', 'username', 'foto', 'password', 'password_confirmation', 'current_password'])->toArray();
 
         if ($request->hasFile('foto')) {
             $data['foto_path'] = $request->file('foto')->store('foto-gt', 'public');
@@ -111,6 +123,9 @@ class GtController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user->id)],
+            'username' => ['required', 'alpha_dash', 'min:3', 'max:50', \Illuminate\Validation\Rule::unique('users', 'username')->ignore($user->id)],
+            'current_password' => 'required_with:password|current_password',
+            'password' => 'nullable|min:6|confirmed',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'tempat_lahir' => 'nullable|string|max:100',
             'tanggal_lahir' => 'nullable|date',
@@ -122,9 +137,16 @@ class GtController extends Controller
             'kecamatan' => 'nullable|string|max:100',
             'kode_pos' => 'nullable|string|max:10',
         ]);
-        $user->update(['name' => $validated['name'], 'email' => $validated['email']]);
+        $akunPjgt = ['name' => $validated['name'], 'email' => $validated['email'], 'username' => $validated['username']];
+        if ($validated['username'] !== $user->username) {
+            Permohonan::where('username', $user->username)->update(['username' => $validated['username']]);
+        }
+        if ($request->filled('password')) {
+            $akunPjgt['password'] = $validated['password'];
+        }
+        $user->update($akunPjgt);
         $biodata = GtBiodata::firstOrCreate(['user_id' => $user->id]);
-        $data = collect($validated)->except(['name', 'email', 'foto'])->toArray();
+        $data = collect($validated)->except(['name', 'email', 'username', 'foto', 'password', 'password_confirmation', 'current_password'])->toArray();
         if ($request->hasFile('foto')) {
             $data['foto_path'] = $request->file('foto')->store('foto-gt', 'public');
         }

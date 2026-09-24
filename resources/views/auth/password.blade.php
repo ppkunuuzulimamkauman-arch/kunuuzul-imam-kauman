@@ -3,9 +3,14 @@
 @section('breadcrumb','Ganti Password')
 @section('content')
 <div class="card-form" style="max-width:560px;margin:0 auto">
-  <div class="card-form-header"><i class="bi bi-key-fill" style="color:var(--gold)"></i> Ganti Password Login</div>
+  <div class="card-form-header"><i class="bi bi-key-fill" style="color:var(--gold)"></i> Ganti Username & Password</div>
   <form method="POST" action="{{ route('password.update') }}" class="p-4">
     @csrf @method('PUT')
+    <div class="mb-3">
+      <label class="form-label">Username <span style="color:#dc3545">*</span></label>
+      <input type="text" name="username" value="{{ old('username', auth()->user()->username) }}" class="form-control @error('username') is-invalid @enderror" placeholder="huruf/angka tanpa spasi" required>
+      @error('username')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    </div>
     <div class="mb-3">
       <label class="form-label">Password Saat Ini <span style="color:#dc3545">*</span></label>
       <input type="password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" placeholder="Masukkan password lama" required autocomplete="current-password">
@@ -21,7 +26,7 @@
       <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password baru" required autocomplete="new-password">
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <button class="btn-green flex-fill" style="justify-content:center"><i class="bi bi-check-circle"></i> Simpan Password</button>
+      <button class="btn-green flex-fill" style="justify-content:center"><i class="bi bi-check-circle"></i> Simpan</button>
       <a href="{{ route('dashboard') }}" class="btn-yellow flex-fill" style="justify-content:center">Batal</a>
     </div>
     <div class="small mt-3 p-2 rounded-3" style="background:var(--cream);border:1.5px dashed var(--gold);color:var(--brown)">Login memakai username/email + password ini. Setelah diganti, gunakan password baru saat masuk berikutnya.</div>

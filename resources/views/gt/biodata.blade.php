@@ -153,6 +153,17 @@
         </div>
       </div>
 
+      {{-- Akun login: username + password --}}
+      <div class="card mt-2 mb-2" style="border:1.5px solid #e8d9a0;border-radius:12px;overflow:hidden">
+        <div class="px-3 py-2 fw-bold" style="background:linear-gradient(135deg,#0a3d1f,#1d7a3d);color:#f4e2a0;font-size:13px"><i class="bi bi-key-fill"></i> Akun Login</div>
+        <div class="p-3 row g-3">
+          <div class="col-12 col-md-6"><label class="bio-label">Username <span class="req">*</span></label><input type="text" name="username" value="{{ old('username', $user->username) }}" class="form-control form-control-sm bio-input" disabled required></div>
+          <div class="col-12 col-md-6"><label class="bio-label">Password Saat Ini <small style="color:#999">(wajib bila ganti password)</small></label><input type="password" name="current_password" class="form-control form-control-sm bio-input" disabled autocomplete="current-password"></div>
+          <div class="col-12 col-md-6"><label class="bio-label">Password Baru <small style="color:#999">(kosongkan bila tidak ganti)</small></label><input type="password" name="password" class="form-control form-control-sm bio-input" disabled autocomplete="new-password" placeholder="min 6 karakter"></div>
+          <div class="col-12 col-md-6"><label class="bio-label">Konfirmasi Password Baru</label><input type="password" name="password_confirmation" class="form-control form-control-sm bio-input" disabled autocomplete="new-password"></div>
+        </div>
+      </div>
+
       <div class="d-none gap-2 mt-3" id="saveBar">
         <button type="submit" class="btn fw-bold" style="background:#0a3d1f;color:#d4af37;border-radius:8px;min-height:46px;flex:1"><i class="bi bi-check-circle-fill"></i> Simpan Biodata</button>
         <button type="button" id="btnCancel" class="btn fw-bold" style="background:#fff;border:1.5px solid #e8d9a0;color:#5d4037;border-radius:8px;min-height:46px">Batal</button>
