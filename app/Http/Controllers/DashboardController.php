@@ -80,7 +80,7 @@ class DashboardController extends Controller
         if ($isPjgt) {
             $gtQ = \App\Models\Penempatan::with(['gt','permohonan'])
                 ->whereHas('permohonan', function ($qq) use ($user) { $qq->where('username', $user->username); });
-            $gtDiLembagaCount = (clone $gtQ)->count();
+            $gtDiLembagaCount = \App\Models\Penempatan::unreadUntukPjgt($user);
             $gtDiLembaga = $gtQ->latest()->take(5)->get();
         }
 

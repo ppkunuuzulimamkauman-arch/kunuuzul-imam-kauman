@@ -20,4 +20,32 @@ class Penempatan extends Model
     {
         return $this->belongsTo(Permohonan::class);
     }
+
+    // Scope: penempatan ke lembaga milik PJGT tertentu
+    public static function untukPjgt($user)
+    {
+        return static::whereHas('permohonan', function ($q) use ($user) {
+            $q->where('username', $user->username);
+        });
+    }
+
+    // Jumlah belum dibaca (badge merah): penempatan yg berubah setelah terakhir dibuka
+    public static function unreadUntukPjgt($user)
+    {
+        $readAt = \DB::table('penempatan_reads')->where('user_id', $user->id)->value('read_at');
+        $query = static::untukPjgt($user);
+        if ($readAt) {
+            $query->where('updated_at', '>', $readAt);
+        }
+        return $query->count();
+    }
+
+    // Tandai sudah dibaca (dipanggil saat halaman dibuka)
+    public static function tandaiDibaca($user)
+    {
+        \DB::table('penempatan_reads')->updateOrInsert(
+            ['user_id' => $user->id],
+            ['read_at' => now(), 'updated_at' => now(), 'created_at' => \DB::raw('COALESCE(created_at, NOW())')]
+        );
+    }
 }

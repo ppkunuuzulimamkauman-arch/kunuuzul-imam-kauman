@@ -18,6 +18,10 @@ class PjgtGtController extends Controller
             });
         }
         $items = $query->latest()->paginate(15);
+        // Dibuka = dibaca → badge merah hilang sampai ada penempatan baru/berubah
+        if (($user->role ?? '') !== 'admin') {
+            Penempatan::tandaiDibaca($user);
+        }
         return view('pjgt.gt-saya', compact('items'));
     }
 }
