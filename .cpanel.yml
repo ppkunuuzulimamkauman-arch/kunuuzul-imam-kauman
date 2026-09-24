@@ -1,0 +1,13 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/makunuu1/repositories/kunuuzul-imam-kauman
+    - export PHPBIN=/opt/cpanel/ea-php83/root/usr/bin/php
+    - cd $DEPLOYPATH
+    - $PHPBIN /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
+    - $PHPBIN artisan migrate --force
+    - chmod -R 775 storage bootstrap/cache
+    - $PHPBIN artisan config:cache
+    - $PHPBIN artisan route:cache
+    - $PHPBIN artisan view:cache
+    - rm -f public/test.txt public/phpv.php
