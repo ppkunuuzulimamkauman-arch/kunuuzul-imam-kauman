@@ -32,6 +32,9 @@ class Penempatan extends Model
     // Jumlah belum dibaca (badge merah): penempatan yg berubah setelah terakhir dibuka
     public static function unreadUntukPjgt($user)
     {
+        if (! \Schema::hasTable('penempatan_reads')) {
+            return static::untukPjgt($user)->count();
+        }
         $readAt = \DB::table('penempatan_reads')->where('user_id', $user->id)->value('read_at');
         $query = static::untukPjgt($user);
         if ($readAt) {
@@ -43,6 +46,9 @@ class Penempatan extends Model
     // Tandai sudah dibaca (dipanggil saat halaman dibuka)
     public static function tandaiDibaca($user)
     {
+        if (! \Schema::hasTable('penempatan_reads')) {
+            return;
+        }
         \DB::table('penempatan_reads')->updateOrInsert(
             ['user_id' => $user->id],
             ['read_at' => now(), 'updated_at' => now(), 'created_at' => \DB::raw('COALESCE(created_at, NOW())')]
