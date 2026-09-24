@@ -362,7 +362,7 @@ section[id]:target{animation:sectFlash 1.4s ease}
         <li>Status: <span class="badge" style="background:var(--gold);color:var(--green)">Proses</span> <span class="badge bg-success">Diterima</span> <span class="badge bg-danger">Ditolak</span></li>
       </ul>
  <div class="alert small mt-3 mb-0 arab text-center" style="background:var(--cream2);border:1px solid var(--gold);color:var(--green)">Semoga menjadi amal jariyah</div>
-      <div class="text-center small mt-2" style="color:var(--brown)">Kendala? <a href="https://wa.me/628124981242?text=Assalamualaikum%20Admin%20KIK%2C%20saya%20butuh%20bantuan%20pengisian%20formulir" target="_blank" rel="noopener" style="color:var(--green);font-weight:700">Hubungi Admin KIK via WA <i class="bi bi-whatsapp"></i></a></div>
+      <div class="text-center small mt-2" style="color:var(--brown)">Kendala? <a href="https://wa.me/6281249811242?text=Assalamualaikum%20Admin%20KIK%2C%20saya%20butuh%20bantuan%20pengisian%20formulir" target="_blank" rel="noopener" style="color:var(--green);font-weight:700">Hubungi Admin KIK via WA <i class="bi bi-whatsapp"></i></a></div>
     </div>
  <div class="text-center mt-3 arab" style="color:var(--gold2);font-size:16px">Ilmu adalah Cahaya</div>
   </div>

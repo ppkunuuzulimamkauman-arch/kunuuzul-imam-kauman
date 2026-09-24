@@ -34,7 +34,7 @@
       </div>
       <div class="col-12">
         <label class="form-label fw-bold" style="color:var(--green)">Nomor HP / WhatsApp Aktif <span class="text-danger">*</span></label>
-        <input type="text" name="telepon" value="{{ old('telepon') }}" class="form-control @error('telepon') is-invalid @enderror" placeholder="Contoh: 081249811242" required>
+        <input type="text" name="telepon" value="{{ old('telepon') }}" class="form-control @error('telepon') is-invalid @enderror" placeholder="Contoh: 0812498111242" required>
         @error('telepon')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>
       <div class="col-md-6">

@@ -13,9 +13,9 @@ class LayananController extends Controller
         // Kontak tetap PP KUNUUZUL IMAM KAUMAN
         $kontak = [
             'alamat' => 'Jln KH Zainul Arifin No.165 Kauman, Bondowoso 68213',
-            'telepon' => '081249811242',
+            'telepon' => '0812498111242',
             'email' => 'kunuzulimam@gmail.com',
-            'wa' => 'https://wa.me/628124981242',
+            'wa' => 'https://wa.me/6281249811242',
         ];
         return view('layanan.index', compact('sarans','kontak'));
     }

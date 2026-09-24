@@ -30,7 +30,7 @@ class PermohonanSeeder extends Seeder
                 'negara' => 'INDONESIA',
                 'provinsi' => 'JAWA TIMUR',
                 'kabupaten' => 'KABUPATEN BONDOWOSO',
-                'telepon' => '081249811242',
+                'telepon' => '0812498111242',
                 'email' => 'contoh@gmail.com',
             ]));
         }
