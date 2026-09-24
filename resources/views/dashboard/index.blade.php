@@ -41,6 +41,18 @@
   </div>
 </div>
 
+@if(($isPjgt ?? false) && ($gtDiLembagaCount ?? 0) > 0)
+<a href="{{ route('pjgt.gt-saya') }}" class="text-decoration-none">
+  <div class="p-3 mb-3 rounded-4 d-flex align-items-center gap-3" style="background:linear-gradient(135deg,#fff8d6,#fdf0c7);border:2px solid #d4af37;box-shadow:0 8px 24px rgba(212,175,55,.25)">
+    <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#0a3d1f,#1d7a3d);color:#f4e2a0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative"><i class="bi bi-bell-fill"></i><span style="position:absolute;top:-6px;right:-6px;background:#dc3545;color:#fff;font-size:10px;font-weight:800;border-radius:20px;padding:1px 6px;border:2px solid #fff">{{ $gtDiLembagaCount }}</span></div>
+    <div class="flex-fill" style="min-width:0">
+      <div class="fw-bold" style="color:#0a3d1f;font-size:14px">{{ $gtDiLembagaCount }} Guru Tugas ditempatkan di lembaga Anda</div>
+      <div class="small" style="color:#5d4037">{{ $gtDiLembaga->pluck('gt.name')->filter()->take(3)->join(', ') }}{{ $gtDiLembagaCount > 3 ? ' dkk' : '' }} — ketuk untuk lihat. <span class="fw-bold" style="color:#0a3d1f">Lihat →</span></div>
+    </div>
+  </div>
+</a>
+@endif
+
 <div class="row g-2 g-md-3">
   <div class="col-12 col-lg-8">
     <div class="card" style="border:1px solid #e9e2cb;border-radius:16px;box-shadow:0 8px 28px rgba(20,40,25,.10);overflow:hidden">

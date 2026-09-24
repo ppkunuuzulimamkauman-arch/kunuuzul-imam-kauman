@@ -22,11 +22,10 @@
         @csrf
         <div class="p-4">
             <h6 class="fw-bold mb-3">Data Pengelola Lembaga</h6>
-            <div class="alert small py-2" style="background:#fdf6e3;border:1px solid #d4af37;color:#0a3d1f"><i class="bi bi-info-circle-fill" style="color:#d4af37"></i> <strong>Adab:</strong> Nama wajib diisi lengkap sesuai KTP (termasuk Sekretaris Yayasan). Jika tidak ada isi <code>0</code>. No HP/WA hanya untuk PJGT. Contoh: KH Zaid, Lora Amr, Fulan.</div>
+            <div class="alert small py-2" style="background:#fdf6e3;border:1px solid #d4af37;color:#0a3d1f"><i class="bi bi-info-circle-fill" style="color:#d4af37"></i> <strong>Adab:</strong> Nama wajib diisi lengkap sesuai KTP. Jika tidak ada isi <code>0</code>. No HP/WA hanya untuk PJGT. Contoh: KH Zaid, Lora Amr, Fulan.</div>
             @php $fields = [
                 ['label'=>'Pengasuh','field'=>'pengasuh'],
                 ['label'=>'Ketua Yayasan','field'=>'ketua_yayasan'],
-                ['label'=>'Sekretaris Yayasan','field'=>'sekretaris_yayasan'],
                 ['label'=>'Kepala Madrasah','field'=>'kepala_madrasah'],
                 ['label'=>'PJGT','field'=>'pjgt','hp'=>'pjgt_hp'],
             ]; @endphp

@@ -175,13 +175,11 @@ class PermohonanController extends Controller
         $validated = $request->validate(array_merge([
             'pengasuh' => 'required|string|min:3|max:100',
             'ketua_yayasan' => 'required|string|min:3|max:100',
-            'sekretaris_yayasan' => 'required|string|min:3|max:100',
             'kepala_madrasah' => 'required|string|min:3|max:100',
             'pjgt' => 'required|string|min:3|max:100',
             'pjgt_hp' => 'required|string|regex:/^08[0-9]{8,13}$/',
         ], $this->customRules(2)), [
             'pengasuh.required' => 'Pengasuh wajib diisi (jika tidak ada isi 0)',
-            'sekretaris_yayasan.required' => 'Sekretaris Yayasan wajib diisi (jika tidak ada isi 0)',
             'pjgt_hp.regex' => 'No HP/WA PJGT harus format 08... 10-15 digit',
         ]);
 

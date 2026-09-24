@@ -11,6 +11,7 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PjgtLaporanController;
+use App\Http\Controllers\PjgtGtController;
 use App\Models\Permohonan;
 use Illuminate\Support\Facades\Route;
 
@@ -112,6 +113,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('pjgt')->name('pjgt.')->middleware('role:pjgt,admin')->group(function () {
         Route::get('/biodata', [GtController::class, 'pjgtBiodata'])->name('biodata');
         Route::put('/biodata', [GtController::class, 'updatePjgtBiodata'])->name('biodata.update');
+        Route::get('/gt-saya', [PjgtGtController::class, 'index'])->name('gt-saya');
     });
 
     // PJGT Laporan Kegiatan GT — checklist (hanya PJGT buat, Admin terima)

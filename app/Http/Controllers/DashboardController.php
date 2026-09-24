@@ -74,13 +74,22 @@ class DashboardController extends Controller
             $pengaduanPjgt = Pengaduan::with(['gt'])->where('pjgt_user_id',$user->id)->latest()->take(3)->get();
             $pengaduanPjgtCount = Pengaduan::where('pjgt_user_id',$user->id)->count();
         }
+        // GT yang ditempatkan admin ke lembaga milik PJGT (pemberitahuan)
+        $gtDiLembaga = collect();
+        $gtDiLembagaCount = 0;
+        if ($isPjgt) {
+            $gtQ = \App\Models\Penempatan::with(['gt','permohonan'])
+                ->whereHas('permohonan', function ($qq) use ($user) { $qq->where('username', $user->username); });
+            $gtDiLembagaCount = (clone $gtQ)->count();
+            $gtDiLembaga = $gtQ->latest()->take(5)->get();
+        }
 
         return view('dashboard.index', compact(
             'total','proses','diterima','ditolak','butuhGt','madrasahDistinct','pjgtDistinct',
             'allTotal','allProses','byStatus','byRapot','byWil','byProv','recent','pending','topPjgt','gtCount','pjgtUserCount','isAdmin','isPjgt','isGt','tugasUtama',
             'pengaduanGt','pengaduanGtCount','pengaduanPjgt','pengaduanPjgtCount',
             'pengaduanTotal','pengaduanMenunggu','layananTotal','laporanGtTotal',
-            'infoUmum','infoPjgt','infoGt'
+            'infoUmum','infoPjgt','infoGt','gtDiLembaga','gtDiLembagaCount'
         ));
     }
 }
