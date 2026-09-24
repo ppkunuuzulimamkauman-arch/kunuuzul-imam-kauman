@@ -30,7 +30,7 @@
                     @foreach($items as $i => $p)
                     <tr>
                         <td>{{ $items->firstItem() + $i }}</td>
-                        <td class="fw-bold" style="color:#0a3d1f">{{ $p->gt->name ?? '-' }}<div class="small text-muted fw-normal">{{ $p->gt->username ?? '' }}</div></td>
+                        <td><a href="{{ route('pjgt.gt-saya.show', $p->gt) }}" class="fw-bold text-decoration-none" style="color:#0a3d1f">{{ $p->gt->name ?? '-' }}</a><div class="small text-muted fw-normal">{{ $p->gt->username ?? '' }}</div></td>
                         <td>{{ $p->permohonan->nama_madrasah ?? '-' }}<div class="small text-muted">{{ trim(($p->permohonan->desa ?? '').' • '.($p->permohonan->kecamatan ?? ''), ' •') }}</div></td>
                         <td class="small">{{ $p->catatan ?? '-' }}</td>
                         <td class="small text-muted">{{ $p->updated_at?->format('d/m/Y') }}</td>

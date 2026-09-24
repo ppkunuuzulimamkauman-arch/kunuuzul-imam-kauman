@@ -114,6 +114,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/biodata', [GtController::class, 'pjgtBiodata'])->name('biodata');
         Route::put('/biodata', [GtController::class, 'updatePjgtBiodata'])->name('biodata.update');
         Route::get('/gt-saya', [PjgtGtController::class, 'index'])->name('gt-saya');
+        Route::get('/gt-saya/{user}', [PjgtGtController::class, 'show'])->name('gt-saya.show');
     });
 
     // PJGT Laporan Kegiatan GT — checklist (hanya PJGT buat, Admin terima)
